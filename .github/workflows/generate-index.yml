@@ -1,0 +1,73 @@
+name: Generate HTML Index and Deploy
+
+on:
+  push:
+    branches:
+      - main  # 메인 브랜치에 푸시될 때 실행 (원하는 브랜치로 변경 가능)
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Index.html 자동 생성 스크립트 실행
+        run: |
+          node -e '
+            const fs = require("fs");
+            const path = require("path");
+
+            const colDir = path.join(__dirname, "col");
+            
+            // col 디렉토리가 존재하는지 확인
+            if (!fs.existsSync(colDir)) {
+              console.log("col 디렉토리가 존재하지 않습니다.");
+              process.exit(0);
+            }
+
+            // col 디렉토리 내의 html 파일 목록 읽기 (index.html 제외)
+            const files = fs.readdirSync(colDir)
+              .filter(file => file.endsWith(".html") && file !== "index.html");
+
+            // HTML 리스트 항목 생성
+            const listItems = files.map(file => {
+              // 파일명을 제목 등으로 활용 가능 (확장자 제거 등)
+              const title = file.replace(/\.html$/, "");
+              return `<li><a href="col/${file}">${title}</a></li>`;
+            }).join("\n");
+
+            // 최종 index.html 내용 작성
+            const htmlContent = `<!DOCTYPE html>
+            <html lang="ko">
+            <head>
+                <meta charset="UTF-8">
+                <title>Col HTML 파일 목록</title>
+                <style>
+                    body { font-family: sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+                    h1 { border-bottom: 2px solid #eee; padding-bottom: 10px; }
+                    ul { line-height: 1.6; }
+                </style>
+            </head>
+            <body>
+                <h1>📁 Col Directory HTML List</h1>
+                <ul>
+                    ${listItems}
+                </ul>
+            </body>
+            </html>`;
+
+            // 최상단(또는 원하는 위치)에 index.html 저장
+            fs.writeFileSync(path.join(__dirname, "index.html"), htmlContent);
+            console.log("index.html이 성공적으로 생성되었습니다.");
+          '
+
+      - name: 변경 사항 커밋 및 푸시 (선택 사항)
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --quiet && git diff --cached --quiet || (git commit -m "chore: auto-generate index.html" && git push)
