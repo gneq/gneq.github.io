@@ -3,7 +3,7 @@ name: Generate HTML Index and Deploy
 on:
   push:
     branches:
-      - main  # 메인 브랜치에 푸시될 때 실행 (원하는 브랜치로 변경 가능)
+      - main  # 메인 브랜치에 푸시될 때 실행
 
 permissions:
   contents: write
@@ -33,11 +33,10 @@ jobs:
             const files = fs.readdirSync(colDir)
               .filter(file => file.endsWith(".html") && file !== "index.html");
 
-            // HTML 리스트 항목 생성
+            // HTML 리스트 항목 생성 (같은 폴더 안이므로 상대 경로 처리 주의)
             const listItems = files.map(file => {
-              // 파일명을 제목 등으로 활용 가능 (확장자 제거 등)
               const title = file.replace(/\.html$/, "");
-              return `<li><a href="col/${file}">${title}</a></li>`;
+              return `<li><a href="${file}">${title}</a></li>`;
             }).join("\n");
 
             // 최종 index.html 내용 작성
@@ -60,14 +59,17 @@ jobs:
             </body>
             </html>`;
 
-            // 최상단(또는 원하는 위치)에 index.html 저장
+            // col 폴더 내부에 index.html 저장
             fs.writeFileSync(path.join(colDir, "index.html"), htmlContent);
-            console.log("index.html이 성공적으로 생성되었습니다.");
+            console.log("col/index.html이 성공적으로 생성되었습니다.");
           '
 
-      - name: 변경 사항 커밋 및 푸시 (선택 사항)
+      - name: 변경 사항 커밋 및 푸시
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add index.html
-          git diff --quiet && git diff --cached --quiet || (git commit -m "chore: auto-generate index.html" && git push)
+          
+          # [수정] col 폴더 안의 index.html을 지정하도록 변경
+          git add col/index.html
+          
+          git diff --quiet && git diff --cached --quiet || (git commit -m "chore: auto-generate col/index.html" && git push)
