@@ -20,12 +20,15 @@ jobs:
     steps:
       - name: 체크아웃
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Git 히스토리를 전체 다 가져오도록 설정 (날짜 조회를 위해 필수)
 
-      - name: Index.html 자동 생성 및 시간순 정렬 스크립트 실행
+      - name: Index.html 자동 생성 및 Git 커밋 시간순 정렬 스크립트 실행
         run: |
           node -e '
             const fs = require("fs");
             const path = require("path");
+            const { execSync } = require("child_process");
 
             const colDir = path.join(__dirname, "col");
             
@@ -34,25 +37,37 @@ jobs:
               process.exit(0);
             }
 
-            // 파일 정보(이름, 수정 시간)를 객체 형태로 수집
             const files = fs.readdirSync(colDir)
               .filter(file => file.endsWith(".html") && file !== "index.html")
               .map(file => {
-                const filePath = path.join(colDir, file);
-                const stats = fs.statSync(filePath);
+                const filePath = `col/${file}`;
+                let mtime;
+
+                try {
+                  // Git 히스토리에서 해당 파일의 마지막 커밋 시간을 가져옴 (UNIX 타임스탬프)
+                  const gitTimeStr = execSync(`git log -1 --format=%ct -- "${filePath}"`, { encoding: "utf-8" }).trim();
+                  if (gitTimeStr) {
+                    mtime = new Date(parseInt(gitTimeStr, 10) * 1000);
+                  } else {
+                    // Git에 아직 기록되지 않은 신규 파일인 경우 현재 파일 시스템 시간 사용
+                    mtime = fs.statSync(path.join(colDir, file)).mtime;
+                  }
+                } catch (e) {
+                  mtime = fs.statSync(path.join(colDir, file)).mtime;
+                }
+
                 return {
                   name: file,
                   title: file.replace(/\.html$/, ""),
-                  mtime: stats.mtime // 파일 수정 시간
+                  mtime: mtime
                 };
               });
 
-            // 최신 수정일 순으로 정렬 (내림차순: 가장 최근에 수정된 파일이 위로)
+            // 최신 커밋 순으로 정렬 (내림차순)
             files.sort((a, b) => b.mtime - a.mtime);
 
-            // HTML 리스트 항목 생성 (시간 표시 포함)
+            // HTML 리스트 항목 생성
             const listItems = files.map(file => {
-              // 날짜 포맷팅 (YYYY-MM-DD HH:mm:ss)
               const d = new Date(file.mtime);
               const year = d.getFullYear();
               const month = String(d.getMonth() + 1).padStart(2, "0");
@@ -91,7 +106,7 @@ jobs:
             </html>`;
 
             fs.writeFileSync(path.join(colDir, "index.html"), htmlContent);
-            console.log("col/index.html이 시간순 정렬 및 날짜 표시와 함께 생성되었습니다.");
+            console.log("col/index.html이 Git 커밋 시간 기준으로 성공적으로 생성되었습니다.");
           '
 
       - name: Setup Pages
