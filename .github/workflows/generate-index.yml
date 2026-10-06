@@ -61,7 +61,7 @@ jobs:
             </html>`;
 
             // 최상단(또는 원하는 위치)에 index.html 저장
-            fs.writeFileSync(path.join(__dirname, "index.html"), htmlContent);
+            fs.writeFileSync(path.join(__dirname, "columns.html"), htmlContent);
             console.log("index.html이 성공적으로 생성되었습니다.");
           '
 
