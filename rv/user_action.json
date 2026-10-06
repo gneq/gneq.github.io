@@ -1,0 +1,10 @@
+[
+  {
+    "code": "window.open('https://ko.dict.naver.com/#/search?query='+encodeURIComponent(document.defaultView.getSelection().toString()), '_blank');",
+    "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAaklEQVR4nM3SsQmEUBBF0VOD2IJVWNGmaw+2oW5PtrG5Jt9Ew+/HEcQLL5rhDgyPt9FjQSoky4KqcCRdGf4wRQU1/nvqiKDDgBHfiGBGu2eOCFLm85cEByFBjqJgvVOkhOZsocTnbpWfZwOy/ztoYenWMQAAAABJRU5ErkJggg=="
+  },
+  {
+    "code": "window.open('https://google.com/search?q='+encodeURIComponent(document.defaultView.getSelection().toString()), '_blank');",
+    "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAACbklEQVR4nGNgQAL/6+uZTjg7+5/y9Nx/ws3t1QkXl98n3dw+nvb0PHDc2TkcJM+AC5xyc5M94eZ25UZc3NePra3/v/X1/f/a2/v/Q0vL/2fFxf/P+ft/OeXmduWwi4scVs0n3dzev2lo+AfS+Ky4+NfFoKBvIBec8vL6cjsx8ceNmJjvp9zcTl9wdeVG0bxqVSjzCU/3Ey+rq/997ur6f8bL69sJV9eOI46O6md8fLiOubjonnBzm3jSze0whmYQ2DXHI/Tkqpinr/vrfp/x9v5+wsnJloEUsH+B34E3N7r/3TxQ9O1QvFMZA6lgz1zvj//eLvp/fG30170zPZSR5fyqtv7Hhf1rtr+CeGG255//7xb/3zPf5/eqVaFs6AZ0b/+AFftXbf0NVrR3vs/bf28X/j++KuI7MS6IaDnwp2vb+/8BtTvegRXtW+i3/+WV9r+7dpW9zJxdVI3Pu/7V2yaULbz9q3nDy//BdTv3gQU3zfQJ7lldeWH9jS3/0hfVfo+dW2qPTbNf9RaX4Ppd30C2p00889W3cksYWCJ0VShzyoKqc8survu75c6O/xmL674lzKvojJ9ZqZE2s54rbnaJXuK8qknx0/ovli+597ty6b1/gTU7rtYjJ+uoOcXyiQsq3q64tP7vzvt7/s8+uexX8erWb4nzK34XrGz+MuvEkt+bb2//17x5+Zegui0X/Mu3K2A4MW5BoXTS/MordVsmfF1/fev/Hff2/N/1YO//nff2/F93fcv/uq0TviXNr7wWM6tYEWcggZwVO6vUJ3lB1YHEeRUf4uaW/k2aV/k+bWH1vtjZpeEozqYWAACshncz7Ouc5QAAAABJRU5ErkJggg=="
+  }
+]
