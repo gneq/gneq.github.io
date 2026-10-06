@@ -5,13 +5,11 @@ on:
     branches:
       - main  # 메인 브랜치에 푸시될 때 실행
 
-# GitHub Pages 배포를 위한 권한 설정
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# 동시 실행 제어 (이전에 실행 중인 배포가 있다면 취소하여 충돌 방지)
 concurrency:
   group: "pages"
   cancel-in-progress: true
@@ -23,7 +21,7 @@ jobs:
       - name: 체크아웃
         uses: actions/checkout@v4
 
-      - name: Index.html 자동 생성 스크립트 실행
+      - name: Index.html 자동 생성 및 시간순 정렬 스크립트 실행
         run: |
           node -e '
             const fs = require("fs");
@@ -36,12 +34,37 @@ jobs:
               process.exit(0);
             }
 
+            // 파일 정보(이름, 수정 시간)를 객체 형태로 수집
             const files = fs.readdirSync(colDir)
-              .filter(file => file.endsWith(".html") && file !== "index.html");
+              .filter(file => file.endsWith(".html") && file !== "index.html")
+              .map(file => {
+                const filePath = path.join(colDir, file);
+                const stats = fs.statSync(filePath);
+                return {
+                  name: file,
+                  title: file.replace(/\.html$/, ""),
+                  mtime: stats.mtime // 파일 수정 시간
+                };
+              });
 
+            // 최신 수정일 순으로 정렬 (내림차순: 가장 최근에 수정된 파일이 위로)
+            files.sort((a, b) => b.mtime - a.mtime);
+
+            // HTML 리스트 항목 생성 (시간 표시 포함)
             const listItems = files.map(file => {
-              const title = file.replace(/\.html$/, "");
-              return `<li><a href="${file}">${title}</a></li>`;
+              // 날짜 포맷팅 (YYYY-MM-DD HH:mm:ss)
+              const d = new Date(file.mtime);
+              const year = d.getFullYear();
+              const month = String(d.getMonth() + 1).padStart(2, "0");
+              const day = String(d.getDate()).padStart(2, "0");
+              const hours = String(d.getHours()).padStart(2, "0");
+              const minutes = String(d.getMinutes()).padStart(2, "0");
+              const timeStr = `${year}-${month}-${day} ${hours}:${minutes}`;
+
+              return `<li>
+                <a href="${file.name}">${file.title}</a>
+                <span class="date">[${timeStr}]</span>
+              </li>`;
             }).join("\n");
 
             const htmlContent = `<!DOCTYPE html>
@@ -52,7 +75,11 @@ jobs:
                 <style>
                     body { font-family: sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
                     h1 { border-bottom: 2px solid #eee; padding-bottom: 10px; }
-                    ul { line-height: 1.6; }
+                    ul { line-height: 1.8; list-style-type: none; padding: 0; }
+                    li { margin-bottom: 8px; border-bottom: 1px dashed #f0f0f0; padding-bottom: 4px; }
+                    a { text-decoration: none; color: #0066cc; font-weight: bold; }
+                    a:hover { text-decoration: underline; }
+                    .date { float: right; color: #888; font-size: 0.85em; }
                 </style>
             </head>
             <body>
@@ -64,7 +91,7 @@ jobs:
             </html>`;
 
             fs.writeFileSync(path.join(colDir, "index.html"), htmlContent);
-            console.log("col/index.html이 성공적으로 생성되었습니다.");
+            console.log("col/index.html이 시간순 정렬 및 날짜 표시와 함께 생성되었습니다.");
           '
 
       - name: Setup Pages
@@ -73,7 +100,6 @@ jobs:
       - name: Upload artifact (GitHub Pages 전용)
         uses: actions/upload-pages-artifact@v3
         with:
-          # 전체 프로젝트 폴더를 Pages 배포 대상으로 지정 (col 폴더가 포함됨)
           path: '.'
 
       - name: Deploy to GitHub Pages
