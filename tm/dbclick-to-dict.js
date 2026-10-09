@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         더블클릭 미니 구글 검색 버튼
+// @name         더블클릭 미니 구글/네이버 검색 버튼
 // @namespace    http://tampermonkey.net/
-// @version      1.8
-// @description  텍스트를 더블클릭하면 하이라이트가 사라지지 않고 영구적으로 유지됩니다.
+// @version      2.0
+// @description  텍스트를 더블클릭하면 네이버 사전이 새 창으로 열리고, 단어에 하이라이트와 G/N 버튼이 유지됩니다.
 // @author       Gemini
 // @match        *://*/*
 // @grant        none
@@ -56,26 +56,25 @@
                     span.className = 'google-search-mini-layer';
                     span.style.backgroundColor = '#03cf5d';
                     span.style.color = '#ffffff';
-                    span.style.position = 'relative'; // 내부 버튼 absolute 기준점
+                    span.style.position = 'relative'; // 내부 버튼들의 absolute 기준점
                     span.style.display = 'inline-block';
+                    span.style.borderRadius = '5px';
                     highlightRange.surroundContents(span);
                 } catch (err) {
                     return;
                 }
                 
-                // 구글 검색 URL 생성
+                // 2. 우측 하단 구글(G) 버튼 생성
                 const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(word)}`;
-                
-                // 2. span 내부 우측 하단에 위치할 구글 버튼 생성 (absolute 적용)
-                const button = document.createElement('a');
-                button.href = googleSearchUrl;
-                button.target = '_blank';
-                button.innerHTML = 'G';
-                button.style.cssText = `
+                const googleButton = document.createElement('a');
+                googleButton.href = googleSearchUrl;
+                googleButton.target = '_blank';
+                googleButton.innerHTML = 'G';
+                googleButton.style.cssText = `
                     position: absolute;
                     right: 0;
                     bottom: 0;
-                    transform: translate(30%, 40%);
+                    transform: translate(60%, 40%);
                     background-color: #4285F4;
                     color: #ffffff;
                     font-size: 10px;
@@ -88,14 +87,35 @@
                     white-space: nowrap;
                     z-index: 999999;
                 `;
+                span.appendChild(googleButton);
                 
-                span.appendChild(button);
+                // 3. 좌측 상단 네이버(N) 버튼 생성
+                const naverSearchUrl = `https://ko.dict.naver.com/#/search?query=${encodeURIComponent(word)}`;
+                const naverButton = document.createElement('a');
+                naverButton.href = naverSearchUrl;
+                naverButton.target = '_blank';
+                naverButton.innerHTML = 'N';
+                naverButton.style.cssText = `
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    transform: translate(-60%, -40%);
+                    background-color: #03cf5d;
+                    color: #ffffff;
+                    font-size: 10px;
+                    font-family: sans-serif;
+                    font-weight: bold;
+                    text-decoration: none;
+                    padding: 1px 4px;
+                    border-radius: 3px;
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+                    white-space: nowrap;
+                    z-index: 999999;
+                `;
+                span.appendChild(naverButton);
                 
-                // (제거됨) 외부 클릭 시 원래 상태로 돌리던 이벤트 리스너를 완전히 삭제하여 하이라이트가 유지되도록 함
-                
-                // 네이버 사전 창 열기
-                const searchUrl = `https://ko.dict.naver.com/#/search?query=${encodeURIComponent(word)}`;
-                window.open(searchUrl, '_blank');
+                // 4. 더블클릭 시 네이버 사전 창 바로 열기 (원래 기능 복구)
+                window.open(naverSearchUrl, '_blank');
             }
         }
     });
