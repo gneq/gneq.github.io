@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         더블클릭 미니 구글 검색 버튼
 // @namespace    http://tampermonkey.net/
-// @version      1.4
-// @description  텍스트를 더블클릭하면 기존 하이라이트는 유지된 채 우측 하단에 아주 작은 구글 검색 버튼 레이어가 뜹니다.
+// @version      1.8
+// @description  텍스트를 더블클릭하면 하이라이트가 사라지지 않고 영구적으로 유지됩니다.
 // @author       Gemini
 // @match        *://*/*
 // @grant        none
@@ -46,57 +46,52 @@
             const word = text.substring(startIndex, endIndex).trim();
             
             if (word) {
-                // 1. 기존에 생성된 미니 레이어가 있다면 제거
-                const existingLayer = document.getElementById('google-search-mini-layer');
-                if (existingLayer) {
-                    existingLayer.remove();
+                // 1. 단어 자체에 텍스트 하이라이트 span 생성 (마진, 패딩, 보더 없음)
+                let span;
+                try {
+                    const highlightRange = document.createRange();
+                    highlightRange.setStart(node, startIndex);
+                    highlightRange.setEnd(node, endIndex);
+                    span = document.createElement('span');
+                    span.className = 'google-search-mini-layer';
+                    span.style.backgroundColor = '#03cf5d';
+                    span.style.color = '#ffffff';
+                    span.style.position = 'relative'; // 내부 버튼 absolute 기준점
+                    span.style.display = 'inline-block';
+                    highlightRange.surroundContents(span);
+                } catch (err) {
+                    return;
                 }
-                
-                // 2. 새로운 미니 버튼 레이어 생성 (텍스트를 변형하지 않고 화면 좌표 기반으로 배치)
-                const layer = document.createElement('div');
-                layer.id = 'google-search-mini-layer';
-                layer.style.cssText = `
-                    position: fixed;
-                    left: ${clientX + 10}px;
-                    top: ${clientY + 15}px;
-                    z-index: 999999;
-                `;
                 
                 // 구글 검색 URL 생성
                 const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(word)}`;
                 
-                // 미니 버튼 생성 (원하시는 스타일 적용)
+                // 2. span 내부 우측 하단에 위치할 구글 버튼 생성 (absolute 적용)
                 const button = document.createElement('a');
                 button.href = googleSearchUrl;
                 button.target = '_blank';
                 button.innerHTML = 'G';
                 button.style.cssText = `
-                    display: inline-block;
-                    background-color: #03cf5d;
+                    position: absolute;
+                    right: 0;
+                    bottom: 0;
+                    transform: translate(30%, 40%);
+                    background-color: #4285F4;
                     color: #ffffff;
-                    font-size: 11px;
+                    font-size: 10px;
                     font-family: sans-serif;
                     font-weight: bold;
                     text-decoration: none;
-                    padding: 2px 6px;
+                    padding: 1px 4px;
                     border-radius: 3px;
                     box-shadow: 0 1px 3px rgba(0,0,0,0.3);
                     white-space: nowrap;
+                    z-index: 999999;
                 `;
                 
-                layer.appendChild(button);
-                document.body.appendChild(layer);
+                span.appendChild(button);
                 
-                // 3. 레이어 외 다른 곳을 클릭하면 미니 레이어 닫기
-                const closeOnOutsideClick = function(event) {
-                    if (!layer.contains(event.target)) {
-                        layer.remove();
-                        document.removeEventListener('click', closeOnOutsideClick);
-                    }
-                };
-                setTimeout(() => {
-                    document.addEventListener('click', closeOnOutsideClick);
-                }, 0);
+                // (제거됨) 외부 클릭 시 원래 상태로 돌리던 이벤트 리스너를 완전히 삭제하여 하이라이트가 유지되도록 함
                 
                 // 네이버 사전 창 열기
                 const searchUrl = `https://ko.dict.naver.com/#/search?query=${encodeURIComponent(word)}`;
