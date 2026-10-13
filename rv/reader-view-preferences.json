@@ -1,0 +1,6388 @@
+{
+	"./plugins/chapters/core.mjs": false,
+	"./plugins/doi/core.mjs": false,
+	"./plugins/health/core.mjs": false,
+	"./plugins/multiple-articles/core.mjs": false,
+	"./plugins/note/core.mjs": false,
+	"./plugins/notify/core.mjs": false,
+	"./plugins/qr-code/core.mjs": false,
+	"./plugins/tip/core.mjs": false,
+	"auto-fullscreen": false,
+	"auto-rules": [
+		"n.news.naver.com",
+		"r:[\\S]*nocutnews\\.co\\.kr\\/news\\/[\\S]*",
+		"r:[\\S]*gimhae\\.go\\.kr/00001\\.web\\?amode=view[\\S]*",
+		"r:https://www\\.khan\\.co\\.kr/article/[\\S]*",
+		"r:gneq\\.github\\.io\\/col\\/."
+	],
+	"brightness": 100,
+	"cache-highlights": 0,
+	"context-open-in-reader-view": false,
+	"context-open-in-reader-view-bg": false,
+	"context-switch-to-reader-view": false,
+	"design-mode-button": true,
+	"display-loader": true,
+	"embedded": false,
+	"faqs": false,
+	"fixation-point": 0,
+	"font": "Helvetica, Arial, sans-serif",
+	"font-size": 23,
+	"fullscreen-button": false,
+	"highlight-button": true,
+	"highlights-count": "0",
+	"highlights-keys": [
+		"https://n.news.naver.com/mnews/article/469/0000958833?sid=110",
+		"https://bcviewer.bookcube.com/BcViewer/enter?h=C3643A0559EE466B5FB34E9C98CAD7D0F7855FA6654DBEB53C46FB9DA35DC6269477BB3BFBB91B1308F7A456272DBD5653BF429A3E8C06C59F400B502CE16C1B5BA9265C7A364C9E4D64C7EDD01C2DEEACD77235FBE0F1F7865A31952E341884AA5EC1AA1047B402ECD841A3562DFEABD20411F0639E237E5A2C016EF485FC06E5DEF72D1D4F807DFA7ED4B9BFA7799F5C84509AB3C0E2BE8A0F1FE699E6DDDDBCBC0F3791764A0EEE7CE76C6C5CC0B8",
+		"https://www.marieclairekorea.com/culture/film/2026/10/extend-accurate-2/",
+		"https://www.hankookilbo.com/news/article/amp/A2026092915410000490",
+		"https://www.jinju.news/front/news/view.do?articleId=ARTICLE_00047908",
+		"https://www.djtimes.co.kr/news/articleViewAmp.html?idxno=113704",
+		"https://n.news.naver.com/mnews/article/028/0002826826?sid=110",
+		"https://encykorea.aks.ac.kr/Article/E0037564",
+		"https://n.news.naver.com/mnews/article/018/0006385016?sid=110",
+		"https://n.news.naver.com/mnews/article/421/0009219677?sid=110",
+		"https://gneq.github.io/eb/fof/101.html",
+		"https://horizon.kias.re.kr/31550/",
+		"https://n.news.naver.com/article/469/0000958277?sid=110",
+		"https://n.news.naver.com/mnews/article/005/0001877428?sid=110",
+		"https://n.news.naver.com/mnews/article/666/0000126533?sid=110",
+		"https://n.news.naver.com/mnews/article/308/0000038828?sid=110",
+		"https://n.news.naver.com/mnews/article/032/0003474948?sid=110",
+		"https://n.news.naver.com/mnews/article/469/0000958277?sid=110",
+		"https://n.news.naver.com/mnews/article/346/0000117023?sid=110",
+		"https://n.news.naver.com/mnews/article/346/0000116994?sid=110",
+		"https://n.news.naver.com/mnews/article/088/0001032559?sid=110",
+		"https://n.news.naver.com/mnews/article/001/0016358405?sid=110",
+		"https://www.joongang.co.kr/article/3077975",
+		"https://n.news.naver.com/mnews/article/656/0000188646?sid=110",
+		"https://n.news.naver.com/mnews/article/025/0003555895?sid=110",
+		"https://n.news.naver.com/mnews/article/032/0003474335?sid=110",
+		"https://taean43.github.io/2026/3/9/4.html",
+		"https://n.news.naver.com/mnews/article/421/0009209393?sid=110",
+		"https://www.kdi.re.kr/share/pressContriView?bd_no=53184",
+		"https://www.khan.co.kr/article/202610011638001/amp"
+	],
+	"highlights-objects": {
+		"https://bcviewer.bookcube.com/BcViewer/enter?h=C3643A0559EE466B5FB34E9C98CAD7D0F7855FA6654DBEB53C46FB9DA35DC6269477BB3BFBB91B1308F7A456272DBD5653BF429A3E8C06C59F400B502CE16C1B5BA9265C7A364C9E4D64C7EDD01C2DEEACD77235FBE0F1F7865A31952E341884AA5EC1AA1047B402ECD841A3562DFEABD20411F0639E237E5A2C016EF485FC06E5DEF72D1D4F807DFA7ED4B9BFA7799F5C84509AB3C0E2BE8A0F1FE699E6DDDDBCBC0F3791764A0EEE7CE76C6C5CC0B8": [
+			{
+				"content": "다가오는 것을",
+				"offset": 208,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[141]"
+			}
+		],
+		"https://encykorea.aks.ac.kr/Article/E0037564": [
+			{
+				"content": "이들 토지 ",
+				"offset": 99,
+				"xPath": "//*[@id=\"sect2\"]/p[2]"
+			},
+			{
+				"content": "지목(地目)이",
+				"offset": 0,
+				"xPath": "//*[@id=\"sect2\"]/p[2]/span"
+			},
+			{
+				"content": " 당나라에서 실시한 균전제와 유사한 것이었는지는 일찍부터 연구자들의 관심을 받았다. 하지만",
+				"offset": 112,
+				"xPath": "//*[@id=\"sect2\"]/p[2]"
+			}
+		],
+		"https://gneq.github.io/eb/fof/101.html": [
+			{
+				"content": "원본 링크",
+				"offset": 0,
+				"xPath": "//*[@id=\"readability-page-1\"]/a"
+			},
+			{
+				"content": " ",
+				"offset": 306,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[33]"
+			}
+		],
+		"https://horizon.kias.re.kr/31550/": [
+			{
+				"content": "그가 오늘날 과학사의 가장 대표적인",
+				"offset": 230,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[1]"
+			},
+			{
+				"content": "다는 점을 감안한다면 말이",
+				"offset": 281,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[1]"
+			},
+			{
+				"content": "리센코의 초창기 연구 업적 가운데 가장 대표적인 것으로 춘화 처리법",
+				"offset": 0,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[4]"
+			},
+			{
+				"content": "春化, the vernalization treatment",
+				"offset": 0,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[4]/sup[1]"
+			},
+			{
+				"content": "과 식물의 상",
+				"offset": 68,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[4]"
+			},
+			{
+				"content": "相",
+				"offset": 0,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[4]/sup[2]"
+			},
+			{
+				"content": " 발달 이론",
+				"offset": 76,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[4]"
+			},
+			{
+				"content": "the theory of phasic development of plants",
+				"offset": 0,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[4]/sup[3]"
+			},
+			{
+				"content": "을 꼽을 수 있다.",
+				"offset": 124,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[4]"
+			},
+			{
+				"content": "(비교적 따뜻한 초가을에 심어져 이듬해 여름에 수확)",
+				"offset": 0,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[4]/span[1]"
+			},
+			{
+				"content": "(비교적 쌀쌀한 초봄에 파종하여 가을에 수확)",
+				"offset": 0,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[4]/span[2]"
+			},
+			{
+				"content": "그의",
+				"offset": 221,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[4]"
+			},
+			{
+				"content": "부터",
+				"offset": 228,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[4]"
+			},
+			{
+				"content": "리센코는",
+				"offset": 238,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[4]"
+			},
+			{
+				"content": "혹독한",
+				"offset": 276,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[4]"
+			},
+			{
+				"content": "보다 안정적으로",
+				"offset": 289,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[4]"
+			},
+			{
+				"content": "그는 나름의",
+				"offset": 315,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[4]"
+			},
+			{
+				"content": "을 설계·수행한",
+				"offset": 324,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[4]"
+			},
+			{
+				"content": "그",
+				"offset": 373,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[4]"
+			},
+			{
+				"content": "패턴",
+				"offset": 378,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[4]"
+			},
+			{
+				"content": "리센코가",
+				"offset": 13,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[5]"
+			},
+			{
+				"content": "의 효과",
+				"offset": 20,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[5]"
+			},
+			{
+				"content": "해 고안",
+				"offset": 32,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[5]"
+			},
+			{
+				"content": "그는 모든",
+				"offset": 43,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[5]"
+			},
+			{
+				"content": "과의 밀접한 관계",
+				"offset": 59,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[5]"
+			},
+			{
+				"content": "그 생장 과정 전체는",
+				"offset": 80,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[5]"
+			},
+			{
+				"content": "상이한",
+				"offset": 104,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[5]"
+			},
+			{
+				"content": "을 중심",
+				"offset": 114,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[5]"
+			},
+			{
+				"content": "相 또는 phase",
+				"offset": 0,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[5]/sup"
+			},
+			{
+				"content": "예컨대 밀의 생장 초기에 온도라는 환경적 요인이 가장 중요한 단계가 위치한다. 그 이후에는 햇빛에의 노출이 핵심인 단계가 이어진다는 식이다.",
+				"offset": 152,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[5]"
+			},
+			{
+				"content": "데 필요한 대표적인",
+				"offset": 289,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[5]"
+			},
+			{
+				"content": "리센코의 입장이었",
+				"offset": 309,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[5]"
+			},
+			{
+				"content": "의 연구",
+				"offset": 322,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[5]"
+			},
+			{
+				"content": "있으며, 인간의 편익을 위해 겨울밀을 타고난 속성과 달리 봄밀로 거듭나게 만들 수",
+				"offset": 361,
+				"xPath": "//*[@id=\"post-31550\"]/div/section/p[5]"
+			}
+		],
+		"https://n.news.naver.com/article/469/0000958277?sid=110": [
+			{
+				"content": "편집자주",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/div[1]/h3"
+			},
+			{
+				"content": "을 알리려 합니다. 우리말 이야기",
+				"offset": 37,
+				"xPath": "//*[@id=\"dic_area\"]/div[1]/p/span"
+			},
+			{
+				"content": "따뜻한",
+				"offset": 58,
+				"xPath": "//*[@id=\"dic_area\"]/div[1]/p/span"
+			},
+			{
+				"content": "는 행복한 시간이 되",
+				"offset": 67,
+				"xPath": "//*[@id=\"dic_area\"]/div[1]/p/span"
+			},
+			{
+				"content": "원본보기",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span[1]/div/p/span"
+			},
+			{
+				"content": "그래픽=전세현",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span[1]/em"
+			},
+			{
+				"content": "·Chat",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span[1]/em/span[1]"
+			},
+			{
+				"content": " ",
+				"offset": 12,
+				"xPath": "//*[@id=\"dic_area\"]/span[1]/em"
+			},
+			{
+				"content": "GPT",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span[1]/em/span[2]"
+			},
+			{
+				"content": "에서",
+				"offset": 3,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "일상에서 표기하고 발음할 때는 특별히 의식하지 않더라도, ",
+				"offset": 18,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "TV",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span/span"
+			},
+			{
+				"content": "를 보다가",
+				"offset": 52,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "처럼 겹받침",
+				"offset": 67,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "자막에",
+				"offset": 84,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "문득",
+				"offset": 92,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "게 느껴질 때도 있",
+				"offset": 98,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "글자를 소리 내어 읽을 때면",
+				"offset": 111,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "'읽다'부터 살펴보자. 고민 없이 가장 편안하게 발음하는 건",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "다.",
+				"offset": 49,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "뒤에",
+				"offset": 94,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "는",
+				"offset": 106,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "겹받침 두 자음 가운데 하나만 소리 난다.",
+				"offset": 108,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "[일따]가 아닌",
+				"offset": 145,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "상황은 달라진다.",
+				"offset": 201,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "이때",
+				"offset": 218,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "정",
+				"offset": 232,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "두고 있어서",
+				"offset": 235,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "이는 'ㄺ'받침의 용언 어간에 'ㄱ'이 이어질 때의 예외로,",
+				"offset": 270,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": " 설명할 수 있다. ",
+				"offset": 19,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "조금 복잡하지만 짚어 봐야 할 다른 겹받침으로 'ㄼ'이 있다.",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "[ㅂ]으로 소리 나 '밟다'가 [발따]가 아닌",
+				"offset": 81,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "이렇게 괄호를 넣어가며 글로 적어 놓으면 한없이",
+				"offset": 7,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "게만 느껴진다. 그래도 여기까지 읽었다면 다시 처음 문장으로 돌아가 보자. 이번에는 [일꼬], [익찌], [익따]라고 좀 더 자신 있게 소리 낼 수 있기를 바란다. 우리말 발음 규칙도 두꺼운 책처럼 부담스럽고 무겁게 느껴지",
+				"offset": 36,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			}
+		],
+		"https://n.news.naver.com/mnews/article/001/0016358405?sid=110": [
+			{
+				"content": "[글로컬]'예상된",
+				"offset": 0,
+				"xPath": "//*[@id=\"reader-title\"]"
+			},
+			{
+				"content": "'",
+				"offset": 12,
+				"xPath": "//*[@id=\"reader-title\"]"
+			},
+			{
+				"content": "못 막아…",
+				"offset": 14,
+				"xPath": "//*[@id=\"reader-title\"]"
+			},
+			{
+				"content": "가장 강한 성벽보다",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/strong"
+			},
+			{
+				"content": "구멍",
+				"offset": 15,
+				"xPath": "//*[@id=\"dic_area\"]/strong"
+			},
+			{
+				"content": "금융권 넘어",
+				"offset": 28,
+				"xPath": "//*[@id=\"dic_area\"]/strong"
+			},
+			{
+				"content": "AI",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/strong/span"
+			},
+			{
+				"content": "대폭",
+				"offset": 50,
+				"xPath": "//*[@id=\"dic_area\"]/strong"
+			},
+			{
+				"content": "원본보기",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/div[1]/p/span"
+			},
+			{
+				"content": "고객정보",
+				"offset": 8,
+				"xPath": "//*[@id=\"dic_area\"]/em[1]"
+			},
+			{
+				"content": "으로 고객 정보가 유출되는",
+				"offset": 55,
+				"xPath": "//*[@id=\"dic_area\"]/em[1]"
+			},
+			{
+				"content": "한 2일 서울 시내의 한 ",
+				"offset": 76,
+				"xPath": "//*[@id=\"dic_area\"]/em[1]"
+			},
+			{
+				"content": "KB",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/em[1]/span[3]"
+			},
+			{
+				"content": "국민은행 모습.",
+				"offset": 92,
+				"xPath": "//*[@id=\"dic_area\"]/em[1]"
+			},
+			{
+				"content": "이날",
+				"offset": 104,
+				"xPath": "//*[@id=\"dic_area\"]/em[1]"
+			},
+			{
+				"content": "금융당국과 금융권 등에 따르면",
+				"offset": 107,
+				"xPath": "//*[@id=\"dic_area\"]/em[1]"
+			},
+			{
+				"content": "최근 고객",
+				"offset": 133,
+				"xPath": "//*[@id=\"dic_area\"]/em[1]"
+			},
+			{
+				"content": "침입",
+				"offset": 152,
+				"xPath": "//*[@id=\"dic_area\"]/em[1]"
+			},
+			{
+				"content": "의해",
+				"offset": 156,
+				"xPath": "//*[@id=\"dic_area\"]/em[1]"
+			},
+			{
+				"content": "2026.10.2",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/em[1]/span[6]"
+			},
+			{
+				"content": " ",
+				"offset": 182,
+				"xPath": "//*[@id=\"dic_area\"]/em[1]"
+			},
+			{
+				"content": "yatoya",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/em[1]/span[7]"
+			},
+			{
+				"content": "@",
+				"offset": 189,
+				"xPath": "//*[@id=\"dic_area\"]/em[1]"
+			},
+			{
+				"content": "yna.co.kr",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/em[1]/span[8]"
+			},
+			{
+				"content": "(서울=연합뉴스) 한승호 선임기자 =",
+				"offset": 4,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "면서 사람들의 생활이 바뀌",
+				"offset": 40,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "시간이 너무 걸려",
+				"offset": 73,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "AI",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span/span[2]"
+			},
+			{
+				"content": "가",
+				"offset": 114,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "시켜도",
+				"offset": 128,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "고 실행한다",
+				"offset": 138,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "신한",
+				"offset": 7,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "·KB",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span/span[1]"
+			},
+			{
+				"content": "국민·하나",
+				"offset": 12,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "·BNK",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span/span[2]"
+			},
+			{
+				"content": "부산은행과 예가람·웰컴저축은행, 현대캐피탈 등",
+				"offset": 21,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "침해",
+				"offset": 56,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "(온투업)",
+				"offset": 77,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "인 피에프씨테크놀로지스(",
+				"offset": 85,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "PFCT",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span/span[3]"
+			},
+			{
+				"content": ")와 모우다",
+				"offset": 102,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "시스템",
+				"offset": 6,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "다른 업종에 비해",
+				"offset": 11,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "일부",
+				"offset": 40,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "는 점에서 심각성이 있다",
+				"offset": 52,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "지난 7월 '프런티어 ",
+				"offset": 77,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "AI",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span/span"
+			},
+			{
+				"content": " 보안 위협 금융분야 대응 요령' 가이드라인을 통해",
+				"offset": 91,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "원본보기",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/div[2]/p/span"
+			},
+			{
+				"content": "[그래픽] 금융권 해킹 피해 확산 현황",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/em[2]"
+			},
+			{
+				"content": "(서울=연합뉴스) 이재윤 김민지 기자 = 4일 금융당국에 따르면, 신한",
+				"offset": 21,
+				"xPath": "//*[@id=\"dic_area\"]/em[2]"
+			},
+			{
+				"content": "·KB",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/em[2]/span[1]"
+			},
+			{
+				"content": "국민·하나",
+				"offset": 63,
+				"xPath": "//*[@id=\"dic_area\"]/em[2]"
+			},
+			{
+				"content": "·BNK",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/em[2]/span[2]"
+			},
+			{
+				"content": "부산은행과 예가람·웰컴저축은행, 현대캐피탈 등 7개사의 해킹 사고에서",
+				"offset": 72,
+				"xPath": "//*[@id=\"dic_area\"]/em[2]"
+			},
+			{
+				"content": "minfo",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/em[2]/span[4]"
+			},
+			{
+				"content": "@",
+				"offset": 158,
+				"xPath": "//*[@id=\"dic_area\"]/em[2]"
+			},
+			{
+				"content": "yna.co.kr",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/em[2]/span[5]"
+			},
+			{
+				"content": "    X(트위터) @",
+				"offset": 168,
+				"xPath": "//*[@id=\"dic_area\"]/em[2]"
+			},
+			{
+				"content": "yonhap",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/em[2]/span[6]"
+			},
+			{
+				"content": "_",
+				"offset": 186,
+				"xPath": "//*[@id=\"dic_area\"]/em[2]"
+			},
+			{
+				"content": "graphics",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/em[2]/span[7]"
+			},
+			{
+				"content": " 인스타그램 @",
+				"offset": 195,
+				"xPath": "//*[@id=\"dic_area\"]/em[2]"
+			},
+			{
+				"content": "yonhapgraphics",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/em[2]/span[8]"
+			},
+			{
+				"content": "금융회사 보안",
+				"offset": 8,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "빠르게",
+				"offset": 24,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "는 점을 들",
+				"offset": 35,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "자산과 공급망에 대한",
+				"offset": 43,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "했는데도 막지 못",
+				"offset": 81,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "대출모집인용",
+				"offset": 98,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "모바일 업무지원 시스템,",
+				"offset": 117,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "등 보안",
+				"offset": 140,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "지",
+				"offset": 148,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "현재까지 공개된",
+				"offset": 4,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]/span"
+			},
+			{
+				"content": "등으",
+				"offset": 43,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]/span"
+			},
+			{
+				"content": "이들 정보로",
+				"offset": 53,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]/span"
+			},
+			{
+				"content": "곧바로",
+				"offset": 74,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]/span"
+			},
+			{
+				"content": "라고 하",
+				"offset": 91,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]/span"
+			},
+			{
+				"content": "서로",
+				"offset": 99,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]/span"
+			},
+			{
+				"content": "곳에서 유출된",
+				"offset": 105,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]/span"
+			},
+			{
+				"content": "맞춤형",
+				"offset": 129,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]/span"
+			},
+			{
+				"content": "등 2차",
+				"offset": 136,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]/span"
+			},
+			{
+				"content": "남아",
+				"offset": 154,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]/span"
+			},
+			{
+				"content": "이번 해킹 공격에서 우려했던 대로",
+				"offset": 4,
+				"xPath": "//*[@id=\"dic_area\"]/p[10]/span"
+			},
+			{
+				"content": "금융기관의",
+				"offset": 23,
+				"xPath": "//*[@id=\"dic_area\"]/p[10]/span"
+			},
+			{
+				"content": "허점을 찾아내는데 ",
+				"offset": 29,
+				"xPath": "//*[@id=\"dic_area\"]/p[10]/span"
+			},
+			{
+				"content": "AI",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[10]/span/span[1]"
+			},
+			{
+				"content": "가 활용된 것으로 보인다는 점을 주목할 필요가 있다.",
+				"offset": 41,
+				"xPath": "//*[@id=\"dic_area\"]/p[10]/span"
+			},
+			{
+				"content": "도구",
+				"offset": 74,
+				"xPath": "//*[@id=\"dic_area\"]/p[10]/span"
+			},
+			{
+				"content": "자동으로",
+				"offset": 87,
+				"xPath": "//*[@id=\"dic_area\"]/p[10]/span"
+			},
+			{
+				"content": "을 반복",
+				"offset": 99,
+				"xPath": "//*[@id=\"dic_area\"]/p[10]/span"
+			},
+			{
+				"content": "원본보기",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/div[3]/p/span"
+			},
+			{
+				"content": "(서울=연합뉴스) 서대연 기자 = 9일 서울 강남구 코엑스에서 열린 스마트 워크 & 컨택센터 ",
+				"offset": 19,
+				"xPath": "//*[@id=\"dic_area\"]/em[3]"
+			},
+			{
+				"content": "2026.9.9",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/em[3]/span[3]"
+			},
+			{
+				"content": " ",
+				"offset": 112,
+				"xPath": "//*[@id=\"dic_area\"]/em[3]"
+			},
+			{
+				"content": "dwise",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/em[3]/span[4]"
+			},
+			{
+				"content": "@",
+				"offset": 118,
+				"xPath": "//*[@id=\"dic_area\"]/em[3]"
+			},
+			{
+				"content": "yna.co.kr",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/em[3]/span[5]"
+			}
+		],
+		"https://n.news.naver.com/mnews/article/005/0001877428?sid=110": [
+			{
+				"content": "[데스크시각]",
+				"offset": 0,
+				"xPath": "//*[@id=\"reader-title\"]"
+			},
+			{
+				"content": "현실화한",
+				"offset": 8,
+				"xPath": "//*[@id=\"reader-title\"]"
+			},
+			{
+				"content": "최근 신한",
+				"offset": 17,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "·KB",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]/span[2]"
+			},
+			{
+				"content": "국민·하나·부산은행과 저축은행, 캐피털사 등",
+				"offset": 25,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "뚫려",
+				"offset": 62,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "공격 흔적에서",
+				"offset": 84,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "어 기반",
+				"offset": 94,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "하고, ",
+				"offset": 124,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "AI",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]/span[4]"
+			},
+			{
+				"content": "가 공격에 동원됐을 가능성을 제기",
+				"offset": 130,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "해킹 자체야 새로울 게 없지만",
+				"offset": 152,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "양상이",
+				"offset": 181,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "사람이 중요 시설을 뚫으려면 수년간 갈고닦은 실력이 필요하다. 공격 대상이 어떤 언어로 사이트를 구축했는지, 어떤 보안체계를 갖췄는지도 면밀히 연구해야 한다. 계획부터 실행까지 수개월이 걸리기도 한다.",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "은 일이었",
+				"offset": 124,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "해킹 도구로",
+				"offset": 4,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "이",
+				"offset": 16,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "크게",
+				"offset": 22,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "정찰과 취약점 탐색, 공격",
+				"offset": 43,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "의 대부분",
+				"offset": 60,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "이 변화가 얼마나 빠른지 알 수 있다.",
+				"offset": 111,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "만 해도",
+				"offset": 136,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "배후",
+				"offset": 144,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "1년도 안 돼",
+				"offset": 168,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "해커",
+				"offset": 179,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "까지",
+				"offset": 183,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "어를 쓰는",
+				"offset": 194,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "등 ",
+				"offset": 228,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "42",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]/span[5]"
+			},
+			{
+				"content": "곳",
+				"offset": 232,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "최소",
+				"offset": 238,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "의 내부망",
+				"offset": 244,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "개인",
+				"offset": 267,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "이름으로",
+				"offset": 288,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "혼자",
+				"offset": 313,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "포함된 중국어권 해킹 조직은",
+				"offset": 330,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "가량",
+				"offset": 349,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "해킹을 탐지하는",
+				"offset": 359,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "알려지지 않은",
+				"offset": 375,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "AI",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]/span[9]"
+			},
+			{
+				"content": "로",
+				"offset": 391,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "동시에",
+				"offset": 453,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "이 된 것",
+				"offset": 467,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "문제는",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "이",
+				"offset": 4,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "점점",
+				"offset": 12,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "다는 점이",
+				"offset": 19,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "이면",
+				"offset": 80,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "특정 작업이 아니라 인간이 하는",
+				"offset": 102,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "지적",
+				"offset": 125,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": " 뜻한",
+				"offset": 145,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "위협이 커지면서",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "시장조사업체 그랜드뷰리서치는 전 세계",
+				"offset": 24,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "2024",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span/span[2]"
+			},
+			{
+				"content": "년 ",
+				"offset": 63,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "253",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span/span[3]"
+			},
+			{
+				"content": "억",
+				"offset": 68,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "5000",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span/span[4]"
+			},
+			{
+				"content": "만 달러에서 연평균 ",
+				"offset": 73,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "24.4",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span/span[5]"
+			},
+			{
+				"content": "%",
+				"offset": 88,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "해 ",
+				"offset": 92,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "2030",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span/span[6]"
+			},
+			{
+				"content": "년 ",
+				"offset": 98,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "937",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span/span[7]"
+			},
+			{
+				"content": "억",
+				"offset": 103,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "5000",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span/span[8]"
+			},
+			{
+				"content": "만 달러",
+				"offset": 108,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "보안 전문가들이 놓친",
+				"offset": 154,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "보안기관에 먼저",
+				"offset": 185,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "공격자보다 앞서",
+				"offset": 198,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "그럼에도",
+				"offset": 226,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "다는 구조는 그대로",
+				"offset": 242,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "으면 되",
+				"offset": 268,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "시스템에",
+				"offset": 302,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "는",
+				"offset": 326,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "약",
+				"offset": 370,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "한 일이 발생",
+				"offset": 384,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "신뢰를 뚫는",
+				"offset": 399,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "이미",
+				"offset": 415,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "그",
+				"offset": 13,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "외딴 연구소에서",
+				"offset": 24,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "실험을 거듭할수록",
+				"offset": 69,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "의 외로움",
+				"offset": 108,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "파고들어 그를",
+				"offset": 115,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "주인공을 이용해",
+				"offset": 143,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "끝까지 에이바를",
+				"offset": 158,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "고립된 공간에 갇히는",
+				"offset": 175,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "더",
+				"offset": 196,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "섬뜩한 대목은",
+				"offset": 198,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "조종",
+				"offset": 243,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "셈이",
+				"offset": 262,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "위험은 ",
+				"offset": 7,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "AI",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span/span[2]"
+			},
+			{
+				"content": "가 강력하다는 데서만 오지 않는다. 그",
+				"offset": 13,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "에게",
+				"offset": 45,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "너무",
+				"offset": 50,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "다는 데서 온",
+				"offset": 59,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "공격 능력이 퍼지는 속도를 관리하고,",
+				"offset": 69,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "한발",
+				"offset": 99,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "앞서도록",
+				"offset": 102,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "있는 개발",
+				"offset": 110,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "이뤄져야 할 이유가 점점",
+				"offset": 117,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			}
+		],
+		"https://n.news.naver.com/mnews/article/018/0006385016?sid=110": [
+			{
+				"content": "최기훈의",
+				"offset": 19,
+				"xPath": "//*[@id=\"reader-title\"]"
+			},
+			{
+				"content": "[최기훈 아자스쿨 이사]",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "TV",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]/span"
+			},
+			{
+				"content": "촬영을 위해 이탈리아에 간 적이 있다. 야외에서",
+				"offset": 24,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "생각보다",
+				"offset": 69,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "훨씬",
+				"offset": 74,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "가만 보니",
+				"offset": 82,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "촬영, 조명, 음향 같은 전문 영역뿐만 아니라 운전, 소품 준비, 장비 이동, 주변 통제 등도",
+				"offset": 111,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "자기가",
+				"offset": 167,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "나는 이 낯선 모습을 보며",
+				"offset": 274,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "간단한",
+				"offset": 311,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "이",
+				"offset": 325,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "인력",
+				"offset": 330,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "라고 생각했다.",
+				"offset": 343,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			}
+		],
+		"https://n.news.naver.com/mnews/article/025/0003555895?sid=110": [
+			{
+				"content": "고 있으",
+				"offset": 77,
+				"xPath": "//*[@id=\"dic_area\"]"
+			},
+			{
+				"content": "묘한",
+				"offset": 83,
+				"xPath": "//*[@id=\"dic_area\"]"
+			},
+			{
+				"content": "어디로 흔들려도",
+				"offset": 95,
+				"xPath": "//*[@id=\"dic_area\"]"
+			},
+			{
+				"content": "결국",
+				"offset": 104,
+				"xPath": "//*[@id=\"dic_area\"]"
+			},
+			{
+				"content": "일 것",
+				"offset": 123,
+				"xPath": "//*[@id=\"dic_area\"]"
+			},
+			{
+				"content": "정직한",
+				"offset": 152,
+				"xPath": "//*[@id=\"dic_area\"]"
+			},
+			{
+				"content": "높이",
+				"offset": 166,
+				"xPath": "//*[@id=\"dic_area\"]"
+			},
+			{
+				"content": "고스란히",
+				"offset": 177,
+				"xPath": "//*[@id=\"dic_area\"]"
+			},
+			{
+				"content": "열아홉의",
+				"offset": 24,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]"
+			},
+			{
+				"content": "다고 전해진",
+				"offset": 63,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]"
+			},
+			{
+				"content": "훗날 진자시계의 바탕이 된",
+				"offset": 105,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]"
+			},
+			{
+				"content": "원본보기",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/div[2]/div/p/span"
+			},
+			{
+				"content": "거칠게",
+				"offset": 418,
+				"xPath": "//*[@id=\"dic_area\"]"
+			},
+			{
+				"content": "우리",
+				"offset": 431,
+				"xPath": "//*[@id=\"dic_area\"]"
+			},
+			{
+				"content": "겹쳐",
+				"offset": 442,
+				"xPath": "//*[@id=\"dic_area\"]"
+			},
+			{
+				"content": "다음번",
+				"offset": 505,
+				"xPath": "//*[@id=\"dic_area\"]"
+			},
+			{
+				"content": "회복의",
+				"offset": 523,
+				"xPath": "//*[@id=\"dic_area\"]"
+			},
+			{
+				"content": "에 매달린 우리 모두",
+				"offset": 544,
+				"xPath": "//*[@id=\"dic_area\"]"
+			},
+			{
+				"content": "넘지 말아야 할",
+				"offset": 565,
+				"xPath": "//*[@id=\"dic_area\"]"
+			},
+			{
+				"content": "그렇다면 무엇이 위태롭게 커진",
+				"offset": 9,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]"
+			},
+			{
+				"content": "우리가 늘 성가시게",
+				"offset": 64,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]"
+			},
+			{
+				"content": "다.",
+				"offset": 82,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]"
+			},
+			{
+				"content": "지루한",
+				"offset": 90,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]"
+			},
+			{
+				"content": "그 지난한 과정을 거치며, 흔들려도",
+				"offset": 121,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]"
+			},
+			{
+				"content": "서로",
+				"offset": 145,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]"
+			},
+			{
+				"content": "우리",
+				"offset": 156,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]"
+			},
+			{
+				"content": "비로소",
+				"offset": 163,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]"
+			},
+			{
+				"content": "제",
+				"offset": 167,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]"
+			}
+		],
+		"https://n.news.naver.com/mnews/article/028/0002826826?sid=110": [
+			{
+				"content": "원본보기",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/div[1]/p/span"
+			},
+			{
+				"content": "연합뉴스",
+				"offset": 78,
+				"xPath": "//*[@id=\"dic_area\"]/em[1]"
+			},
+			{
+				"content": "예컨대 그는 이런 식으로 말한다. “2027년 1월1일부터 개인이 소유할 수 있는 토지의 상한선을 5천평으로 정한다. 다만 현재 소유하고 있는 5천평 이상의 토지는 그대로 인정해준다.”",
+				"offset": 16,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "원본보기",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/div[2]/p/span"
+			},
+			{
+				"content": " 국민의",
+				"offset": 78,
+				"xPath": "//*[@id=\"dic_area\"]/em[2]"
+			}
+		],
+		"https://n.news.naver.com/mnews/article/032/0003474335?sid=110": [
+			{
+				"content": "[직설]",
+				"offset": 0,
+				"xPath": "//*[@id=\"reader-title\"]"
+			},
+			{
+				"content": "|",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span[1]/b"
+			},
+			{
+				"content": " 김지우 작가·‘굴러라 구르님’ 대표",
+				"offset": 1,
+				"xPath": "//*[@id=\"dic_area\"]/span[1]"
+			},
+			{
+				"content": "에 짐을 푼 지 여드레가 지나도록 아주 불편한 것이 있었다. ",
+				"offset": 11,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "오랜 시간",
+				"offset": 67,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "주로",
+				"offset": 101,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "의 일종으",
+				"offset": 113,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "가 머물",
+				"offset": 122,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "기에 없을 것이라는 생각조차 하지 못했",
+				"offset": 151,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "분명",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "일주일이 지나도록",
+				"offset": 16,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "결국 방의 접근성에 대해",
+				"offset": 35,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "항의하는 메일을 작성했다. 혹시 이것이",
+				"offset": 49,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "서야",
+				"offset": 95,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "메일을 보낸 것은 주말 아침이었는데, 얼마 지나지 않아",
+				"offset": 107,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "였다. 그",
+				"offset": 159,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "진지한 표정으로",
+				"offset": 166,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "거듭",
+				"offset": 175,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "메일에 언급된",
+				"offset": 184,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "재차",
+				"offset": 212,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "곧이어",
+				"offset": 220,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "시설관리인이",
+				"offset": 224,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "와서",
+				"offset": 231,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "1년도 채 머물지 않을 나 하나를 위해, 내 몸과 손이 가장 편한 바로 그 위치에",
+				"offset": 253,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "기숙사",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "내 불편은 있어서는 안 되는 일이었으며, 준비가 미흡했던 것에",
+				"offset": 21,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "진심으로",
+				"offset": 56,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "재발 방지 대책을 마련하고",
+				"offset": 74,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "추가",
+				"offset": 99,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "포함돼",
+				"offset": 118,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "얼마 뒤 마련된",
+				"offset": 127,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "상담에서",
+				"offset": 136,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "책임자들과 둘러앉아",
+				"offset": 141,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "서 일어날 때 필요한",
+				"offset": 158,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "어려운 부탁이라면 사비로 마련하겠다는 사족도 붙였다. 그들은 고개를 저으며 기숙사 차원에서",
+				"offset": 215,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "하겠다고",
+				"offset": 268,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "나는",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "오히려 몸이 움츠러들었다.",
+				"offset": 3,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": ", 그냥 미끄러지지 않는 의자 하나만 주면 될 텐데",
+				"offset": 35,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "왜 벽에 구멍까지…",
+				"offset": 64,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "곧",
+				"offset": 79,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "선례가 없어서, 역차별이라서, 남들이 불편해서 내",
+				"offset": 104,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "번번이",
+				"offset": 157,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "그리고 내 ‘과한’, ‘특혜를 바라는’ 요청은 대체로 이런 것이었다. 손이 닿는 곳에 수건걸이를 설치해 주세요. 체육 시간에 구석에만 있지 않게 해주세요. 통학을 위한 셔틀버스에 탈 수 있게 해주세요.",
+				"offset": 170,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "권리를 보장받지 못하는 상황에서",
+				"offset": 283,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "여성이었던",
+				"offset": 308,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "다름 아닌",
+				"offset": 325,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "특별히 깨어 있었다고,",
+				"offset": 7,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "마땅히 있어야 할 시설이 부재했고 단호히 말하고서야 해결이 이루어졌다.",
+				"offset": 46,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "하지만",
+				"offset": 100,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "계속 ‘이건 심각한",
+				"offset": 108,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "’",
+				"offset": 121,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "다시",
+				"offset": 154,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "의 영역",
+				"offset": 168,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "부끄러움도 모르고",
+				"offset": 190,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "장애인뿐만 아니라 고통을 감내하고 무언가를 바꾸기 위해 용기 내는 모든 이들을 향한",
+				"offset": 217,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "우리의 요구가 ‘불평’이 아닌,",
+				"offset": 270,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "소중한",
+				"offset": 298,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "이제 내 키에",
+				"offset": 334,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "타일 벽에 구멍을 뚫어 단단히",
+				"offset": 348,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "매일",
+				"offset": 377,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "무럭무럭 물을 맞고 조금이라도 더 자라서",
+				"offset": 385,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "는 소망을 가지고",
+				"offset": 427,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "·‘굴러라 구르님’ 대표",
+				"offset": 6,
+				"xPath": "//*[@id=\"dic_area\"]/em"
+			}
+		],
+		"https://n.news.naver.com/mnews/article/032/0003474948?sid=110": [
+			{
+				"content": "[겨를]",
+				"offset": 0,
+				"xPath": "//*[@id=\"reader-title\"]"
+			},
+			{
+				"content": "경향신문 | 네이버",
+				"offset": 0,
+				"xPath": "//*[@id=\"reader-credits\"]"
+			},
+			{
+				"content": "\n  ",
+				"offset": 184,
+				"xPath": "/html/body"
+			},
+			{
+				"content": "2-2 minutes",
+				"offset": 0,
+				"xPath": "//*[@id=\"reader-estimated-time\"]"
+			},
+			{
+				"content": "\n  ",
+				"offset": 198,
+				"xPath": "/html/body"
+			},
+			{
+				"content": "\n  ",
+				"offset": 201,
+				"xPath": "/html/body"
+			},
+			{
+				"content": "\n  ",
+				"offset": 204,
+				"xPath": "/html/body"
+			},
+			{
+				"content": "\n\t\t\t",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]"
+			},
+			{
+				"content": "|",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span[1]/b"
+			},
+			{
+				"content": " 신새벽 민음사 편집자",
+				"offset": 1,
+				"xPath": "//*[@id=\"dic_area\"]/span[1]"
+			},
+			{
+				"content": "많이 먹는 사람더러",
+				"offset": 7,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "그가",
+				"offset": 31,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "소는 자기보다",
+				"offset": 43,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "건데, ",
+				"offset": 61,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "에 할머니가 쓰던",
+				"offset": 76,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "랬",
+				"offset": 88,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "듣고 보니",
+				"offset": 92,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "할 때",
+				"offset": 101,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "의 한",
+				"offset": 145,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "한글",
+				"offset": 18,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "출판에서는 훈민정음을 만든",
+				"offset": 32,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "박완서",
+				"offset": 72,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "낱말",
+				"offset": 88,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "인기",
+				"offset": 93,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "1926",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]/span[2]"
+			},
+			{
+				"content": "년",
+				"offset": 17,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "‘훈민정음",
+				"offset": 39,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "’",
+				"offset": 52,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "1446",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]/span[3]"
+			},
+			{
+				"content": "년",
+				"offset": 64,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "이루어졌다는 <세종실록>에 따라",
+				"offset": 72,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "이라는 낮춤말",
+				"offset": 120,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "다. 우리가 잘 알듯 한글이 앞섰",
+				"offset": 156,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "가갸날, 정음날도",
+				"offset": 176,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "100",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span/span[1]"
+			},
+			{
+				"content": "년 전을",
+				"offset": 3,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "그처럼",
+				"offset": 13,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "한글의 근대사를 서술하는 최경봉의",
+				"offset": 28,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "빼곡하게",
+				"offset": 57,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "한글",
+				"offset": 96,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "강연회는 밤 ",
+				"offset": 99,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "11",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span/span[4]"
+			},
+			{
+				"content": "시까지 이어졌다. ‘의미심장한",
+				"offset": 108,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "’라는 기사",
+				"offset": 132,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "따르면 그날 사리원",
+				"offset": 140,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "의 운명",
+				"offset": 158,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "을 법하",
+				"offset": 176,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "의 의미",
+				"offset": 212,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "조선",
+				"offset": 234,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "배척",
+				"offset": 256,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "한글을 널리 쓰는 것과 조선인이 잘되는 것은 별개라는 강한 주장이었다.",
+				"offset": 274,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "오",
+				"offset": 5,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "한국인은",
+				"offset": 8,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "잘",
+				"offset": 39,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "문자로서의 한글을 들여다보자면 곧 추상적이고 어려워지기 때문에, 언어로서의 한국어로 넓혀서",
+				"offset": 57,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": ". 그렇지",
+				"offset": 123,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "나는 한글 이야기가",
+				"offset": 130,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "정인지가 선언했듯",
+				"offset": 171,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "어서 좋",
+				"offset": 216,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "국어학자 최경봉은 한글날 뻗어나오는 생각거리를 정돈할 하나의 관점을 준다.",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "한글을 업신여기고 억압한",
+				"offset": 42,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "에게",
+				"offset": 76,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "한국어·한글",
+				"offset": 79,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "떼려야 뗄 수 없다.",
+				"offset": 87,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "‘운명의",
+				"offset": 113,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "삼각형’의",
+				"offset": 118,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "다는 것이",
+				"offset": 154,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "이번 한글날에는",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "이는 언어와 국적을 일대일 대응시키는",
+				"offset": 34,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "기도 하",
+				"offset": 73,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "언어학자",
+				"offset": 80,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "한다고",
+				"offset": 117,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "학습자 중에서",
+				"offset": 125,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "한국어",
+				"offset": 142,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "외국어가 아닌",
+				"offset": 147,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "일본에서 태어나",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "자이니치 3세",
+				"offset": 28,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "한국 사람들에게는",
+				"offset": 45,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "낯선",
+				"offset": 63,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "말",
+				"offset": 90,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "천천히",
+				"offset": 157,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			}
+		],
+		"https://n.news.naver.com/mnews/article/088/0001032559?sid=110": [
+			{
+				"content": "[수요일아침-김노주] ",
+				"offset": 0,
+				"xPath": "//*[@id=\"reader-title\"]"
+			},
+			{
+				"content": "김노주(경북대 영어영문학과 명예교수)",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/em"
+			},
+			{
+				"content": "오는",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "1926",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span/span[1]"
+			},
+			{
+				"content": "년 '가갸날'로 ",
+				"offset": 18,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "나타나는",
+				"offset": 48,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "공연한 미사여구는 접고",
+				"offset": 76,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "한글",
+				"offset": 98,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "여주",
+				"offset": 118,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "1991",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span/span[1]"
+			},
+			{
+				"content": "년",
+				"offset": 4,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "교육조교(",
+				"offset": 26,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "TA",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span/span[2]"
+			},
+			{
+				"content": ")를 할 때였다. 담당 교수는",
+				"offset": 33,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "강의하라고 했다. 필자는 신경준과 홍양호가 ",
+				"offset": 69,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "18",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span/span[3]"
+			},
+			{
+				"content": "세기부터 주장했던",
+				"offset": 95,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "중심으로",
+				"offset": 128,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "이는",
+				"offset": 139,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "기본",
+				"offset": 155,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "문자를",
+				"offset": 158,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "의 문자는 기본 문자",
+				"offset": 172,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "처럼 보이",
+				"offset": 208,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "글자가 있었으니 바로",
+				"offset": 215,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "컬럼비아대학교",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "1966",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span/span[1]"
+			},
+			{
+				"content": "년 박사",
+				"offset": 21,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "설명할 수 없다며",
+				"offset": 45,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "한글보다 ",
+				"offset": 55,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "300",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span/span[2]"
+			},
+			{
+				"content": "여 년 전에 나온",
+				"offset": 63,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "정도 시계 반대 방향으로",
+				"offset": 110,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "파스파 문자의",
+				"offset": 128,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "이후 일리노이대학교의 김진우 교수도 '언어'(",
+				"offset": 155,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "1985",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span/span[4]"
+			},
+			{
+				"content": ", ",
+				"offset": 184,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "2014",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span/span[5]"
+			},
+			{
+				"content": ")에서 래디어드 교수의 주장을 받아들였다.",
+				"offset": 190,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "이러한 주장은 'ㄹ'의 창제 원리를 간파하지 못했고, 훈민정음의 일부가 기존 문자를 모방했다고 봄으로써 한글의 독창성과 창의성을 현저히 약화시켰다. ",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span"
+			},
+			{
+				"content": "발음기관을 정확하게 본떠 만든 문자이며",
+				"offset": 94,
+				"xPath": "//*[@id=\"dic_area\"]/span"
+			},
+			{
+				"content": "'ㄹ'은",
+				"offset": 116,
+				"xPath": "//*[@id=\"dic_area\"]/span"
+			},
+			{
+				"content": "을",
+				"offset": 134,
+				"xPath": "//*[@id=\"dic_area\"]/span"
+			},
+			{
+				"content": "나타내는",
+				"offset": 136,
+				"xPath": "//*[@id=\"dic_area\"]/span"
+			},
+			{
+				"content": "더하고",
+				"offset": 146,
+				"xPath": "//*[@id=\"dic_area\"]/span"
+			},
+			{
+				"content": "'∧' 모양으로",
+				"offset": 159,
+				"xPath": "//*[@id=\"dic_area\"]/span"
+			},
+			{
+				"content": "것을 나타내는",
+				"offset": 173,
+				"xPath": "//*[@id=\"dic_area\"]/span"
+			},
+			{
+				"content": "'ㄴ'을 만들 때",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "옆에서 보면 'ㄴ'과 비슷하며 이 혀의 모양을",
+				"offset": 25,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "입천장을 나타내는",
+				"offset": 98,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "(加劃)",
+				"offset": 115,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "'ㄴ'과",
+				"offset": 9,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "의 차이",
+				"offset": 17,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "입천장을 나타내는",
+				"offset": 36,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "'ㄴ'과 같은 계열의",
+				"offset": 55,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "'ㄴ'은 콧소리이므로 공기가 코로 통할 수 있지만,",
+				"offset": 76,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "입천장이 중요한 역할을 하지 않는",
+				"offset": 148,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "는",
+				"offset": 171,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "붙이지 않지만, 역할을 하는 'ㄷ'에는 '―'를",
+				"offset": 182,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "같은 계열의",
+				"offset": 217,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "'ㄴ'과 달리",
+				"offset": 229,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "입속 소리",
+				"offset": 260,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "'ㄷ'은 그 자체로 완성된 문자지만",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "한 번 더",
+				"offset": 35,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "강신항 교수의 '훈민정음 연구'(",
+				"offset": 50,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "2003",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span/span"
+			},
+			{
+				"content": ")에 따르면",
+				"offset": 72,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "세종대왕 당시",
+				"offset": 79,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "초성과 종성에서 음가가 달랐는데",
+				"offset": 92,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "구분",
+				"offset": 139,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "인 반설중음",
+				"offset": 147,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "'ㄹ'을 썼고",
+				"offset": 163,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "인",
+				"offset": 173,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "반설경음엔",
+				"offset": 175,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "'°'",
+				"offset": 197,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "종성 'ㄹ'과 초성 '동그라미 붙인 ㄹ'의",
+				"offset": 207,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "음가가 달랐지만",
+				"offset": 231,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "더 이상",
+				"offset": 254,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "종성 반설중음과 초성 반설경음의",
+				"offset": 9,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]/span"
+			},
+			{
+				"content": "그래서 초성과 종성에서 차이가 나는",
+				"offset": 40,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]/span"
+			},
+			{
+				"content": "영어에서 ",
+				"offset": 72,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]/span"
+			},
+			{
+				"content": "/l/",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]/span/span[1]"
+			},
+			{
+				"content": "은 초성의 '맑은'(",
+				"offset": 80,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]/span"
+			},
+			{
+				"content": "clear",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]/span/span[2]"
+			},
+			{
+				"content": ") ",
+				"offset": 96,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]/span"
+			},
+			{
+				"content": "/l/",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]/span/span[3]"
+			},
+			{
+				"content": "과 종성의 '어두운'(",
+				"offset": 101,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]/span"
+			},
+			{
+				"content": "dark",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]/span/span[4]"
+			},
+			{
+				"content": ") ",
+				"offset": 117,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]/span"
+			},
+			{
+				"content": "/l/",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]/span/span[5]"
+			},
+			{
+				"content": "로 나뉜다.",
+				"offset": 122,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]/span"
+			},
+			{
+				"content": "에서",
+				"offset": 142,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]/span"
+			},
+			{
+				"content": "발음하고",
+				"offset": 167,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]/span"
+			},
+			{
+				"content": "에서",
+				"offset": 184,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]/span"
+			},
+			{
+				"content": "필자는",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[10]/span"
+			},
+			{
+				"content": "다고 본",
+				"offset": 51,
+				"xPath": "//*[@id=\"dic_area\"]/p[10]/span"
+			},
+			{
+				"content": "종성의 반설중음을 기본음으로 보면,",
+				"offset": 58,
+				"xPath": "//*[@id=\"dic_area\"]/p[10]/span"
+			},
+			{
+				"content": "는 특징을 보이",
+				"offset": 97,
+				"xPath": "//*[@id=\"dic_area\"]/p[10]/span"
+			},
+			{
+				"content": "입속 소리를 나타내려 입천장",
+				"offset": 124,
+				"xPath": "//*[@id=\"dic_area\"]/p[10]/span"
+			},
+			{
+				"content": "혀 뒷부분의 상승을 표시하려고",
+				"offset": 150,
+				"xPath": "//*[@id=\"dic_area\"]/p[10]/span"
+			},
+			{
+				"content": "을 옆에서 보면 '∧'와 비슷한",
+				"offset": 229,
+				"xPath": "//*[@id=\"dic_area\"]/p[10]/span"
+			},
+			{
+				"content": "이 되고 이",
+				"offset": 249,
+				"xPath": "//*[@id=\"dic_area\"]/p[10]/span"
+			},
+			{
+				"content": "정도",
+				"offset": 269,
+				"xPath": "//*[@id=\"dic_area\"]/p[10]/span"
+			},
+			{
+				"content": "'ㄱ'이",
+				"offset": 276,
+				"xPath": "//*[@id=\"dic_area\"]/p[10]/span"
+			},
+			{
+				"content": "'ㄹ'은 'ㄴ'에 입천장 '―'를 얹고 혀의 뒤쪽이 상승하는 표시로 'ㄱ'을 얹은 것이다. ",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[11]/span"
+			},
+			{
+				"content": "을 상형한 한글의 독창성, 창의성 및 우수성",
+				"offset": 70,
+				"xPath": "//*[@id=\"dic_area\"]/p[11]/span"
+			}
+		],
+		"https://n.news.naver.com/mnews/article/308/0000038828?sid=110": [
+			{
+				"content": "유튜브의",
+				"offset": 0,
+				"xPath": "//*[@id=\"reader-title\"]"
+			},
+			{
+				"content": "[편집국장의 편지]",
+				"offset": 17,
+				"xPath": "//*[@id=\"reader-title\"]"
+			},
+			{
+				"content": "매주 〈시사",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/strong"
+			},
+			{
+				"content": "IN",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/strong/span"
+			},
+			{
+				"content": "〉 제작을 진두지휘하는 편집국장이 독자들에게 보내는 편지입니다. 우리 시대를 정직하게 기록하려는 편집국장의 고민이 고스란히 담겨 있습니다.",
+				"offset": 8,
+				"xPath": "//*[@id=\"dic_area\"]/strong"
+			},
+			{
+				"content": "\n\t\t",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/div[1]/p"
+			},
+			{
+				"content": "원본보기",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/div[1]/p/span"
+			},
+			{
+				"content": "©시사",
+				"offset": 69,
+				"xPath": "//*[@id=\"dic_area\"]/em"
+			},
+			{
+				"content": "IN",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/em/span[2]"
+			},
+			{
+				"content": " 이명익",
+				"offset": 74,
+				"xPath": "//*[@id=\"dic_area\"]/em"
+			},
+			{
+				"content": "때 날 잡아",
+				"offset": 6,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "(쇼츠 등)",
+				"offset": 23,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "고 낄낄대",
+				"offset": 52,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "요즘 이런",
+				"offset": 105,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "도대체",
+				"offset": 128,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "물리지 않고",
+				"offset": 137,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "스스로",
+				"offset": 153,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "항간에서는",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "을 수도 있",
+				"offset": 19,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "자극과 효율을 좇는",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "장담하건대 이번 호 〈시사",
+				"offset": 29,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "IN",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span/span"
+			},
+			{
+				"content": "〉에서 다룬 두원정공",
+				"offset": 45,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "온라인 플랫폼에는 결코",
+				"offset": 68,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "‘최첨단 미래 먹거리’ 정보가 아닌",
+				"offset": 114,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "알고리즘이",
+				"offset": 161,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "이",
+				"offset": 21,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "하는 문제",
+				"offset": 25,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "이미 존재하는",
+				"offset": 32,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "하루아침에",
+				"offset": 46,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "문제",
+				"offset": 77,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "2주간",
+				"offset": 87,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "〈시사",
+				"offset": 103,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "IN",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span/span"
+			},
+			{
+				"content": "〉에",
+				"offset": 108,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "의 문제의식",
+				"offset": 121,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "그의 취업과",
+				"offset": 141,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "를 지원한",
+				"offset": 150,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "우리",
+				"offset": 159,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "세상에",
+				"offset": 177,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "놓고",
+				"offset": 217,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "박홍근",
+				"offset": 225,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "도 일독을",
+				"offset": 239,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "오늘 아침 나는",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "나의",
+				"offset": 30,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "우리가",
+				"offset": 60,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "다",
+				"offset": 91,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]/span"
+			},
+			{
+				"content": "원본보기",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/div[2]/p/span"
+			}
+		],
+		"https://n.news.naver.com/mnews/article/346/0000116994?sid=110": [
+			{
+				"content": "외과적 수술이나 약물·방사선만으로 완전히",
+				"offset": 3,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]"
+			},
+			{
+				"content": "없애기 힘듭니다. 근본적인",
+				"offset": 26,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]"
+			},
+			{
+				"content": "암이 잘",
+				"offset": 60,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]"
+			},
+			{
+				"content": "심신안정을 통해",
+				"offset": 81,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]"
+			},
+			{
+				"content": "하는 ‘암 맘 다스리기’ 칼럼을 연재",
+				"offset": 106,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]"
+			},
+			{
+				"content": "암 치료에",
+				"offset": 131,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]"
+			},
+			{
+				"content": "해 국내에 처음 소개",
+				"offset": 145,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]"
+			},
+			{
+				"content": "의 칼럼",
+				"offset": 164,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]"
+			},
+			{
+				"content": "조화를 이뤄",
+				"offset": 180,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]"
+			},
+			{
+				"content": "개선하고",
+				"offset": 191,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]"
+			},
+			{
+				"content": "학문인",
+				"offset": 201,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]"
+			},
+			{
+				"content": "이기도 한 김종성 목사",
+				"offset": 213,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]"
+			},
+			{
+				"content": "마음과",
+				"offset": 234,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]"
+			},
+			{
+				"content": "는 시간 가져보",
+				"offset": 245,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]"
+			},
+			{
+				"content": "원본보기",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/div[1]/p/span"
+			},
+			{
+				"content": "클립아트코리아",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/em"
+			},
+			{
+				"content": "우리 마음속에 있는",
+				"offset": 8,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]"
+			},
+			{
+				"content": "적정한",
+				"offset": 37,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]"
+			},
+			{
+				"content": "도",
+				"offset": 58,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]"
+			},
+			{
+				"content": "될 수 있도록 해야",
+				"offset": 66,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]"
+			},
+			{
+				"content": "자아 울타리",
+				"offset": 94,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]"
+			},
+			{
+				"content": "다듬는 방법을",
+				"offset": 105,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]"
+			},
+			{
+				"content": "울타리 안",
+				"offset": 13,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]"
+			},
+			{
+				"content": "점점",
+				"offset": 25,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]"
+			},
+			{
+				"content": "오랫동안 쌓이면 안에서 뒤죽박죽",
+				"offset": 37,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]"
+			},
+			{
+				"content": "끓어오르면서",
+				"offset": 76,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]"
+			},
+			{
+				"content": "스트레스성",
+				"offset": 3,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]"
+			},
+			{
+				"content": "우리",
+				"offset": 20,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]"
+			},
+			{
+				"content": "등",
+				"offset": 42,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]"
+			},
+			{
+				"content": "과 같은 질병",
+				"offset": 62,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]"
+			},
+			{
+				"content": "사람들은",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]"
+			},
+			{
+				"content": "마음의",
+				"offset": 5,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]"
+			},
+			{
+				"content": "밖으로",
+				"offset": 14,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]"
+			},
+			{
+				"content": "주변을",
+				"offset": 23,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]"
+			},
+			{
+				"content": "내부에 끝없이",
+				"offset": 39,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]"
+			},
+			{
+				"content": "합리적",
+				"offset": 70,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]"
+			},
+			{
+				"content": "앨버트 엘리스 박사",
+				"offset": 85,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]"
+			},
+			{
+				"content": "스트레스를 해석하는",
+				"offset": 100,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]"
+			},
+			{
+				"content": "적 원인 차이",
+				"offset": 113,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]"
+			},
+			{
+				"content": "과거의",
+				"offset": 130,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]"
+			},
+			{
+				"content": "본인의",
+				"offset": 139,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]"
+			},
+			{
+				"content": "주변의",
+				"offset": 147,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]"
+			},
+			{
+				"content": "차이가 발생했다는",
+				"offset": 173,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]"
+			},
+			{
+				"content": "심신의학 개척자이자 방사선종양학과 전문의인 칼 사이몬튼 박사는",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]"
+			},
+			{
+				"content": "심리적",
+				"offset": 35,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]"
+			},
+			{
+				"content": "과거와",
+				"offset": 53,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]"
+			},
+			{
+				"content": "하는 방법을 연습",
+				"offset": 63,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]"
+			},
+			{
+				"content": "지금까지 ",
+				"offset": 86,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]"
+			},
+			{
+				"content": "스트레스를",
+				"offset": 99,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]"
+			},
+			{
+				"content": "로 대처하는",
+				"offset": 117,
+				"xPath": "//*[@id=\"dic_area\"]/p[8]"
+			},
+			{
+				"content": "에 쌓인",
+				"offset": 2,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]"
+			},
+			{
+				"content": "효율적으로",
+				"offset": 12,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]"
+			},
+			{
+				"content": "세 가지",
+				"offset": 23,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]"
+			},
+			{
+				"content": "스트레스를 해결할 수 있다고",
+				"offset": 51,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]"
+			},
+			{
+				"content": "원래의 건강한 상태로 회복할",
+				"offset": 87,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]"
+			},
+			{
+				"content": "그 힘을",
+				"offset": 111,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]"
+			},
+			{
+				"content": "암을",
+				"offset": 126,
+				"xPath": "//*[@id=\"dic_area\"]/p[9]"
+			},
+			{
+				"content": "낙관주의입니다. 실제로 암 환자들을 보면",
+				"offset": 33,
+				"xPath": "//*[@id=\"dic_area\"]/p[10]"
+			},
+			{
+				"content": "다른 암 환자보다",
+				"offset": 63,
+				"xPath": "//*[@id=\"dic_area\"]/p[10]"
+			},
+			{
+				"content": "더",
+				"offset": 83,
+				"xPath": "//*[@id=\"dic_area\"]/p[10]"
+			},
+			{
+				"content": "희망을 가지세요.",
+				"offset": 7,
+				"xPath": "//*[@id=\"dic_area\"]/p[11]"
+			},
+			{
+				"content": "모든 게",
+				"offset": 18,
+				"xPath": "//*[@id=\"dic_area\"]/p[11]"
+			},
+			{
+				"content": "고 습관적으로 되뇌",
+				"offset": 31,
+				"xPath": "//*[@id=\"dic_area\"]/p[11]"
+			},
+			{
+				"content": "의 형태",
+				"offset": 50,
+				"xPath": "//*[@id=\"dic_area\"]/p[11]"
+			},
+			{
+				"content": "실제로",
+				"offset": 65,
+				"xPath": "//*[@id=\"dic_area\"]/p[11]"
+			},
+			{
+				"content": "이 의심되는 조직을 떼어내고 검사 결과를 기다리는",
+				"offset": 74,
+				"xPath": "//*[@id=\"dic_area\"]/p[11]"
+			},
+			{
+				"content": "절망감에 빠진 여성들 중 ",
+				"offset": 122,
+				"xPath": "//*[@id=\"dic_area\"]/p[11]"
+			},
+			{
+				"content": "68",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[11]/span[1]"
+			},
+			{
+				"content": "%에서",
+				"offset": 138,
+				"xPath": "//*[@id=\"dic_area\"]/p[11]"
+			},
+			{
+				"content": "암 조직",
+				"offset": 142,
+				"xPath": "//*[@id=\"dic_area\"]/p[11]"
+			},
+			{
+				"content": "나온 반면",
+				"offset": 154,
+				"xPath": "//*[@id=\"dic_area\"]/p[11]"
+			},
+			{
+				"content": "이",
+				"offset": 163,
+				"xPath": "//*[@id=\"dic_area\"]/p[11]"
+			},
+			{
+				"content": "다는 연구도 있",
+				"offset": 182,
+				"xPath": "//*[@id=\"dic_area\"]/p[11]"
+			},
+			{
+				"content": "심신의학적 방법도",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[12]"
+			},
+			{
+				"content": "미국 하버드대 의대 심신의학과 교수 허버트 벤슨 박사를 중심으로 개발된",
+				"offset": 24,
+				"xPath": "//*[@id=\"dic_area\"]/p[12]"
+			},
+			{
+				"content": "내 몸의",
+				"offset": 80,
+				"xPath": "//*[@id=\"dic_area\"]/p[12]"
+			},
+			{
+				"content": "려고 노력하",
+				"offset": 102,
+				"xPath": "//*[@id=\"dic_area\"]/p[12]"
+			},
+			{
+				"content": "지금 이곳에",
+				"offset": 117,
+				"xPath": "//*[@id=\"dic_area\"]/p[12]"
+			},
+			{
+				"content": "칼 사이몬튼 박사가 적용하기 시작한",
+				"offset": 150,
+				"xPath": "//*[@id=\"dic_area\"]/p[12]"
+			},
+			{
+				"content": "긍정적인 심상을 활용하는 방법으로,",
+				"offset": 188,
+				"xPath": "//*[@id=\"dic_area\"]/p[12]"
+			},
+			{
+				"content": "물어",
+				"offset": 219,
+				"xPath": "//*[@id=\"dic_area\"]/p[12]"
+			},
+			{
+				"content": "등 시각화",
+				"offset": 242,
+				"xPath": "//*[@id=\"dic_area\"]/p[12]"
+			},
+			{
+				"content": "성공적인 암 치료를 비롯한 목표를 정한 뒤 마음의 심상을 그려내면 됩니다.",
+				"offset": 258,
+				"xPath": "//*[@id=\"dic_area\"]/p[12]"
+			},
+			{
+				"content": "잘",
+				"offset": 9,
+				"xPath": "//*[@id=\"dic_area\"]/div[2]/p"
+			},
+			{
+				"content": "부정적인 마음에서 부정적인 몸으로 이어지는 악순환 구조에서 벗어나세요. 스트레스로 손상된",
+				"offset": 15,
+				"xPath": "//*[@id=\"dic_area\"]/div[2]/p"
+			},
+			{
+				"content": "직접적이고 즉각적인 생리적",
+				"offset": 85,
+				"xPath": "//*[@id=\"dic_area\"]/div[2]/p"
+			},
+			{
+				"content": "✔ 암 극복을 위한 필수 지침, 아미랑",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[13]"
+			},
+			{
+				"content": "암으로 지친 마음 달래는 힐링 레터부터 극복한 이들의 노하우까지!",
+				"offset": 21,
+				"xPath": "//*[@id=\"dic_area\"]/p[13]"
+			},
+			{
+				"content": "https",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[13]/span[1]"
+			},
+			{
+				"content": ":",
+				"offset": 62,
+				"xPath": "//*[@id=\"dic_area\"]/p[13]"
+			},
+			{
+				"content": "/",
+				"offset": 63,
+				"xPath": "//*[@id=\"dic_area\"]/p[13]"
+			},
+			{
+				"content": "/",
+				"offset": 64,
+				"xPath": "//*[@id=\"dic_area\"]/p[13]"
+			},
+			{
+				"content": "band.us",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[13]/span[4]"
+			},
+			{
+				"content": "/",
+				"offset": 72,
+				"xPath": "//*[@id=\"dic_area\"]/p[13]"
+			},
+			{
+				"content": "@",
+				"offset": 73,
+				"xPath": "//*[@id=\"dic_area\"]/p[13]"
+			},
+			{
+				"content": "amirang",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[13]/span[6]"
+			},
+			{
+				"content": "↑밴드 가입하면 모두 무료로 확인 가능",
+				"offset": 81,
+				"xPath": "//*[@id=\"dic_area\"]/p[13]"
+			}
+		],
+		"https://n.news.naver.com/mnews/article/346/0000117023?sid=110": [
+			{
+				"content": "치료를",
+				"offset": 129,
+				"xPath": "//*[@id=\"dic_area\"]/div[1]/p[1]"
+			},
+			{
+				"content": "호르몬 치료를 일률적으로 두려워하기보다 환자의 연령과 폐경 시점, 증상, 기저질환을 고려해",
+				"offset": 14,
+				"xPath": "//*[@id=\"dic_area\"]/div[1]/p[7]"
+			},
+			{
+				"content": "불편한 증상과 건강 상태는",
+				"offset": 9,
+				"xPath": "//*[@id=\"dic_area\"]/div[2]/p[1]"
+			}
+		],
+		"https://n.news.naver.com/mnews/article/421/0009209393?sid=110": [
+			{
+				"content": "'디지털",
+				"offset": 0,
+				"xPath": "//*[@id=\"reader-title\"]"
+			},
+			{
+				"content": "혁신가'",
+				"offset": 12,
+				"xPath": "//*[@id=\"reader-title\"]"
+			},
+			{
+				"content": "56세로",
+				"offset": 25,
+				"xPath": "//*[@id=\"reader-title\"]"
+			},
+			{
+				"content": "인 스티브 잡스",
+				"offset": 60,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "미국",
+				"offset": 79,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "자택",
+				"offset": 94,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "2004",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span/span[5]"
+			},
+			{
+				"content": "년",
+				"offset": 112,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "오랜",
+				"offset": 127,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			}
+		],
+		"https://n.news.naver.com/mnews/article/421/0009219677?sid=110": [
+			{
+				"content": "이 답한 것",
+				"offset": 28,
+				"xPath": "//*[@id=\"reader-title\"]"
+			},
+			{
+				"content": "원본보기",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span[1]/div/p/span"
+			},
+			{
+				"content": "저우쉰(왼쪽) 김도연 / 뉴스1 ",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span[1]/em"
+			},
+			{
+				"content": "DB",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span[1]/em/span"
+			},
+			{
+				"content": "(부산=뉴스1) 장아름 기자 =",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			}
+		],
+		"https://n.news.naver.com/mnews/article/469/0000958277?sid=110": [
+			{
+				"content": "원본보기",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span[1]/div/p/span"
+			},
+			{
+				"content": "그래픽=전세현",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span[1]/em"
+			},
+			{
+				"content": "·Chat",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span[1]/em/span[1]"
+			},
+			{
+				"content": " ",
+				"offset": 12,
+				"xPath": "//*[@id=\"dic_area\"]/span[1]/em"
+			},
+			{
+				"content": "GPT",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span[1]/em/span[2]"
+			}
+		],
+		"https://n.news.naver.com/mnews/article/469/0000958833?sid=110": [
+			{
+				"content": "아동·청소년 계정에서는 무한 스크롤과 자동재생, 과도한 알림 등 과몰입을 유도하는 기능을 제한하고 추천 알고리즘, 외모 비교, ‘좋아요’와 같은 기능도 ",
+				"offset": 32,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "SNS",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span/span[1]"
+			},
+			{
+				"content": "뿐 아니라 인공지능(",
+				"offset": 144,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "AI",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span/span[2]"
+			},
+			{
+				"content": ") 챗봇 등 서비스별로",
+				"offset": 157,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "보호장치가 제대로 작동할 수 있도록 신뢰할 수 있는",
+				"offset": 182,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "이미 우리",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "일상은 ",
+				"offset": 11,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "SNS",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span/span[1]"
+			},
+			{
+				"content": "와 ",
+				"offset": 18,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "불가분의",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span/span[2]"
+			},
+			{
+				"content": " 관계인 상태다. 따라서 차단보다는",
+				"offset": 24,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "현재 국회에 발의된 관련 법안에 대한 심도 있는 논의를 포함해",
+				"offset": 75,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "책임을 강화하고 이",
+				"offset": 120,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "실제",
+				"offset": 132,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "지도록 하기 위한 사회적 노력이 이뤄",
+				"offset": 141,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "위험하다고 아동 앞에 무턱대고 '디지털 장벽'만 높이기보다는",
+				"offset": 171,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			}
+		],
+		"https://n.news.naver.com/mnews/article/656/0000188646?sid=110": [
+			{
+				"content": "[여백]",
+				"offset": 0,
+				"xPath": "//*[@id=\"reader-title\"]"
+			},
+			{
+				"content": "차",
+				"offset": 4,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "출범 초기부터",
+				"offset": 19,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "가장 매력적인",
+				"offset": 31,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "혁신적인",
+				"offset": 45,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "의 상징",
+				"offset": 54,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "관로",
+				"offset": 66,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "주민들의 큰",
+				"offset": 114,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "10",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span/span[1]"
+			},
+			{
+				"content": "여년 만에",
+				"offset": 11,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "300",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span/span[2]"
+			},
+			{
+				"content": "억원대",
+				"offset": 20,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "기관 간",
+				"offset": 33,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "이라는 암초",
+				"offset": 50,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "화려한 구호 뒤에 가려졌던",
+				"offset": 64,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "고스란히",
+				"offset": 94,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "셈이",
+				"offset": 103,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "이번 사태의 가장 뼈아픈 대목은 안일한 대응이다.",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "수거체계",
+				"offset": 38,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "탈취",
+				"offset": 47,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "직선화 등",
+				"offset": 59,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "약",
+				"offset": 66,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "2015",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]/span[3]"
+			},
+			{
+				"content": "년",
+				"offset": 114,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "넘는 세월",
+				"offset": 126,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "증가",
+				"offset": 144,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "중장기",
+				"offset": 152,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "파손 위험이",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "수백억 원대",
+				"offset": 16,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "시정의",
+				"offset": 36,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "허겁지겁",
+				"offset": 67,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "스스로",
+				"offset": 84,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "를 둘러싼 모양새",
+				"offset": 5,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "당시 설계·시공",
+				"offset": 34,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "10",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span/span[2]"
+			},
+			{
+				"content": "년 넘게 사용한 시설의 책임을 전가한다는 주장에",
+				"offset": 83,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "문제 해결에 아무런",
+				"offset": 133,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "도움이",
+				"offset": 144,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "을 대하는 태도는 더욱 실망스럽다.",
+				"offset": 3,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "막대한",
+				"offset": 29,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "시장을 비롯한",
+				"offset": 67,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "황급히",
+				"offset": 103,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "전형적인",
+				"offset": 116,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "단순히 수거방식이",
+				"offset": 9,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "애초",
+				"offset": 44,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "주민들이",
+				"offset": 61,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "라는 인식이 크",
+				"offset": 76,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "이미 값비싼 비용을 치렀는데,",
+				"offset": 87,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "노후화",
+				"offset": 104,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "생활",
+				"offset": 116,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "고 하",
+				"offset": 128,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "눈 뜨고 코 베인 상황을",
+				"offset": 140,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "무리하게",
+				"offset": 4,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "여론의 뭇매를 맞고",
+				"offset": 15,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "지금",
+				"offset": 51,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "300",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span/span[1]"
+			},
+			{
+				"content": "억원을 누가 낼지 따지는 소모적 공방이 아니다.",
+				"offset": 65,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "10",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span/span[2]"
+			},
+			{
+				"content": "년간 사전",
+				"offset": 96,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "장기",
+				"offset": 128,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "원점에서 다시",
+				"offset": 137,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			},
+			{
+				"content": "주민들의 질문에 더 이상",
+				"offset": 153,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span"
+			}
+		],
+		"https://n.news.naver.com/mnews/article/666/0000126533?sid=110": [
+			{
+				"content": "권혜인 동남보건대학교 간호학과·인구문제를 생각하는 경기 대학생 네트워크 단장",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/span[1]/em"
+			},
+			{
+				"content": "매년",
+				"offset": 1,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "인 ‘임산부의 날’",
+				"offset": 18,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "하지만 실제로 임산부의 날을 모르는 사람이 다수일뿐만 아니라",
+				"offset": 32,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "우리나라",
+				"offset": 66,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "한번",
+				"offset": 95,
+				"xPath": "//*[@id=\"dic_area\"]/span[2]"
+			},
+			{
+				"content": "는 단어로 쉽게 포장되",
+				"offset": 9,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "막상",
+				"offset": 25,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "가 돼 겪",
+				"offset": 31,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "일상은 전혀 다른 차원의 도전이다. 호르몬의 급격한 변화로 인한 신체적 고통은 시작에 불과하다.",
+				"offset": 38,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "시달리면서도",
+				"offset": 108,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "는",
+				"offset": 119,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "업무 공백을",
+				"offset": 121,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "사회적으로는",
+				"offset": 138,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "당연한",
+				"offset": 156,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "은근한",
+				"offset": 167,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "속에서 외로움",
+				"offset": 174,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "내",
+				"offset": 185,
+				"xPath": "//*[@id=\"dic_area\"]/p[1]/span"
+			},
+			{
+				"content": "대중교통을 이용할 때의 경험은 그 대표적인 예다.",
+				"offset": 1,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "늘 임산부가 아닌 누군가로 인해 채워져 있거나 혹은 배가 부르지 않은 초기 임산부들이 다른 사람의 눈초리를 감당하며",
+				"offset": 42,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "경우도 다수",
+				"offset": 116,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "결국 겉으로 티가 나지 않는",
+				"offset": 125,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "유산의 위험을 안고도 만원 지하철에서",
+				"offset": 150,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "고통을 겪게 되는",
+				"offset": 185,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "배려라는 이름의 시혜가 아니라, 당연히",
+				"offset": 200,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "누군가의",
+				"offset": 239,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "만",
+				"offset": 247,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "해야",
+				"offset": 251,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "구조가",
+				"offset": 257,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "의 핵심",
+				"offset": 263,
+				"xPath": "//*[@id=\"dic_area\"]/p[2]/span"
+			},
+			{
+				"content": "현장으로 시선을 돌리면 상황",
+				"offset": 4,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "해진",
+				"offset": 26,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "육아휴직이나 임신 기간 단축 근무",
+				"offset": 31,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "적",
+				"offset": 55,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "마련돼",
+				"offset": 59,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "이를",
+				"offset": 68,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "는 직장인은 그리 많",
+				"offset": 81,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "대체 인력 구하기가 하늘의 별 따기인 현실에서 눈코 뜰 새 없이",
+				"offset": 98,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "바쁜",
+				"offset": 134,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "많은 여성은 제도를",
+				"offset": 160,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "심지어",
+				"offset": 183,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "를 고민",
+				"offset": 196,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "가능하다고 말하지만,",
+				"offset": 219,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "개인의",
+				"offset": 235,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "를 담보",
+				"offset": 245,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "로운 균형",
+				"offset": 261,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "그 과정에서 발생하는 모든",
+				"offset": 301,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "온전히",
+				"offset": 325,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "개인이",
+				"offset": 329,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "다면, 저출생이라는 거대한 벽을 넘기기란 힘들어 보인",
+				"offset": 339,
+				"xPath": "//*[@id=\"dic_area\"]/span[3]"
+			},
+			{
+				"content": "을 결심",
+				"offset": 3,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "“내가 이 사회에서",
+				"offset": 14,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "”",
+				"offset": 33,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "비로소",
+				"offset": 46,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "어 보인",
+				"offset": 65,
+				"xPath": "//*[@id=\"dic_area\"]/p[3]/span"
+			},
+			{
+				"content": "한마디를 건네는 따뜻함도 중요하지만, 그",
+				"offset": 56,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "더 중요한 것은",
+				"offset": 81,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "대중교통에서 임산부",
+				"offset": 110,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "양보의 대상이 아니라 당연히",
+				"offset": 132,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "만이",
+				"offset": 151,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "당당히 앉을 수 있는",
+				"offset": 154,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "눈치 보지 않고 법적",
+				"offset": 179,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "당당히",
+				"offset": 195,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "또한",
+				"offset": 220,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "값",
+				"offset": 256,
+				"xPath": "//*[@id=\"dic_area\"]/p[4]/span"
+			},
+			{
+				"content": "그러기에 인구보건복지협회 경기지회의 인구문제를 생각하는 경기 대학생 네트워크에서의",
+				"offset": 1,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "함께하는",
+				"offset": 54,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "과 활동",
+				"offset": 65,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "다는",
+				"offset": 86,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "한 가정의 경사를 넘어",
+				"offset": 92,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "미래의",
+				"offset": 105,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "를",
+				"offset": 113,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "빛낼",
+				"offset": 115,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "들",
+				"offset": 120,
+				"xPath": "//*[@id=\"dic_area\"]/p[5]/span"
+			},
+			{
+				"content": "10",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span/span[1]"
+			},
+			{
+				"content": "월",
+				"offset": 3,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "10",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span/span[2]"
+			},
+			{
+				"content": "일 하루만 반짝 주목받고 지나가는 기념일이 아니라, 1년 ",
+				"offset": 6,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "365",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span/span[3]"
+			},
+			{
+				"content": "일",
+				"offset": 41,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "사회가",
+				"offset": 59,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "는 계기가 되",
+				"offset": 69,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "를",
+				"offset": 77,
+				"xPath": "//*[@id=\"dic_area\"]/p[6]/span"
+			},
+			{
+				"content": "● 외부 필진의 기고는 본지 편집 방향과 다를 수 있습니다.",
+				"offset": 0,
+				"xPath": "//*[@id=\"dic_area\"]/p[7]/span/span"
+			}
+		],
+		"https://taean43.github.io/2026/3/9/4.html": [
+			{
+				"content": "목표 달성을 위해",
+				"offset": 4,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[1]"
+			},
+			{
+				"content": "을 이끌고 그",
+				"offset": 17,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[1]"
+			},
+			{
+				"content": "핵심",
+				"offset": 37,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[1]"
+			},
+			{
+				"content": "리더와 구성원이",
+				"offset": 54,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[1]"
+			},
+			{
+				"content": "관계인",
+				"offset": 71,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[1]"
+			},
+			{
+				"content": "리더가",
+				"offset": 77,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[1]"
+			},
+			{
+				"content": "구성원의",
+				"offset": 81,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[1]"
+			},
+			{
+				"content": "구성원 에게",
+				"offset": 98,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[1]"
+			},
+			{
+				"content": "방식으로",
+				"offset": 108,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[1]"
+			},
+			{
+				"content": "등이",
+				"offset": 123,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[1]"
+			},
+			{
+				"content": "이들 연구가 기업 같은 정형적 조직의 리더와 구성원 간 관계에 주목한다면,",
+				"offset": 0,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[2]"
+			},
+			{
+				"content": "에 관한 연구",
+				"offset": 60,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[2]"
+			},
+			{
+				"content": "의 리더",
+				"offset": 79,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[2]"
+			},
+			{
+				"content": "사람",
+				"offset": 124,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[2]"
+			},
+			{
+				"content": "게",
+				"offset": 127,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[2]"
+			},
+			{
+				"content": "하면서 영향력을 발휘",
+				"offset": 131,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[2]"
+			},
+			{
+				"content": "중반,",
+				"offset": 5,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[3]"
+			},
+			{
+				"content": "활발하게",
+				"offset": 41,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[3]"
+			},
+			{
+				"content": "당시 선거 캠페인의 영향력을 연구하던",
+				"offset": 53,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[3]"
+			},
+			{
+				"content": "그의",
+				"offset": 81,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[3]"
+			},
+			{
+				"content": "유권자의 투표 결정에",
+				"offset": 7,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[4]"
+			},
+			{
+				"content": "이들은 이러한 결과가",
+				"offset": 38,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[4]"
+			},
+			{
+				"content": "에서 비롯 하였음",
+				"offset": 62,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[4]"
+			},
+			{
+				"content": "확인하고, 이를",
+				"offset": 73,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[4]"
+			},
+			{
+				"content": "적",
+				"offset": 84,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[4]"
+			},
+			{
+				"content": "이 이론은 미디어 이용자를 상호 고립되어 원자화된 존재로 파악한 대중 사회 이론의 가정을 ⓐ 벗어나",
+				"offset": 118,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[4]"
+			},
+			{
+				"content": "1차적 사회 집단의",
+				"offset": 185,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[4]"
+			},
+			{
+				"content": "커뮤니케이션",
+				"offset": 227,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[4]"
+			},
+			{
+				"content": "미디어가 이용자들에게 직접적이고 즉각적인효과를 미친다는 입장을 위축시켰고, 이를 계기로",
+				"offset": 245,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[4]"
+			},
+			{
+				"content": "주류로",
+				"offset": 314,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[4]"
+			},
+			{
+				"content": "다. 미디어 환경의 변화에도 불구하",
+				"offset": 322,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[4]"
+			},
+			{
+				"content": "자신이 정보 제공자로서 주위 ",
+				"offset": 9,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[5]"
+			},
+			{
+				"content": "이들 중 상당수는 남보다 먼저 새로운 것을 수용하고 자신의 삶에 적용하는",
+				"offset": 50,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[5]"
+			},
+			{
+				"content": "사회적으로 신뢰받는",
+				"offset": 96,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[5]"
+			},
+			{
+				"content": "오늘날 정보의 홍수 속에서",
+				"offset": 139,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[5]"
+			},
+			{
+				"content": "지속 가능한",
+				"offset": 178,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[5]"
+			},
+			{
+				"content": "오피니언 리더의",
+				"offset": 195,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[5]"
+			},
+			{
+				"content": "이들은 일반 이용자보다",
+				"offset": 213,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[5]"
+			},
+			{
+				"content": "의 이용 동기도 높고 실제로 이들",
+				"offset": 253,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[5]"
+			},
+			{
+				"content": "커뮤니케이션",
+				"offset": 292,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[5]"
+			},
+			{
+				"content": "미디어 기반",
+				"offset": 306,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[5]"
+			},
+			{
+				"content": "라는 기존의",
+				"offset": 319,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[5]"
+			},
+			{
+				"content": "자신이",
+				"offset": 333,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[5]"
+			},
+			{
+				"content": "일반 이용자들에게",
+				"offset": 345,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[5]"
+			},
+			{
+				"content": "이러한",
+				"offset": 0,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[6]"
+			},
+			{
+				"content": "이 이론이 일반 이용자가 오피니언",
+				"offset": 35,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[6]"
+			},
+			{
+				"content": "미디어 에서",
+				"offset": 65,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[6]"
+			},
+			{
+				"content": "직접",
+				"offset": 76,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[6]"
+			},
+			{
+				"content": "정보 수용 방식에 있어 항상",
+				"offset": 89,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[6]"
+			},
+			{
+				"content": "다",
+				"offset": 125,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[6]"
+			},
+			{
+				"content": " 비판한다. 또한 한 분야에서 오피니언 리더의 위치를 가진 사람이",
+				"offset": 127,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[6]"
+			},
+			{
+				"content": "제대로 살피지 않았다고",
+				"offset": 194,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[6]"
+			},
+			{
+				"content": "미디어에서 나온",
+				"offset": 217,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[6]"
+			},
+			{
+				"content": "2단계 외에",
+				"offset": 234,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[6]"
+			},
+			{
+				"content": "과정을 거쳐 일반 이용자에게 전달 되는",
+				"offset": 258,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[6]"
+			},
+			{
+				"content": "취지를 수용한",
+				"offset": 307,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[6]"
+			},
+			{
+				"content": "여러 영역에서",
+				"offset": 327,
+				"xPath": "//*[@id=\"readability-page-1\"]/p[6]"
+			}
+		],
+		"https://www.djtimes.co.kr/news/articleViewAmp.html?idxno=113704": [
+			{
+				"content": "지난 8월 28일",
+				"offset": 8,
+				"xPath": "//*[@id=\"amp_content\"]/p[2]/span"
+			},
+			{
+				"content": "“땅을 뺏긴다”, “평생 일군 땅이 반값이 됐다”는 ",
+				"offset": 45,
+				"xPath": "//*[@id=\"amp_content\"]/p[2]/span"
+			},
+			{
+				"content": "지만, 현장의 걱정은 좀처럼 가라앉지 않는",
+				"offset": 138,
+				"xPath": "//*[@id=\"amp_content\"]/p[2]/span"
+			},
+			{
+				"content": "기록하고, 소문과 사실을 가려 진짜 문제가 어디에 있는지",
+				"offset": 180,
+				"xPath": "//*[@id=\"amp_content\"]/p[2]/span"
+			},
+			{
+				"content": "△1회에서는 당진들녁 농민들의 목소리를 전한다. △2회에서는 농민들이 걱정하는 내용을 법 조문과 하나하나 대조해 오해와 진짜 허점을 가린다. △3회에서는 국회 회의록과 표결 기록으로 입법 과정을 추적하고, 당시 소관 상임위원장이던 어기구 국회의원과 정용선 국민의힘 충남도당위원장의 서면 답변을 싣는다. ",
+				"offset": 227,
+				"xPath": "//*[@id=\"amp_content\"]/p[2]/span"
+			},
+			{
+				"content": "농민 A씨는 이웃의 사연부터 꺼냈다.",
+				"offset": 0,
+				"xPath": "//*[@id=\"amp_content\"]/p[6]"
+			},
+			{
+				"content": "그대로",
+				"offset": 69,
+				"xPath": "//*[@id=\"amp_content\"]/p[6]"
+			},
+			{
+				"content": "다는 것이",
+				"offset": 80,
+				"xPath": "//*[@id=\"amp_content\"]/p[6]"
+			},
+			{
+				"content": "3분의 2, 2분의 1로",
+				"offset": 5,
+				"xPath": "//*[@id=\"amp_content\"]/p[7]"
+			},
+			{
+				"content": "거래가 안 돼요. 저도 8만 원가량에 산 땅이 13만 원까지 올랐다가 지금은 6만 원 얘기가 나오는데, 그래도",
+				"offset": 26,
+				"xPath": "//*[@id=\"amp_content\"]/p[7]"
+			},
+			{
+				"content": "도시에서",
+				"offset": 0,
+				"xPath": "//*[@id=\"amp_content\"]/p[11]"
+			},
+			{
+				"content": "우강으로",
+				"offset": 23,
+				"xPath": "//*[@id=\"amp_content\"]/p[11]"
+			},
+			{
+				"content": "번 법의",
+				"offset": 37,
+				"xPath": "//*[@id=\"amp_content\"]/p[11]"
+			},
+			{
+				"content": "는 말로",
+				"offset": 59,
+				"xPath": "//*[@id=\"amp_content\"]/p[11]"
+			},
+			{
+				"content": "요약",
+				"offset": 64,
+				"xPath": "//*[@id=\"amp_content\"]/p[11]"
+			},
+			{
+				"content": "공시지가로 쳐준다는데",
+				"offset": 79,
+				"xPath": "//*[@id=\"amp_content\"]/p[13]"
+			},
+			{
+				"content": "고 말했다.",
+				"offset": 101,
+				"xPath": "//*[@id=\"amp_content\"]/p[13]"
+			},
+			{
+				"content": "또 다른",
+				"offset": 8,
+				"xPath": "//*[@id=\"amp_content\"]/p[16]"
+			},
+			{
+				"content": "B씨는",
+				"offset": 0,
+				"xPath": "//*[@id=\"amp_content\"]/p[20]"
+			},
+			{
+				"content": "우강은",
+				"offset": 5,
+				"xPath": "//*[@id=\"amp_content\"]/p[20]"
+			},
+			{
+				"content": "물을 뽑으면",
+				"offset": 13,
+				"xPath": "//*[@id=\"amp_content\"]/p[20]"
+			},
+			{
+				"content": "이라며",
+				"offset": 40,
+				"xPath": "//*[@id=\"amp_content\"]/p[20]"
+			},
+			{
+				"content": "라고 했다. A씨도",
+				"offset": 71,
+				"xPath": "//*[@id=\"amp_content\"]/p[20]"
+			},
+			{
+				"content": "우리 같은 데는",
+				"offset": 83,
+				"xPath": "//*[@id=\"amp_content\"]/p[20]"
+			},
+			{
+				"content": "거의",
+				"offset": 96,
+				"xPath": "//*[@id=\"amp_content\"]/p[20]"
+			},
+			{
+				"content": "합덕",
+				"offset": 140,
+				"xPath": "//*[@id=\"amp_content\"]/p[20]"
+			},
+			{
+				"content": "같은 곳",
+				"offset": 147,
+				"xPath": "//*[@id=\"amp_content\"]/p[20]"
+			},
+			{
+				"content": "이라고 말했다.",
+				"offset": 161,
+				"xPath": "//*[@id=\"amp_content\"]/p[20]"
+			},
+			{
+				"content": "농민들은 신고포상금도 마을 공동체를 불안하게 하는 요인으로 꼽혔다.",
+				"offset": 0,
+				"xPath": "//*[@id=\"amp_content\"]/p[22]"
+			},
+			{
+				"content": "의 1인당 연간 지급 상한",
+				"offset": 54,
+				"xPath": "//*[@id=\"amp_content\"]/p[22]"
+			},
+			{
+				"content": "1500만 원으로",
+				"offset": 70,
+				"xPath": "//*[@id=\"amp_content\"]/p[22]"
+			},
+			{
+				"content": "A씨는",
+				"offset": 86,
+				"xPath": "//*[@id=\"amp_content\"]/p[22]"
+			},
+			{
+				"content": "한 동네 사는",
+				"offset": 91,
+				"xPath": "//*[@id=\"amp_content\"]/p[22]"
+			},
+			{
+				"content": "서로",
+				"offset": 104,
+				"xPath": "//*[@id=\"amp_content\"]/p[22]"
+			},
+			{
+				"content": "고 ",
+				"offset": 128,
+				"xPath": "//*[@id=\"amp_content\"]/p[22]"
+			},
+			{
+				"content": "",
+				"offset": 0,
+				"xPath": "//*[@id=\"amp_content\"]/p[22]/span"
+			},
+			{
+				"content": "비토했다.",
+				"offset": 0,
+				"xPath": "//*[@id=\"amp_content\"]/p[22]/span/span"
+			}
+		],
+		"https://www.hankookilbo.com/news/article/amp/A2026092915410000490": [
+			{
+				"content": "특성상",
+				"offset": 162,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[3]"
+			},
+			{
+				"content": "이유로 응시 자격을",
+				"offset": 170,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[3]"
+			},
+			{
+				"content": "며",
+				"offset": 190,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[3]"
+			},
+			{
+				"content": "을 수밖에 없었",
+				"offset": 220,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[3]"
+			},
+			{
+				"content": "고 해명했다.",
+				"offset": 230,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[3]"
+			},
+			{
+				"content": "반도체를 비롯한 첨단 제조업이 수출을 ",
+				"offset": 0,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[12]"
+			},
+			{
+				"content": "견인하고",
+				"offset": 0,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[12]/span"
+			},
+			{
+				"content": " 있지만 생산",
+				"offset": 25,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[12]"
+			},
+			{
+				"content": "인해",
+				"offset": 43,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[12]"
+			},
+			{
+				"content": "점차",
+				"offset": 50,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[12]"
+			},
+			{
+				"content": "있고,",
+				"offset": 58,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[12]"
+			},
+			{
+				"content": "더 이상",
+				"offset": 82,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[12]"
+			},
+			{
+				"content": "란 전망까지 나오고 있",
+				"offset": 97,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[12]"
+			},
+			{
+				"content": "김 의원은",
+				"offset": 0,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[13]"
+			},
+			{
+				"content": "해 단기 인턴이나 ",
+				"offset": 34,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[13]"
+			},
+			{
+				"content": "한시적",
+				"offset": 0,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[13]/span"
+			},
+			{
+				"content": " 일자리까지 청년 일자리로 포장해서는 안 된다\"며 \"보여주기식 숫자 경쟁에 그치지 않도록 사업별 고용 유지율과 정규직 전환율 등 실제 청년 고용으로 이어졌는지를 기준으로 정책을 관리해야",
+				"offset": 47,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[13]"
+			},
+			{
+				"content": "고 말했다.",
+				"offset": 154,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[13]"
+			}
+		],
+		"https://www.jinju.news/front/news/view.do?articleId=ARTICLE_00047908": [
+			{
+				"content": "모집, 반복 참여·가산점 논란…",
+				"offset": 10,
+				"xPath": "//*[@id=\"reader-title\"]"
+			},
+			{
+				"content": "진주인터넷뉴스",
+				"offset": 41,
+				"xPath": "//*[@id=\"reader-title\"]"
+			},
+			{
+				"content": "\n  ",
+				"offset": 203,
+				"xPath": "/html/body"
+			},
+			{
+				"content": "문방주 기자",
+				"offset": 0,
+				"xPath": "//*[@id=\"reader-credits\"]"
+			},
+			{
+				"content": "\n  ",
+				"offset": 212,
+				"xPath": "/html/body"
+			},
+			{
+				"content": "3-4 minutes",
+				"offset": 0,
+				"xPath": "//*[@id=\"reader-estimated-time\"]"
+			},
+			{
+				"content": "\n  ",
+				"offset": 226,
+				"xPath": "/html/body"
+			},
+			{
+				"content": "Invalid Date",
+				"offset": 0,
+				"xPath": "//*[@id=\"published-time\"]"
+			},
+			{
+				"content": "단순한 임시 일자리가 아니다. 산불 발생 위험이 높은 현장에서",
+				"offset": 8,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[1]"
+			},
+			{
+				"content": "이상",
+				"offset": 52,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[1]"
+			},
+			{
+				"content": "가장 먼저",
+				"offset": 59,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[1]"
+			},
+			{
+				"content": "초기",
+				"offset": 69,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[1]"
+			},
+			{
+				"content": "지역",
+				"offset": 80,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[1]"
+			},
+			{
+				"content": "그런데 최근 의령군의 산불감시원 모집과 관리·감독을 둘러싼 논란을 들여다보면 정작 중요한 문제가 보인다. 누가 선발되느냐를 놓고 경쟁은 치열해졌는데, 정작 선발 과정과 관리 체계에 대한 행정의 설명은 충분했느냐는 것이다.",
+				"offset": 2,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[2]"
+			},
+			{
+				"content": "참여자",
+				"offset": 45,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[4]"
+			},
+			{
+				"content": "여기에",
+				"offset": 74,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[4]"
+			},
+			{
+				"content": "산불감시원 선발이",
+				"offset": 98,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[4]"
+			},
+			{
+				"content": "부터 다시",
+				"offset": 131,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[4]"
+			},
+			{
+				"content": "자체",
+				"offset": 7,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[5]"
+			},
+			{
+				"content": "무조건",
+				"offset": 11,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[5]"
+			},
+			{
+				"content": "다는 뜻은 아니",
+				"offset": 18,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[5]"
+			},
+			{
+				"content": "현장 경험과 산림 지식, 안전의식이",
+				"offset": 11,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[6]"
+			},
+			{
+				"content": "일정 수준의",
+				"offset": 40,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[6]"
+			},
+			{
+				"content": "문제는",
+				"offset": 2,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[7]"
+			},
+			{
+				"content": "전문성을 이유로",
+				"offset": 6,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[7]"
+			},
+			{
+				"content": "지나치게",
+				"offset": 24,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[7]"
+			},
+			{
+				"content": "가 고착되는 경우",
+				"offset": 35,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[7]"
+			},
+			{
+				"content": "일정한 전문성을 요구하면서도 동시에",
+				"offset": 9,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[8]"
+			},
+			{
+				"content": "따라서",
+				"offset": 2,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[9]"
+			},
+			{
+				"content": "지나치게",
+				"offset": 14,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[9]"
+			},
+			{
+				"content": "참여자",
+				"offset": 29,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[9]"
+			},
+			{
+				"content": "시험을",
+				"offset": 34,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[9]"
+			},
+			{
+				"content": "고, 기존 참여자는 반복적으로 선발되는 구조가 만들어질 수 있",
+				"offset": 45,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[9]"
+			},
+			{
+				"content": "그렇다면 행정은 단순히 “평가 기준에 따라 선발했다”고 답할 것이 아니라,",
+				"offset": 2,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[10]"
+			},
+			{
+				"content": "\n\n왜 이런 기준이 필요한지, 경력 가산점은 어떤 근거로 부여하는지,",
+				"offset": 0,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[11]"
+			},
+			{
+				"content": "어떻게",
+				"offset": 51,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[11]"
+			},
+			{
+				"content": "하는지를 군민에게 설명",
+				"offset": 57,
+				"xPath": "//*[@id=\"readability-page-1\"]/div/p[11]"
+			}
+		],
+		"https://www.joongang.co.kr/article/3077975": [
+			{
+				"content": "통·청소차",
+				"offset": 3,
+				"xPath": "//*[@id=\"reader-title\"]"
+			},
+			{
+				"content": "생긴다",
+				"offset": 16,
+				"xPath": "//*[@id=\"reader-title\"]"
+			},
+			{
+				"content": "Posted by 더 하이엔드",
+				"offset": 0,
+				"xPath": "//*[@id=\"reader-credits\"]"
+			},
+			{
+				"content": "개발 예정지 가운데 유성과 서구 가수원동 사이 들판을 중심으로 1단계 611만㎡을 개발중이다. 이",
+				"offset": 18,
+				"xPath": "//*[@id=\"article_body\"]/div[2]/div[2]/p"
+			},
+			{
+				"content": "친환경적이 주거지역으로 개발하기 위해",
+				"offset": 78,
+				"xPath": "//*[@id=\"article_body\"]/div[2]/div[2]/p"
+			},
+			{
+				"content": "통이 없는",
+				"offset": 103,
+				"xPath": "//*[@id=\"article_body\"]/div[2]/div[2]/p"
+			},
+			{
+				"content": "쓰레기",
+				"offset": 109,
+				"xPath": "//*[@id=\"article_body\"]/div[2]/div[2]/p"
+			},
+			{
+				"content": "[대전시 도시개발공사 제공]",
+				"offset": 131,
+				"xPath": "//*[@id=\"article_body\"]/div[2]/div[2]/p"
+			},
+			{
+				"content": "필요",
+				"offset": 21,
+				"xPath": "//*[@id=\"article_body\"]/p[1]"
+			},
+			{
+				"content": "도시개발공사",
+				"offset": 4,
+				"xPath": "//*[@id=\"article_body\"]/p[2]"
+			},
+			{
+				"content": "로",
+				"offset": 15,
+				"xPath": "//*[@id=\"article_body\"]/p[2]"
+			},
+			{
+				"content": "개발중인",
+				"offset": 17,
+				"xPath": "//*[@id=\"article_body\"]/p[2]"
+			},
+			{
+				"content": "필요",
+				"offset": 52,
+				"xPath": "//*[@id=\"article_body\"]/p[2]"
+			},
+			{
+				"content": "다고 17일 밝혔",
+				"offset": 72,
+				"xPath": "//*[@id=\"article_body\"]/p[2]"
+			},
+			{
+				"content": "올해 말 착공,",
+				"offset": 91,
+				"xPath": "//*[@id=\"article_body\"]/p[2]"
+			},
+			{
+				"content": "서남부지역에 공동주택 입주가 시작되는 2011년까지는",
+				"offset": 110,
+				"xPath": "//*[@id=\"article_body\"]/p[2]"
+			},
+			{
+				"content": "를 마칠",
+				"offset": 142,
+				"xPath": "//*[@id=\"article_body\"]/p[2]"
+			},
+			{
+				"content": "이 시설이 완공되면 현재 가동되고 있는 인천 송도신도시와 용인 수지2지구에 이어",
+				"offset": 0,
+				"xPath": "//*[@id=\"article_body\"]/p[3]"
+			},
+			{
+				"content": "또",
+				"offset": 54,
+				"xPath": "//*[@id=\"article_body\"]/p[3]"
+			},
+			{
+				"content": "으로",
+				"offset": 65,
+				"xPath": "//*[@id=\"article_body\"]/p[3]"
+			},
+			{
+				"content": "◇쓰레기를 어떻게 처리하나=",
+				"offset": 0,
+				"xPath": "//*[@id=\"article_body\"]/p[4]"
+			},
+			{
+				"content": "이 시스템 운영을 위해 길이",
+				"offset": 15,
+				"xPath": "//*[@id=\"article_body\"]/p[4]"
+			},
+			{
+				"content": "쓰레기",
+				"offset": 36,
+				"xPath": "//*[@id=\"article_body\"]/p[4]"
+			},
+			{
+				"content": "서남부지역",
+				"offset": 46,
+				"xPath": "//*[@id=\"article_body\"]/p[4]"
+			},
+			{
+				"content": "1300여곳의",
+				"offset": 62,
+				"xPath": "//*[@id=\"article_body\"]/p[4]"
+			},
+			{
+				"content": "진공청소기와 같은 원리로",
+				"offset": 87,
+				"xPath": "//*[@id=\"article_body\"]/p[4]"
+			},
+			{
+				"content": "쓰레기가",
+				"offset": 109,
+				"xPath": "//*[@id=\"article_body\"]/p[4]"
+			},
+			{
+				"content": "자동으로",
+				"offset": 121,
+				"xPath": "//*[@id=\"article_body\"]/p[4]"
+			},
+			{
+				"content": "주민편의를 위해",
+				"offset": 0,
+				"xPath": "//*[@id=\"article_body\"]/p[5]"
+			},
+			{
+				"content": "각 동마다",
+				"offset": 15,
+				"xPath": "//*[@id=\"article_body\"]/p[5]"
+			},
+			{
+				"content": "1조씩을",
+				"offset": 65,
+				"xPath": "//*[@id=\"article_body\"]/p[5]"
+			},
+			{
+				"content": "또 쓰레기",
+				"offset": 86,
+				"xPath": "//*[@id=\"article_body\"]/p[5]"
+			},
+			{
+				"content": "투입구에 종량제봉투",
+				"offset": 104,
+				"xPath": "//*[@id=\"article_body\"]/p[5]"
+			},
+			{
+				"content": "이",
+				"offset": 135,
+				"xPath": "//*[@id=\"article_body\"]/p[5]"
+			},
+			{
+				"content": "해 투입구를 개폐",
+				"offset": 144,
+				"xPath": "//*[@id=\"article_body\"]/p[5]"
+			},
+			{
+				"content": "등",
+				"offset": 159,
+				"xPath": "//*[@id=\"article_body\"]/p[5]"
+			},
+			{
+				"content": "이 시스템이 가동되면 명절이나 이사철에",
+				"offset": 11,
+				"xPath": "//*[@id=\"article_body\"]/p[6]"
+			},
+			{
+				"content": "발생",
+				"offset": 47,
+				"xPath": "//*[@id=\"article_body\"]/p[6]"
+			},
+			{
+				"content": "시민",
+				"offset": 65,
+				"xPath": "//*[@id=\"article_body\"]/p[6]"
+			},
+			{
+				"content": "크게",
+				"offset": 71,
+				"xPath": "//*[@id=\"article_body\"]/p[6]"
+			},
+			{
+				"content": "특히",
+				"offset": 0,
+				"xPath": "//*[@id=\"article_body\"]/p[7]"
+			},
+			{
+				"content": "배출",
+				"offset": 17,
+				"xPath": "//*[@id=\"article_body\"]/p[7]"
+			},
+			{
+				"content": "각종",
+				"offset": 26,
+				"xPath": "//*[@id=\"article_body\"]/p[7]"
+			},
+			{
+				"content": "환경의 친환경",
+				"offset": 43,
+				"xPath": "//*[@id=\"article_body\"]/p[7]"
+			},
+			{
+				"content": "이에따라",
+				"offset": 0,
+				"xPath": "//*[@id=\"article_body\"]/p[8]"
+			},
+			{
+				"content": "2만3000여가구에 6만여명이 거주할 것으로 예상돼",
+				"offset": 17,
+				"xPath": "//*[@id=\"article_body\"]/p[8]"
+			},
+			{
+				"content": "가걍의",
+				"offset": 53,
+				"xPath": "//*[@id=\"article_body\"]/p[8]"
+			},
+			{
+				"content": "일반·음식물",
+				"offset": 57,
+				"xPath": "//*[@id=\"article_body\"]/p[8]"
+			},
+			{
+				"content": "그러나",
+				"offset": 79,
+				"xPath": "//*[@id=\"article_body\"]/p[8]"
+			},
+			{
+				"content": "악취 등이 크게 줄어",
+				"offset": 95,
+				"xPath": "//*[@id=\"article_body\"]/p[8]"
+			},
+			{
+				"content": "돼 신도시의 품격을 한 단계 끌어 올리게",
+				"offset": 119,
+				"xPath": "//*[@id=\"article_body\"]/p[8]"
+			},
+			{
+				"content": "대전시",
+				"offset": 0,
+				"xPath": "//*[@id=\"article_body\"]/p[9]"
+			},
+			{
+				"content": "도시개발공사",
+				"offset": 4,
+				"xPath": "//*[@id=\"article_body\"]/p[9]"
+			},
+			{
+				"content": "앞으로 서남부신도시 외에 학하지구 개발에도 쓰레기 자동집하시설을",
+				"offset": 17,
+				"xPath": "//*[@id=\"article_body\"]/p[9]"
+			},
+			{
+				"content": "하는 등 등",
+				"offset": 55,
+				"xPath": "//*[@id=\"article_body\"]/p[9]"
+			},
+			{
+				"content": "=유성구와 서구에 걸쳐있는 개발지역으로 아산 신도시와 함께",
+				"offset": 11,
+				"xPath": "//*[@id=\"article_body\"]/p[10]"
+			},
+			{
+				"content": "공식적으로",
+				"offset": 48,
+				"xPath": "//*[@id=\"article_body\"]/p[10]"
+			},
+			{
+				"content": "1537만1970㎡가운데 유성과 서구 가수원동 사이 들판을 중심으로 1단계 611만㎡이",
+				"offset": 67,
+				"xPath": "//*[@id=\"article_body\"]/p[10]"
+			},
+			{
+				"content": "사업지구",
+				"offset": 4,
+				"xPath": "//*[@id=\"article_body\"]/p[11]"
+			},
+			{
+				"content": "유성과 도안, 가수원 등",
+				"offset": 10,
+				"xPath": "//*[@id=\"article_body\"]/p[11]"
+			},
+			{
+				"content": "각 생활권별로",
+				"offset": 39,
+				"xPath": "//*[@id=\"article_body\"]/p[11]"
+			},
+			{
+				"content": "전체 면적 가운데",
+				"offset": 7,
+				"xPath": "//*[@id=\"article_body\"]/p[12]"
+			},
+			{
+				"content": "총",
+				"offset": 29,
+				"xPath": "//*[@id=\"article_body\"]/p[12]"
+			},
+			{
+				"content": "주로",
+				"offset": 46,
+				"xPath": "//*[@id=\"article_body\"]/p[12]"
+			},
+			{
+				"content": "도안",
+				"offset": 59,
+				"xPath": "//*[@id=\"article_body\"]/p[12]"
+			},
+			{
+				"content": "스런",
+				"offset": 71,
+				"xPath": "//*[@id=\"article_body\"]/p[12]"
+			},
+			{
+				"content": "(1839세대)",
+				"offset": 79,
+				"xPath": "//*[@id=\"article_body\"]/p[12]"
+			},
+			{
+				"content": "구릉",
+				"offset": 102,
+				"xPath": "//*[@id=\"article_body\"]/p[12]"
+			},
+			{
+				"content": "(96세대)",
+				"offset": 117,
+				"xPath": "//*[@id=\"article_body\"]/p[12]"
+			},
+			{
+				"content": "주거선호도를 고려해",
+				"offset": 0,
+				"xPath": "//*[@id=\"article_body\"]/p[13]"
+			},
+			{
+				"content": "평형도",
+				"offset": 44,
+				"xPath": "//*[@id=\"article_body\"]/p[13]"
+			},
+			{
+				"content": "전체",
+				"offset": 56,
+				"xPath": "//*[@id=\"article_body\"]/p[13]"
+			},
+			{
+				"content": "전체 면적의",
+				"offset": 78,
+				"xPath": "//*[@id=\"article_body\"]/p[13]"
+			},
+			{
+				"content": "유성방향, 중심부, 가수원 방향에",
+				"offset": 92,
+				"xPath": "//*[@id=\"article_body\"]/p[13]"
+			},
+			{
+				"content": "1ha당 107명으로 둔산 277명, 노은 180명, 분당 189명 등에 비해",
+				"offset": 15,
+				"xPath": "//*[@id=\"article_body\"]/p[14]"
+			},
+			{
+				"content": "27.6%로 둔산 13%, 노은 15%, 분당 19%보다",
+				"offset": 71,
+				"xPath": "//*[@id=\"article_body\"]/p[14]"
+			},
+			{
+				"content": "주거",
+				"offset": 110,
+				"xPath": "//*[@id=\"article_body\"]/p[14]"
+			},
+			{
+				"content": "서형식 기자",
+				"offset": 0,
+				"xPath": "//*[@id=\"article_body\"]/p[15]"
+			}
+		],
+		"https://www.kdi.re.kr/share/pressContriView?bd_no=53184": [
+			{
+				"content": "더 늦출 수 없는",
+				"offset": 0,
+				"xPath": "//*[@id=\"reader-title\"]"
+			},
+			{
+				"content": " - KDI 한국개발연구원 - 소통 - 언론기고",
+				"offset": 18,
+				"xPath": "//*[@id=\"reader-title\"]"
+			},
+			{
+				"content": "현 세수 연동 산정법,",
+				"offset": 0,
+				"xPath": "//*[@id=\"contents\"]/p[1]/strong/span"
+			},
+			{
+				"content": "급감",
+				"offset": 18,
+				"xPath": "//*[@id=\"contents\"]/p[1]/strong/span"
+			},
+			{
+				"content": "못",
+				"offset": 24,
+				"xPath": "//*[@id=\"contents\"]/p[1]/strong/span"
+			},
+			{
+				"content": "성장률 연동·조절장치 마련…",
+				"offset": 29,
+				"xPath": "//*[@id=\"contents\"]/p[1]/strong/span"
+			},
+			{
+				"content": "모든 납세자가 부담한 내국세수의 20.79%와 교육세 일부를 기계적으로 떼어 교육 여건이나 학생 수 변화를 묻지도 따지지도 않고",
+				"offset": 16,
+				"xPath": "//*[@id=\"contents\"]/p[4]/span"
+			},
+			{
+				"content": "이처럼 경직적인 재원 조성 방식은 학교와 교사가 부족했던 경제개발 초기인 1972년에 도입됐다.",
+				"offset": 126,
+				"xPath": "//*[@id=\"contents\"]/p[4]/span"
+			},
+			{
+				"content": "초중등",
+				"offset": 2,
+				"xPath": "//*[@id=\"contents\"]/p[5]"
+			},
+			{
+				"content": "여전히",
+				"offset": 13,
+				"xPath": "//*[@id=\"contents\"]/p[5]"
+			},
+			{
+				"content": "정책",
+				"offset": 31,
+				"xPath": "//*[@id=\"contents\"]/p[5]"
+			},
+			{
+				"content": "천양지차로",
+				"offset": 38,
+				"xPath": "//*[@id=\"contents\"]/p[5]"
+			},
+			{
+				"content": "1972년 1000만명을 넘던",
+				"offset": 49,
+				"xPath": "//*[@id=\"contents\"]/p[5]"
+			},
+			{
+				"content": "현재 475만명으로 급감했고 앞으로",
+				"offset": 72,
+				"xPath": "//*[@id=\"contents\"]/p[5]"
+			},
+			{
+				"content": "는 8000여개에서 1만1800여개로",
+				"offset": 114,
+				"xPath": "//*[@id=\"contents\"]/p[5]"
+			},
+			{
+				"content": "17만명에서 43.7만명으로 대폭",
+				"offset": 140,
+				"xPath": "//*[@id=\"contents\"]/p[5]"
+			},
+			{
+				"content": "1972년 1인당 GDP의 7.9%이던 중앙정부의 학생 1명당 교부금은 2026년 명목성장률을 10%로 높게 전제하여도 28.4% 수준이다. 이는 지방정부 부담을 포함한 경제협력개발기구(OECD) 평균 비율 22%를 크게 웃돈다. ‘콩나물시루’였던 초중등",
+				"offset": 164,
+				"xPath": "//*[@id=\"contents\"]/p[5]"
+			},
+			{
+				"content": "세수 연동형 산정",
+				"offset": 6,
+				"xPath": "//*[@id=\"contents\"]/p[6]"
+			},
+			{
+				"content": "적 배분",
+				"offset": 34,
+				"xPath": "//*[@id=\"contents\"]/p[6]"
+			},
+			{
+				"content": "심각하게",
+				"offset": 40,
+				"xPath": "//*[@id=\"contents\"]/p[6]"
+			},
+			{
+				"content": "우리는",
+				"offset": 51,
+				"xPath": "//*[@id=\"contents\"]/p[6]"
+			},
+			{
+				"content": "위기",
+				"offset": 64,
+				"xPath": "//*[@id=\"contents\"]/p[6]"
+			},
+			{
+				"content": "이를",
+				"offset": 75,
+				"xPath": "//*[@id=\"contents\"]/p[6]"
+			},
+			{
+				"content": "예상치 못한",
+				"offset": 87,
+				"xPath": "//*[@id=\"contents\"]/p[6]"
+			},
+			{
+				"content": "2022년",
+				"offset": 117,
+				"xPath": "//*[@id=\"contents\"]/p[6]"
+			},
+			{
+				"content": "중앙",
+				"offset": 146,
+				"xPath": "//*[@id=\"contents\"]/p[6]"
+			},
+			{
+				"content": "국가",
+				"offset": 152,
+				"xPath": "//*[@id=\"contents\"]/p[6]"
+			},
+			{
+				"content": "여력",
+				"offset": 166,
+				"xPath": "//*[@id=\"contents\"]/p[6]"
+			},
+			{
+				"content": "정책 환경을 반영해 합리적으로 예산을 산정했다면, 이 22조원은",
+				"offset": 192,
+				"xPath": "//*[@id=\"contents\"]/p[6]"
+			},
+			{
+				"content": "올해",
+				"offset": 266,
+				"xPath": "//*[@id=\"contents\"]/p[6]"
+			},
+			{
+				"content": "인한",
+				"offset": 276,
+				"xPath": "//*[@id=\"contents\"]/p[6]"
+			},
+			{
+				"content": "똑같은",
+				"offset": 298,
+				"xPath": "//*[@id=\"contents\"]/p[6]"
+			},
+			{
+				"content": "반복",
+				"offset": 306,
+				"xPath": "//*[@id=\"contents\"]/p[6]"
+			},
+			{
+				"content": "호조 등",
+				"offset": 319,
+				"xPath": "//*[@id=\"contents\"]/p[6]"
+			},
+			{
+				"content": "교부금으로 자동 편성됐다. 불요불급한 초중등 교육재정 대신",
+				"offset": 346,
+				"xPath": "//*[@id=\"contents\"]/p[6]"
+			},
+			{
+				"content": "게다가 법인세 의존도가 높아",
+				"offset": 2,
+				"xPath": "//*[@id=\"contents\"]/p[7]"
+			},
+			{
+				"content": "세수 사이클에 따라 널뛰는",
+				"offset": 38,
+				"xPath": "//*[@id=\"contents\"]/p[7]"
+			},
+			{
+				"content": "예상 밖 초과 세수로",
+				"offset": 77,
+				"xPath": "//*[@id=\"contents\"]/p[7]"
+			},
+			{
+				"content": "예산",
+				"offset": 98,
+				"xPath": "//*[@id=\"contents\"]/p[7]"
+			},
+			{
+				"content": "이는",
+				"offset": 115,
+				"xPath": "//*[@id=\"contents\"]/p[7]"
+			},
+			{
+				"content": "업무",
+				"offset": 122,
+				"xPath": "//*[@id=\"contents\"]/p[7]"
+			},
+			{
+				"content": "교육",
+				"offset": 135,
+				"xPath": "//*[@id=\"contents\"]/p[7]"
+			},
+			{
+				"content": "제고",
+				"offset": 140,
+				"xPath": "//*[@id=\"contents\"]/p[7]"
+			},
+			{
+				"content": "국가 전체의 관점에서",
+				"offset": 2,
+				"xPath": "//*[@id=\"contents\"]/p[8]"
+			},
+			{
+				"content": "시대적",
+				"offset": 22,
+				"xPath": "//*[@id=\"contents\"]/p[8]"
+			},
+			{
+				"content": "각 지출 분야에",
+				"offset": 35,
+				"xPath": "//*[@id=\"contents\"]/p[8]"
+			},
+			{
+				"content": "각 국가기관은 재정 당국에 협조하고 배분받은 예산의 효과성을",
+				"offset": 56,
+				"xPath": "//*[@id=\"contents\"]/p[8]"
+			},
+			{
+				"content": "초중등 교육도 마찬가지다. 교부금 산정 방식에서 세수 연동 고리를 완전히 끊어 내고,",
+				"offset": 99,
+				"xPath": "//*[@id=\"contents\"]/p[8]"
+			},
+			{
+				"content": "한 뒤 중앙과 지방이 분담",
+				"offset": 173,
+				"xPath": "//*[@id=\"contents\"]/p[8]"
+			},
+			{
+				"content": "평가 등 여러 재정 효율화 수단",
+				"offset": 193,
+				"xPath": "//*[@id=\"contents\"]/p[8]"
+			},
+			{
+				"content": "상시",
+				"offset": 215,
+				"xPath": "//*[@id=\"contents\"]/p[8]"
+			},
+			{
+				"content": "가장",
+				"offset": 227,
+				"xPath": "//*[@id=\"contents\"]/p[8]"
+			},
+			{
+				"content": "그러나 지난 반세기 동안 세수 연동 방식을 고수해 온 시도교육청의 입장을 고려하여 타협안을 모색할 필요가 있다. 2021년 한국개발연구원(KDI)에서 제안한",
+				"offset": 237,
+				"xPath": "//*[@id=\"contents\"]/p[8]"
+			},
+			{
+				"content": "비중의",
+				"offset": 357,
+				"xPath": "//*[@id=\"contents\"]/p[8]"
+			},
+			{
+				"content": "속도",
+				"offset": 373,
+				"xPath": "//*[@id=\"contents\"]/p[8]"
+			},
+			{
+				"content": "하나의",
+				"offset": 386,
+				"xPath": "//*[@id=\"contents\"]/p[8]"
+			},
+			{
+				"content": "최근 이 방안이 검토되고 있다는 보도가 있었으나, ",
+				"offset": 2,
+				"xPath": "//*[@id=\"contents\"]/p[9]"
+			},
+			{
+				"content": "몇 가지",
+				"offset": 35,
+				"xPath": "//*[@id=\"contents\"]/p[9]"
+			},
+			{
+				"content": "2022년 논의 과정에서 했던 주장을 반복하고",
+				"offset": 51,
+				"xPath": "//*[@id=\"contents\"]/p[9]"
+			},
+			{
+				"content": "정부가 차년도에 역성장을 전망하지 않는 한",
+				"offset": 26,
+				"xPath": "//*[@id=\"contents\"]/p[10]"
+			},
+			{
+				"content": "정부 경제전망의 낙관적 특성상",
+				"offset": 79,
+				"xPath": "//*[@id=\"contents\"]/p[10]"
+			},
+			{
+				"content": "구체적인 사업 계획도 없이",
+				"offset": 137,
+				"xPath": "//*[@id=\"contents\"]/p[10]"
+			},
+			{
+				"content": "에 불과하",
+				"offset": 164,
+				"xPath": "//*[@id=\"contents\"]/p[10]"
+			},
+			{
+				"content": "1인당 GDP의 22% 수준에서 미래 투자를 포함한 학생 1명당",
+				"offset": 182,
+				"xPath": "//*[@id=\"contents\"]/p[10]"
+			},
+			{
+				"content": "초중등",
+				"offset": 226,
+				"xPath": "//*[@id=\"contents\"]/p[10]"
+			},
+			{
+				"content": "만 26.8%",
+				"offset": 262,
+				"xPath": "//*[@id=\"contents\"]/p[10]"
+			},
+			{
+				"content": "이라는 주장",
+				"offset": 290,
+				"xPath": "//*[@id=\"contents\"]/p[10]"
+			},
+			{
+				"content": "재원 조달의 책무 없이",
+				"offset": 315,
+				"xPath": "//*[@id=\"contents\"]/p[10]"
+			},
+			{
+				"content": "자율성",
+				"offset": 331,
+				"xPath": "//*[@id=\"contents\"]/p[10]"
+			},
+			{
+				"content": "진정한",
+				"offset": 344,
+				"xPath": "//*[@id=\"contents\"]/p[10]"
+			},
+			{
+				"content": "주민",
+				"offset": 359,
+				"xPath": "//*[@id=\"contents\"]/p[10]"
+			},
+			{
+				"content": "공교육 규모의 경제 훼손을 축소하고자",
+				"offset": 388,
+				"xPath": "//*[@id=\"contents\"]/p[10]"
+			},
+			{
+				"content": "학생 1인당",
+				"offset": 420,
+				"xPath": "//*[@id=\"contents\"]/p[10]"
+			},
+			{
+				"content": "상향 조정하되 총량은 소폭",
+				"offset": 434,
+				"xPath": "//*[@id=\"contents\"]/p[10]"
+			},
+			{
+				"content": "OECD 국가들의 유연한",
+				"offset": 454,
+				"xPath": "//*[@id=\"contents\"]/p[10]"
+			},
+			{
+				"content": "우리 교육청도",
+				"offset": 479,
+				"xPath": "//*[@id=\"contents\"]/p[10]"
+			},
+			{
+				"content": "초중등 교육이 미래 인적자원 육성에 중요하다는 점에는 이론의 여지가 없다. 그러나 한정된",
+				"offset": 2,
+				"xPath": "//*[@id=\"contents\"]/p[11]"
+			},
+			{
+				"content": "각 지출 분야별 재원",
+				"offset": 70,
+				"xPath": "//*[@id=\"contents\"]/p[11]"
+			},
+			{
+				"content": "국가 재정의 지속가능성이 걸린",
+				"offset": 95,
+				"xPath": "//*[@id=\"contents\"]/p[11]"
+			},
+			{
+				"content": "이제는 변화된 정책",
+				"offset": 121,
+				"xPath": "//*[@id=\"contents\"]/p[11]"
+			},
+			{
+				"content": "시도교육청이 유연하고 합리적인",
+				"offset": 141,
+				"xPath": "//*[@id=\"contents\"]/p[11]"
+			},
+			{
+				"content": "에 적극 협조",
+				"offset": 170,
+				"xPath": "//*[@id=\"contents\"]/p[11]"
+			},
+			{
+				"content": "KDI 선임",
+				"offset": 5,
+				"xPath": "//*[@id=\"contents\"]/p[14]/span"
+			}
+		],
+		"https://www.khan.co.kr/article/202610011638001/amp": [
+			{
+				"content": "고 재정정책과 구조개혁, 중장기 전략 등에 대한 의견을 수렴하",
+				"offset": 103,
+				"xPath": "//*[@id=\"artCont\"]/p[2]"
+			},
+			{
+				"content": "초대",
+				"offset": 154,
+				"xPath": "//*[@id=\"artCont\"]/p[2]"
+			},
+			{
+				"content": "장관을 지낸 진념",
+				"offset": 161,
+				"xPath": "//*[@id=\"artCont\"]/p[2]"
+			},
+			{
+				"content": "박봉흠·김병일·변양균·장병완 전 장관과 기획처 주요",
+				"offset": 181,
+				"xPath": "//*[@id=\"artCont\"]/p[2]"
+			}
+		],
+		"https://www.marieclairekorea.com/culture/film/2026/10/extend-accurate-2/": [
+			{
+				"content": "형태적으로나 의미적으로",
+				"offset": 62,
+				"xPath": "//*[@id=\"post-566112\"]/div[2]/p[4]/strong"
+			},
+			{
+				"content": "있는지",
+				"offset": 86,
+				"xPath": "//*[@id=\"post-566112\"]/div[2]/p[4]/strong"
+			},
+			{
+				"content": "내적 힘이 작은 게 아니라, ",
+				"offset": 143,
+				"xPath": "//*[@id=\"post-566112\"]/div[2]/p[5]"
+			},
+			{
+				"content": "의 ",
+				"offset": 12,
+				"xPath": "//*[@id=\"post-566112\"]/div[2]/p[8]/strong"
+			},
+			{
+				"content": "면면",
+				"offset": 0,
+				"xPath": "//*[@id=\"post-566112\"]/div[2]/p[8]/strong/span"
+			},
+			{
+				"content": "담당 프로그래머로",
+				"offset": 103,
+				"xPath": "//*[@id=\"post-566112\"]/div[2]/p[11]"
+			},
+			{
+				"content": "기도 하지만, 무엇보다 중요한 건 관객이라고 생각하",
+				"offset": 243,
+				"xPath": "//*[@id=\"post-566112\"]/div[2]/p[19]"
+			}
+		]
+	},
+	"images-button": true,
+	"last-update": 1788876618279,
+	"line-height": 28.8,
+	"mail-button": false,
+	"max-wait-for-page-load": 3,
+	"mode": "groove-dark",
+	"navigate-buttons": true,
+	"note-button": false,
+	"notes:https://n.news.naver.com/mnews/article/088/0001033435?sid=110": {},
+	"os-sync": false,
+	"preferred-dark-mode": "groove-dark",
+	"preferred-light-mode": "white-light",
+	"printing-button": false,
+	"reader-mode": false,
+	"save-button": false,
+	"save-images-locally": false,
+	"screenshot-button": false,
+	"shortcuts": {
+		"design-mode": [
+			"KeyD"
+		],
+		"email": [
+			"KeyE"
+		],
+		"fullscreen": [
+			"F9"
+		],
+		"highlight": [
+			"KeyH"
+		],
+		"images": [
+			"KeyI"
+		],
+		"next-page": [
+			"ArrowRight"
+		],
+		"previous-page": [
+			"ArrowLeft"
+		],
+		"print": [
+			"KeyP"
+		],
+		"save": [
+			"KeyS"
+		],
+		"speech": [
+			"KeyS"
+		],
+		"speech-next": [
+			"KeyC"
+		],
+		"speech-play": [
+			"KeyX"
+		],
+		"speech-previous": [
+			"KeyZ"
+		],
+		"toggle-toolbar": [
+			"KeyY"
+		]
+	},
+	"show-icon": false,
+	"show-images": false,
+	"speech-button": false,
+	"supported-fonts": [
+		{
+			"name": "Sans-serif",
+			"value": "Helvetica, Arial, sans-serif"
+		},
+		{
+			"name": "Serif",
+			"value": "Georgia, 'Times New Roman', serif"
+		},
+		{
+			"name": "Helvetica",
+			"value": "'Helvetica', sans-serif"
+		},
+		{
+			"name": "Times New Roman",
+			"value": "'Times New Roman', serif"
+		},
+		{
+			"name": "Georgia",
+			"value": "'Georgia', serif"
+		},
+		{
+			"name": "Verdana",
+			"value": "'Verdana', sans-serif"
+		},
+		{
+			"name": "Tahoma",
+			"value": "'Tahoma', sans-serif"
+		},
+		{
+			"name": "Open Sans",
+			"value": "'Open Sans', sans-serif"
+		},
+		{
+			"name": "Poppins",
+			"value": "Poppins, sans-serif"
+		},
+		{
+			"name": "Comic Neue",
+			"value": "'Comic Neue', Arial, sans-serif"
+		},
+		{
+			"name": "Lexend Deca",
+			"value": "'Lexend Deca', Arial, sans-serif"
+		}
+	],
+	"text-align": true,
+	"tip.0": "s",
+	"tip.2": "s",
+	"tip.3": "s",
+	"title": "[ORIGINAL]",
+	"top-css": "#toolbar-container {\n   zoom: .9;\n   position: fixed;\n   top: 0;\n   bottom: 0;\n   pointer-events: none;\n   \n}\n\n#pinned {\n   display: none;\n   position: fixed;\n   top: 0;\n   right: 0;\n}\n\n#toolbar {\n  flex: 0 auto;\n  \n}\n\n#toolbar > *:not([data-disabled=true]) {\n   pointer-events: auto;\n}\n\n#highlight-button {\n   margin: auto 0 0 0;\n   \n}\n\n#toolbar > div {\n   \n}\n\n.edit-toolbar {\n    top: 0;\n    left: 48px;\n\n}\n\n.icon-close {display: none !important;}\n\n",
+	"tts-delay": 300,
+	"tts-scroll": "center",
+	"user-action": [
+		{
+			"code": "if(window.parent.event.currentTarget instanceof HTMLSpanElement) window.parent.event.currentTarget.remove(); if (!window.parent._naverDictListenerInitialized) { window.parent._naverDictListenerInitialized = true; document.addEventListener('dblclick',function(e){let range;const clientX=e.clientX;const clientY=e.clientY;if(document.caretRangeFromPoint){range=document.caretRangeFromPoint(clientX,clientY);}else if(document.caretPositionFromPoint){const pos=document.caretPositionFromPoint(clientX,clientY);if(pos){range=document.createRange();range.setStart(pos.offsetNode,pos.offset);range.collapse(true);}}if(!range)return;const node=range.startContainer;if(node.nodeType===Node.TEXT_NODE){const text=node.nodeValue;const offset=range.startOffset;let startIndex=offset;let endIndex=offset;while(startIndex>0&&!/\\s/.test(text[startIndex-1])){startIndex--;}while(endIndex<text.length&&!/\\s/.test(text[endIndex])){endIndex++;}const word=text.substring(startIndex,endIndex).trim();if(word){let span;try{const highlightRange=document.createRange();highlightRange.setStart(node,startIndex);highlightRange.setEnd(node,endIndex);span=document.createElement('span');span.className='google-search-mini-layer';span.style.backgroundColor='#03cf5d';span.style.color='#ffffff';span.style.position='relative';span.style.display='inline-block';span.style.borderRadius='5px';highlightRange.surroundContents(span);}catch(err){return;}const buttonCommonStyle=\"position: absolute;width: 12px;height: 12px;display: flex;align-items: center;justify-content: center;text-decoration: none;border-radius: 50%;box-shadow: 0 1px 3px rgba(0,0,0,0.3);z-index: 999999;\";const googleSearchUrl=`https://www.google.com/search?q=${encodeURIComponent(word)}`;const googleButton=document.createElement('a');googleButton.href=googleSearchUrl;googleButton.target='_blank';googleButton.title='구글 검색';googleButton.style.cssText=`${buttonCommonStyle}right: 0;bottom: 0;transform: translate(50%, 50%);background-color: #4285F4;`;span.appendChild(googleButton);const naverSearchUrl=`https://ko.dict.naver.com/#/search?query=${encodeURIComponent(word)}`;const naverButton=document.createElement('a');naverButton.href=naverSearchUrl;naverButton.target='_blank';naverButton.title='네이버 사전 검색';naverButton.style.cssText=`${buttonCommonStyle}left: 0;top: 0;transform: translate(-50%, -50%);background-color: #03cf5d;`;span.appendChild(naverButton);window.open(naverSearchUrl,'_blank');}}}); }",
+			"icon": "data:image/gif;base64,R0lGODlhEAAQAPAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQJGQABACwAAAAAEAAQAAACJoyPqbvgDxVgM9XgztX6buN5EkhiI/aUSMWqXCNB8snEclbnOlIAACH5BAkZAAAALAAAAAAPAA8AAAINhI+py+0Po5y02otnAQA7"
+		},
+		{
+			"code": "const s = document.defaultView.getSelection(); if (s.rangeCount > 0) { const range = s.getRangeAt(0); if (!range.collapsed) { const el = range.commonAncestorContainer; const m = (el.nodeType === Node.TEXT_NODE ? el.parentElement : el).closest('b'); if (m) { while (m.firstChild) { m.parentNode.insertBefore(m.firstChild, m); } m.remove(); s.removeAllRanges(); } else { const bold = document.createElement('b'); try { range.surroundContents(bold); } catch (e) { const contents = range.extractContents(); bold.appendChild(contents); range.insertNode(bold); } s.removeAllRanges(); } } }",
+			"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAxUlEQVR4nNWUoQpCQRBFD2iwKlhsVrHYTeoPiIhmk80/MYjBaLb5CS+YDAYFNVoEEQ3+gDLwHgwPebvLbtCBk+7llNkd+McZAhfg+YUjMAMqLsId8DZwA+q2woOFUNgDOVdhOZU1gKvKm75CmanKR77CPLBRedtVuAZWirPK5CUUXIVZbIFSSKEQ2WxaC3tAJ8UYeKhO13fLxNKkMw8h7KvO0ldYi39J0pm4CE3cgWKI4yC8gJZJJjPIOF/CCVgAVRvZ780HtmeGV/ngpvgAAAAASUVORK5CYII="
+		},
+		{
+			"code": "const s = document.defaultView.getSelection(); if (s.rangeCount > 0) { const range = s.getRangeAt(0); if (!range.collapsed) { const el = range.commonAncestorContainer; const m = (el.nodeType === Node.TEXT_NODE ? el.parentElement : el).closest('strike'); if (m) { while (m.firstChild) { m.parentNode.insertBefore(m.firstChild, m); } m.remove(); s.removeAllRanges(); } else { const mark = document.createElement('strike'); try { range.surroundContents(mark); } catch (e) { const contents = range.extractContents(); mark.appendChild(contents); range.insertNode(mark); } s.removeAllRanges(); } } }",
+			"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAABZklEQVR4nN3PPUgCYRzH8aNGWxtqKIKWwCAQoqUhqHNpbStqbsshqAZpKfJOdEhoiBpC0DFoiIbelCgJgkCEsmyIe3xUSO+eF8XgH0900OBj6S3RF37j8+H5K8q/StV5QNVYTg3yQcdYYn/ham37GLw6B1XnaDJUHWobO9lbPIN4L9RiA+AYVXW+MRt6BiM6BgKtx/rBHzlqD/VqfFM8FGuGjgfLoz//TONBG2uGTgUIjCzn6soMdLaENUSjfRDZ8oPbl32VYocpc1WG2ZsLPwE+8EA10gN34YmaFKOU7lqEQCJjnTcDxZnz60eQDE1XpRghZIcyBhXT/NxF2jxtiGkUPCsvMLz0iKQYAHRQxt5tTIb+CrMjjN2Ic2VoS5gIIeSilN43QpOZ8rXA3L6sobQSxriLMpb+jpYrFUB5DPFLlFLaCSHkIoSkTMuCty8MF4u3ipMMw+jGpdKDgfKQLxQSjrA/1wchAcDTJhRb9AAAAABJRU5ErkJggg=="
+		},
+		{
+			"code": "const s = document.defaultView.getSelection(); if (s.rangeCount > 0) { const range = s.getRangeAt(0); if (!range.collapsed) { const el = range.commonAncestorContainer; const m = (el.nodeType === Node.TEXT_NODE ? el.parentElement : el).closest('fieldset'); if (m) { while (m.firstChild) { m.parentNode.insertBefore(m.firstChild, m); } m.remove(); s.removeAllRanges(); } else { const mark = document.createElement('fieldset'); try { range.surroundContents(mark); } catch (e) { const contents = range.extractContents(); mark.appendChild(contents); range.insertNode(mark); } s.removeAllRanges(); } } }",
+			"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAeklEQVR4nM2U7QmAMAwFb4g6RIboOtnJxTqHTlApRJBC61cqHrw/4XG0VAODEECryJu+ArlKmbU47asNEzBbYkcYD73UE5bCXeZPhGKD3jVbxAuPOJ7J4iZbgQUIHsJgMjfhfko32SPE+7PR3/8pOmo5ZK/15b5g3dgAOO5A9v2NN2gAAAAASUVORK5CYII="
+		},
+		{
+			"code": "window.open('https://google.com/search?q='+encodeURIComponent(document.defaultView.getSelection().toString()), '_blank');",
+			"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB+0lEQVR4nGNgoCf4X8/A9r+EOfh/IWPD/xKm+v/lzP7/6xlYSDeohkH1fwrTyf9uDH//2zL8R8HujH//pzMd+1/NoEycYbWsaf+9GDENwmZwMUsWfsPKWbL/OxIwCNnASuYA3Ia1Myj892b8g6IpkvHl/yKmov+ZDLL/6xnE/pczFf6PZnwBNqyc2R+/69awTfkfx4QwLJ1xN0619Wwa+A37z8D0/yDb8/8H2P//72ABu4yBEvD/AKvu/4Ps/+F4J7sTuprgzvmPceGwrll3m6eWWSEZyOaJYuB+Bh50AyXLLv3HhyunVNcgDNzP7kGpgRVTa6qRDGTVgRn27yD7//N7ZDCSA7o3HZrWfUE2sGZmZQBqpBxge/b1APf/tq0W//M2Ob4hFO4ercvfwQzTrD78N3TVKmYUBZd3S85I3ej232d9ABg3b7XYh8uwlP7+w8iui++ZfAJD0dwtukqRG7z+wgwE4YLNDq+mbDcq7d5iKD9nu4n6tC2GNQWbHN4lzSn+L1t+Hu666okl2PP1lO0GeUEbfOEG4sNJi1P+a9cc/Fc+tS4Xb9hM22KQF4XmUmw4ZoPn36mbbPAXDjCwYJu2cvMWy+ORGzwxDI7e4Pm3bav50Vkb9RSJMgwZzDxjzDpzh37AlC1G9VO3GdTN26nnW/+fgYlkgygBAOrTuFLcL9uXAAAAAElFTkSuQmCC"
+		},
+		{
+			"code": "(async()=>{const T='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',O='gneq',R='gneq.github.io',B='main';try{const t=document.getElementById('reader-title').textContent.trim(),d=document.getElementById('reader-domain').getAttribute('href'),x=d.replace(/\\s*\\n\\s*/g,'');const safeDecode=str=>{try{return str.includes('%')?decodeURIComponent(str):str;}catch(e){return str;}};let defaultDir=window.parent.__lastGithubDir__||'',defaultFile=window.parent.__lastGithubFilename__||safeDecode(t.replace(/[/\\\\?%*:|\"<>]/g,'-')+'.html');try{const parsedUrl=new URL(x,window.location.href),targetDomain=R;if(parsedUrl.hostname===targetDomain||x.startsWith(`https://${targetDomain}`)||x.startsWith(`http://${targetDomain}`)){const pathSegments=parsedUrl.pathname.split('/').filter(Boolean);if(pathSegments.length>0){defaultFile=safeDecode(pathSegments.pop());defaultDir=safeDecode(pathSegments.join('/'));}}}catch(err){console.warn('URL 파싱 실패:',err);}const c=`<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>${t}</title></head><body>`+Array.from(document.querySelectorAll('[id^=readability-page-]')).map(e=>e.innerHTML).join('\\n')+'</body></html>',uDir=prompt('디렉터리 경로 (예: folder/sub):',defaultDir);if(uDir===null)return;const uFile=prompt('파일명:',defaultFile);if(uFile===null)return;const cleanDir=uDir.trim().replace(/^\\/+|\\/+$/g,'');let file=uFile.trim()||defaultFile;if(!/\\.html$/i.test(file)){file+='.html';}const P=cleanDir?`${cleanDir}/${file}`:file;window.parent.__lastGithubDir__=uDir.trim();window.parent.__lastGithubFilename__=file;const url=`https://api.github.com/repos/${O}/${R}/contents/${P}`,h={\"Authorization\":`Bearer ${T}`,\"Accept\":\"application/vnd.github+json\",\"Content-Type\":\"application/json\"};let s=null;const r=await fetch(`${url}?ref=${B}`,{method:'GET',headers:h});if(r.ok)s=(await r.json()).sha;const b={message:`docs: ${t}`,content:btoa(unescape(encodeURIComponent(c))),branch:B};if(s)b.sha=s;const res=await fetch(url,{method:'PUT',headers:h,body:JSON.stringify(b)});if(res.ok){const pageUrl=`https://${R}/${P}`;if(confirm(`✅️ 업로드 성공: ${P}\n해당 깃허브 페이지로 이동하시겠습니까?\n${pageUrl}`)){window.open(pageUrl,'_blank');}}else{alert(`❌️ 실패: ${(await res.json()).message}`);}}catch(e){console.error(e);alert(`🚫 에러: ${e.message}`);}})();",
+			"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAABZElEQVR4nLXUsUtWYRQG8N9giKiVNji6SYFTf4C4tAgOSeqsg0hDECTV5+Am7g7iKkhDe9bs1pAiQRAEboZKKoGDg8mVc+Hl9frdi9ADZ7nnnOee85xzXurRg8dh3e6IB1jEDv5lVnxr4X5TsmkcVxDldoTJOrK3uGxAVtolFtpVVpId4KwN0Ql+J6QvqjQ7ShJG0Rl/n8dI2Eu8xj2MJfGHuaaLWQXPGmg9nuW0Uudu5izar8NMlvOtdPRmjuNoqQ5dOM8GdL2nQxnhV83xK8stuDzBT6xjJYRvgo4Y0DJW8SOuyUPsYwNb2MarBoRLEfs5cvdjW67xPUo+xUXoUVQ8XEH0FB8qdnMvDWrFx78xvT9J4CcMhH1ps+zvUsJHyWJvYhCzeB6vTRp3WkF2iL7bTq+wNczFdeT4WHHPU00fh0LHHOsZ2ZvbyNJKy/bbERZt1j5fJfrxPjTMMREDuKHZf8EVKB+bwgwPI8gAAAAASUVORK5CYII="
+		}
+	],
+	"user-css": "body {\n  \n  padding: 50vh 4px 75vh 46px;\n  word-break: keep-all;\n  text-align: justify;\n  box-sizing: border-box;\n  text-underline-offset: 3px;\n  \n  \n}\n/*\nbody::before {\n   content: '';\n   position: fixed;\n   top: 0;\n   left: 0;\n   right: 0;\n   bottom: 0;\n   pointer-events: none; \n\nz-index: 1;\nmask-image: linear-gradient(\n    to bottom,\n    #000000 0%,\n    #000000 30%,\n    transparent 35%,\n    transparent 45%,\n    #000000 50%,\n    #000000 100%\n  );\n  backdrop-filter: blur(0) brightness(45%);\n}\n*/\nbody::after {\n   position: fixed;\n   top: 32vh;\n   left: 0;\n   right: 0;\n   height: 1.5rem;\n   content: '';\n   background-color: currentColor;\n   mix-blend-mode: overlay;\n   pointer-events: none;\n   box-shadow: currentColor 0 0 10px 5px;\n   filter: contrast(2);\n}\n\npre {\n  white-space: pre-wrap;\n}\npre code {\n  background-color: #eff0f1;\n  color: #393318;\n  font-family: monospace;\n  display: block;\n  padding: 5px 10px;\n  overflow: hidden;\n}\nblockquote {\n  padding: 0;\n  padding-inline-start: 2ch;\n  border-inline-start: 2px solid var(--bd);\n}\naside {\n  color: color-mix(in srgb, var(--fg), var(--bg) 20%);\n}\nbody[data-mode=\"dark\"] pre code {\n  background-color: #eff0f1;\n  color: #393318;\n}\n\n/* CSS for sans-serif fonts */\nbody[data-font=sans-serif] {}\n/* CSS for serif fonts */\nbody[data-font=serif] {}\n\n/* CSS for \"sepia\" theme */\nhtml[data-mode=sepia] body {}\n/* CSS for \"light\" theme */\nhtml[data-mode=light] body {}\n/* CSS for \"dark\" theme */\nhtml[data-mode=dark] body {}\n\n/* Csutom styling if page includes example.com in the URL */\nhtml[data-page-url*=\"example.com\"] {\n  a {\n    display: none;\n  }\n}\n\nstrike {\n   filter: blur(2.0px) opacity(.35);\n   background-color: transparent !important;\n   text-decoration: none;\n   color: currentColor;\n}\nstrike:hover {\n  \n}\n\nb {\n   filter: contrast(2.0);\n   \n}\n\nmark {\n   border-radius: 5px;\n}",
+	"width": 400
+}
