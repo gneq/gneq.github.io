@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-deploy-col:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: 체크아웃
@@ -23,7 +23,7 @@ jobs:
         with:
           fetch-depth: 0 # Git 히스토리를 전체 다 가져오도록 설정
 
-      - name: Index.html 자동 생성 및 한국 시간(KST) 정렬 스크립트 실행
+      - name: Col 디렉토리 Index.html 자동 생성 (최신 커밋 순 내림차순)
         run: |
           node -e '
             const fs = require("fs");
@@ -64,7 +64,6 @@ jobs:
             // 최신 커밋 순으로 정렬 (내림차순)
             files.sort((a, b) => b.mtime - a.mtime);
 
-            // HTML 리스트 항목 생성 (한국 시간 KST 기준 포맷팅)
             const listItems = files.map(file => {
               const formatter = new Intl.DateTimeFormat("ko-KR", {
                 timeZone: "Asia/Seoul",
@@ -76,7 +75,6 @@ jobs:
                 hour12: false
               });
 
-              // "2026. 06. 06. 23:45" 형태의 문자열을 보기 좋게 변환
               const parts = formatter.formatToParts(file.mtime);
               const dateObj = {};
               parts.forEach(p => { dateObj[p.type] = p.value; });
@@ -115,30 +113,10 @@ jobs:
             </html>`;
 
             fs.writeFileSync(path.join(colDir, "index.html"), htmlContent);
-            console.log("col/index.html이 한국 시간(KST) 기준으로 성공적으로 생성되었습니다.");
+            console.log("col/index.html 생성 완료");
           '
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      - name: Upload artifact (GitHub Pages 전용)
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '.'
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-  
-  build-and-deploy-eb:
-    runs-on: ubuntu-latest
-    steps:
-      - name: 체크아웃
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Git 히스토리를 전체 다 가져오도록 설정
-
-      - name: eb/index.html 자동 생성 (하위 폴더 구조 및 펼치기/접기 포함)
+      - name: Eb 디렉토리 Index.html 자동 생성 (파일명 오름차순 정렬)
         run: |
           node -e '
             const fs = require("fs");
@@ -146,14 +124,13 @@ jobs:
             const { execSync } = require("child_process");
 
             const rootDir = __dirname;
-            const targetDir = path.join(rootDir, "eb"); // eb 디렉토리
+            const targetDir = path.join(rootDir, "eb");
 
             if (!fs.existsSync(targetDir)) {
               console.log("eb 디렉토리가 존재하지 않습니다.");
               process.exit(0);
             }
 
-            // 재귀적으로 디렉토리를 탐색하여 HTML 파일과 수정일시를 수집하는 함수
             function scanDirectory(dir, relativePath = "") {
               const entries = fs.readdirSync(dir, { withFileTypes: true });
               let structure = { directories: {}, files: [] };
@@ -203,13 +180,13 @@ jobs:
                 }
               });
 
-              structure.files.sort((a, b) => a.mtime - b.mtime);
+              // 파일명 오름차순 정렬 (localeCompare 사용)
+              structure.files.sort((a, b) => a.name.localeCompare(b.name, "ko", { numeric: true }));
               return structure;
             }
 
             const ebData = scanDirectory(targetDir);
 
-            // HTML 트리 구조 생성 (펼치기/접기 지원)
             function renderTree(node) {
               let html = "";
               
@@ -268,9 +245,8 @@ jobs:
             </body>
             </html>`;
 
-            // eb/index.html로 정확히 생성
             fs.writeFileSync(path.join(targetDir, "index.html"), htmlContent);
-            console.log("eb/index.html 파일이 하위 디렉토리 구조 및 펼치기/접기 기능과 함께 성공적으로 생성되었습니다.");
+            console.log("eb/index.html 파일명 오름차순 정렬 완료");
           '
 
       - name: Setup Pages
@@ -284,4 +260,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
