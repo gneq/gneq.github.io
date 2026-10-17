@@ -88,7 +88,7 @@ jobs:
                 }
               });
 
-              structure.files.sort((a, b) => b.mtime - a.mtime);
+              structure.files.sort((a, b) => a.mtime - b.mtime);
               return structure;
             }
 
