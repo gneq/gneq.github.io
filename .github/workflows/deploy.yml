@@ -101,7 +101,7 @@ jobs:
                     h1 { border-bottom: 2px solid #eee; padding-bottom: 10px; }
                     ul { line-height: 1.8; list-style-type: none; padding: 0; }
                     li { margin-bottom: 8px; border-bottom: 1px dashed #f0f0f0; padding-bottom: 4px; }
-                    a { text-decoration: none; color: #0066cc; font-weight: bold; }
+                    a { text-decoration: none; color: #0066cc; }
                     a:hover { text-decoration: underline; }
                     .date { float: right; color: #888; font-size: 0.85em; }
                 </style>
