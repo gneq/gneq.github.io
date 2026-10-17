@@ -1,4 +1,4 @@
-name: Generate HTML Index and Deploy
+name: Generate HTML Index and Deploy in EB
 
 on:
   push:
@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  build-and-deploy-eb:
     runs-on: ubuntu-latest
     steps:
       - name: 체크아웃
