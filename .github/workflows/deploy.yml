@@ -93,8 +93,10 @@ jobs:
             <html lang="ko">
             <head>
                 <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <title>Col HTML 파일 목록</title>
                 <style>
+                    html {font-size: 20px}
                     body { font-family: sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
                     h1 { border-bottom: 2px solid #eee; padding-bottom: 10px; }
                     ul { line-height: 1.8; list-style-type: none; padding: 0; }
