@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML5 웹캠 OCR (글자 인식)</title>
+    <!-- Tesseract.js CDN 로드 -->
+    <script src="https://jsdelivr.net"></script>
+    <style>
+        body { font-family: sans-serif; text-align: center; background: #f4f4f9; padding: 20px; }
+        .container { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        video, canvas { border: 2px solid #333; border-radius: 8px; background: #000; max-width: 100%; }
+        button { padding: 10px 20px; font-size: 16px; font-weight: bold; background: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        #result-box { width: 80%; max-width: 600px; min-height: 100px; padding: 15px; background: #fff; border: 1px solid #ccc; border-radius: 5px; text-align: left; white-space: pre-wrap; }
+        .loading { color: #ff9900; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h1>HTML5 웹캠 글자 인식 (OCR)</h1>
+    
+    <div class="container">
+        <!-- 웹캠 스트림 화면 -->
+        <video id="webcam" width="640" height="480" autoplay playsinline></video>
+        
+        <!-- 글자 인식을 위해 순간 포착할 숨김 캔버스 -->
+        <canvas id="snapshot" width="640" height="480" style="display:none;"></canvas>
+        
+        <button id="capture-btn">사진 촬영 및 글자 인식</button>
+        
+        <h3>인식 결과</h3>
+        <div id="result-box">셔터를 누르면 인식된 텍스트가 여기에 표시됩니다.</div>
+    </div>
+
+    <script>
+        const video = document.getElementById('webcam');
+        const canvas = document.getElementById('snapshot');
+        const context = canvas.getContext('2d');
+        const captureBtn = document.getElementById('capture-btn');
+        const resultBox = document.getElementById('result-box');
+
+        // 1. HTML5 MediaDevices API로 웹캠 시작
+        async function startWebcam() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: 'environment' } // 모바일의 경우 후면 카메라 우선
+                });
+                video.srcObject = stream;
+            } catch (err) {
+                console.error("웹캠 접근 실패:", err);
+                resultBox.innerHTML = "<span style='color:red;'>카메라 권한을 허용해주세요.</span>";
+            }
+        }
+
+        // 2. 버튼 클릭 시 캔버스에 영상을 그리고 OCR 수행
+        captureBtn.addEventListener('click', async () => {
+            // 현재 비디오 프레임을 캔버스에 복사 (스냅샷 생성)
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            resultBox.innerHTML = "<span class='loading'>글자를 분석하는 중입니다. 잠시만 기다려 주세요...</span>";
+            
+            try {
+                // 캔버스 데이터를 Base64 이미지 URL로 변환하여 Tesseract에 전달
+                const imageData = canvas.toDataURL('image/png');
+                
+                // 'kor+eng'를 설정하여 한글과 영어를 동시에 인식하도록 함
+                const result = await Tesseract.recognize(imageData, 'kor+eng', {
+                    logger: m => console.log(m) // 콘솔에서 진행 상황 확인 가능
+                });
+                
+                // 추출된 텍스트 출력
+                if (result.data.text.trim() === "") {
+                    resultBox.innerText = "인식된 글자가 없습니다. 더 가까이 대거나 초점을 맞춰주세요.";
+                } else {
+                    resultBox.innerText = result.data.text;
+                }
+            } catch (error) {
+                console.error("OCR 에러:", error);
+                resultBox.innerText = "오류가 발생했습니다: " + error.message;
+            }
+        });
+
+        // 페이지 로드 시 웹캠 켜기
+        window.addEventListener('load', startWebcam);
+    </script>
+</body>
+</html>
