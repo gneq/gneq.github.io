@@ -204,7 +204,7 @@ jobs:
               for (const [dirName, subNode] of Object.entries(node.directories)) {
                 const hasContent = subNode.files.length > 0 || Object.keys(subNode.directories).length > 0;
                 if (hasContent) {
-                  html += `<details open>
+                  html += `<details>
                     <summary>📁 <strong>${dirName}</strong></summary>
                     <div class="sub-folder">
                       ${renderTree(subNode)}
