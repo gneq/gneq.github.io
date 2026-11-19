@@ -31,7 +31,7 @@ jobs:
             const { execSync } = require("child_process");
 
             const colDir = path.join(__dirname, "col");
-            
+
             if (!fs.existsSync(colDir)) {
               console.log("col 디렉토리가 존재하지 않습니다.");
               process.exit(0);
@@ -78,7 +78,7 @@ jobs:
               const parts = formatter.formatToParts(file.mtime);
               const dateObj = {};
               parts.forEach(p => { dateObj[p.type] = p.value; });
-              
+
               const timeStr = `${dateObj.year}-${dateObj.month}-${dateObj.day} ${dateObj.hour}:${dateObj.minute}`;
 
               return `<li>
@@ -116,7 +116,7 @@ jobs:
             console.log("col/index.html 생성 완료");
           '
 
-      - name: Eb 디렉토리 Index.html 자동 생성 (파일명 오름차순 정렬)
+      - name: Eb 디렉토리 Index.html 자동 생성 (하위 폴더 최신순, 파일명 가나다순)
         run: |
           node -e '
             const fs = require("fs");
@@ -131,16 +131,39 @@ jobs:
               process.exit(0);
             }
 
+            const formatter = new Intl.DateTimeFormat("ko-KR", {
+              timeZone: "Asia/Seoul",
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: false
+            });
+
+            function formatKst(date) {
+              const parts = formatter.formatToParts(date);
+              const dateObj = {};
+              parts.forEach(p => { dateObj[p.type] = p.value; });
+              return `${dateObj.year}-${dateObj.month}-${dateObj.day} ${dateObj.hour}:${dateObj.minute}`;
+            }
+
             function scanDirectory(dir, relativePath = "") {
               const entries = fs.readdirSync(dir, { withFileTypes: true });
-              let structure = { directories: {}, files: [] };
+              const dirStatMtime = fs.statSync(dir).mtime.getTime();
+              let latestTime = dirStatMtime;
+              let structure = { directories: {}, files: [], latestMtime: dirStatMtime };
 
               entries.forEach(entry => {
                 const fullPath = path.join(dir, entry.name);
                 const relPath = path.join(relativePath, entry.name);
 
                 if (entry.isDirectory()) {
-                  structure.directories[entry.name] = scanDirectory(fullPath, relPath);
+                  const subNode = scanDirectory(fullPath, relPath);
+                  structure.directories[entry.name] = subNode;
+                  if (subNode.latestMtime > latestTime) {
+                    latestTime = subNode.latestMtime;
+                  }
                 } else if (entry.isFile() && entry.name.endsWith(".html") && entry.name !== "index.html") {
                   let mtime;
                   try {
@@ -155,33 +178,23 @@ jobs:
                     mtime = fs.statSync(fullPath).mtime;
                   }
 
-                  const formatter = new Intl.DateTimeFormat("ko-KR", {
-                    timeZone: "Asia/Seoul",
-                    year: "numeric",
-                    month: "2-digit",
-                    day: "2-digit",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    hour12: false
-                  });
-
-                  const parts = formatter.formatToParts(mtime);
-                  const dateObj = {};
-                  parts.forEach(p => { dateObj[p.type] = p.value; });
-                  const timeStr = `${dateObj.year}-${dateObj.month}-${dateObj.day} ${dateObj.hour}:${dateObj.minute}`;
+                  if (mtime.getTime() > latestTime) {
+                    latestTime = mtime.getTime();
+                  }
 
                   structure.files.push({
                     name: entry.name,
                     title: entry.name.replace(/\.html$/, ""),
                     path: relPath.replace(/\\/g, "/"),
                     mtime: mtime,
-                    timeStr: timeStr
+                    timeStr: formatKst(mtime)
                   });
                 }
               });
 
-              // 파일명 오름차순 정렬 (localeCompare 사용)
+              // 파일명 오름차순 정렬 (가나다/숫자순)
               structure.files.sort((a, b) => a.name.localeCompare(b.name, "ko", { numeric: true }));
+              structure.latestMtime = latestTime;
               return structure;
             }
 
@@ -189,7 +202,7 @@ jobs:
 
             function renderTree(node) {
               let html = "";
-              
+
               if (node.files && node.files.length > 0) {
                 html += `<ul>`;
                 node.files.forEach(file => {
@@ -201,7 +214,15 @@ jobs:
                 html += `</ul>`;
               }
 
-              for (const [dirName, subNode] of Object.entries(node.directories)) {
+              // 하위 디렉터리를 최신 커밋/수정 시각 내림차순으로 정렬
+              const sortedDirs = Object.entries(node.directories).sort((a, b) => {
+                if (b[1].latestMtime !== a[1].latestMtime) {
+                  return b[1].latestMtime - a[1].latestMtime;
+                }
+                return a[0].localeCompare(b[0], "ko", { numeric: true });
+              });
+
+              for (const [dirName, subNode] of sortedDirs) {
                 const hasContent = subNode.files.length > 0 || Object.keys(subNode.directories).length > 0;
                 if (hasContent) {
                   html += `<details>
@@ -246,7 +267,161 @@ jobs:
             </html>`;
 
             fs.writeFileSync(path.join(targetDir, "index.html"), htmlContent);
-            console.log("eb/index.html 파일명 오름차순 정렬 완료");
+            console.log("eb/index.html 생성 완료");
+          '
+
+      - name: Co 디렉토리 Index.html 자동 생성 (하위 폴더 최신순, 파일명 가나다순)
+        run: |
+          node -e '
+            const fs = require("fs");
+            const path = require("path");
+            const { execSync } = require("child_process");
+
+            const rootDir = __dirname;
+            const targetDir = path.join(rootDir, "co");
+
+            if (!fs.existsSync(targetDir)) {
+              console.log("co 디렉토리가 존재하지 않습니다.");
+              process.exit(0);
+            }
+
+            const formatter = new Intl.DateTimeFormat("ko-KR", {
+              timeZone: "Asia/Seoul",
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: false
+            });
+
+            function formatKst(date) {
+              const parts = formatter.formatToParts(date);
+              const dateObj = {};
+              parts.forEach(p => { dateObj[p.type] = p.value; });
+              return `${dateObj.year}-${dateObj.month}-${dateObj.day} ${dateObj.hour}:${dateObj.minute}`;
+            }
+
+            function scanDirectory(dir, relativePath = "") {
+              const entries = fs.readdirSync(dir, { withFileTypes: true });
+              const dirStatMtime = fs.statSync(dir).mtime.getTime();
+              let latestTime = dirStatMtime;
+              let structure = { directories: {}, files: [], latestMtime: dirStatMtime };
+
+              entries.forEach(entry => {
+                const fullPath = path.join(dir, entry.name);
+                const relPath = path.join(relativePath, entry.name);
+
+                if (entry.isDirectory()) {
+                  const subNode = scanDirectory(fullPath, relPath);
+                  structure.directories[entry.name] = subNode;
+                  if (subNode.latestMtime > latestTime) {
+                    latestTime = subNode.latestMtime;
+                  }
+                } else if (entry.isFile() && entry.name.endsWith(".html") && entry.name !== "index.html") {
+                  let mtime;
+                  try {
+                    const gitPath = `co/${relPath}`.replace(/\\/g, "/");
+                    const gitTimeStr = execSync(`git log -1 --format=%ct -- "${gitPath}"`, { encoding: "utf-8" }).trim();
+                    if (gitTimeStr) {
+                      mtime = new Date(parseInt(gitTimeStr, 10) * 1000);
+                    } else {
+                      mtime = fs.statSync(fullPath).mtime;
+                    }
+                  } catch (e) {
+                    mtime = fs.statSync(fullPath).mtime;
+                  }
+
+                  if (mtime.getTime() > latestTime) {
+                    latestTime = mtime.getTime();
+                  }
+
+                  structure.files.push({
+                    name: entry.name,
+                    title: entry.name.replace(/\.html$/, ""),
+                    path: relPath.replace(/\\/g, "/"),
+                    mtime: mtime,
+                    timeStr: formatKst(mtime)
+                  });
+                }
+              });
+
+              // 파일명 오름차순 정렬 (가나다/숫자순)
+              structure.files.sort((a, b) => a.name.localeCompare(b.name, "ko", { numeric: true }));
+              structure.latestMtime = latestTime;
+              return structure;
+            }
+
+            const coData = scanDirectory(targetDir);
+
+            function renderTree(node) {
+              let html = "";
+
+              if (node.files && node.files.length > 0) {
+                html += `<ul>`;
+                node.files.forEach(file => {
+                  html += `<li>
+                    <a href="${file.path}" target="_blank">${file.title}</a>
+                    <span class="date">[${file.timeStr}]</span>
+                  </li>`;
+                });
+                html += `</ul>`;
+              }
+
+              // 하위 디렉터리를 최신 커밋/수정 시각 내림차순으로 정렬
+              const sortedDirs = Object.entries(node.directories).sort((a, b) => {
+                if (b[1].latestMtime !== a[1].latestMtime) {
+                  return b[1].latestMtime - a[1].latestMtime;
+                }
+                return a[0].localeCompare(b[0], "ko", { numeric: true });
+              });
+
+              for (const [dirName, subNode] of sortedDirs) {
+                const hasContent = subNode.files.length > 0 || Object.keys(subNode.directories).length > 0;
+                if (hasContent) {
+                  html += `<details>
+                    <summary>📁 <strong>${dirName}</strong></summary>
+                    <div class="sub-folder">
+                      ${renderTree(subNode)}
+                    </div>
+                  </details>`;
+                }
+              }
+
+              return html;
+            }
+
+            const treeHtml = renderTree(coData);
+
+            const htmlContent = `<!DOCTYPE html>
+            <html lang="ko">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <title>Co Directory HTML List</title>
+                <style>
+                    html { font-size: 18px; }
+                    body { font-family: sans-serif; max-width: 700px; margin: 40px auto; padding: 20px; color: #333; }
+                    h1 { border-bottom: 2px solid #eee; padding-bottom: 10px; font-size: 1.5rem; }
+                    ul { line-height: 1.8; list-style-type: none; padding-left: 15px; margin: 5px 0; }
+                    li { margin-bottom: 6px; border-bottom: 1px dashed #f0f0f0; padding-bottom: 4px; }
+                    a { text-decoration: none; color: #0066cc; }
+                    a:hover { text-decoration: underline; }
+                    .date { float: right; color: #888; font-size: 0.8em; }
+                    details { margin: 10px 0; border: 1px solid #e1e4e8; border-radius: 6px; padding: 8px 12px; background: #fafbfc; }
+                    summary { cursor: pointer; font-weight: bold; padding: 4px 0; color: #24292e; }
+                    summary:hover { color: #0366d6; }
+                    .sub-folder { margin-top: 8px; padding-left: 10px; border-left: 2px solid #e1e4e8; }
+                </style>
+            </head>
+            <body>
+                <h1>📁 Co Directory Structure</h1>
+                ${treeHtml}
+            </body>
+            </html>`;
+
+            fs.writeFileSync(path.join(targetDir, "index.html"), htmlContent);
+            console.log("co/index.html 생성 완료");
           '
 
       - name: Setup Pages
