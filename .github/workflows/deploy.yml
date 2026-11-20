@@ -116,7 +116,7 @@ jobs:
             console.log("col/index.html 생성 완료");
           '
 
-      - name: Eb 디렉토리 Index.html 자동 생성 (하위 폴더 최신순, 파일명 가나다순)
+      - name: Eb 디렉토리 Index.html 자동 생성 (디렉터리 내 페이지 최근 변경순, 파일명 가나다순)
         run: |
           node -e '
             const fs = require("fs");
@@ -150,9 +150,8 @@ jobs:
 
             function scanDirectory(dir, relativePath = "") {
               const entries = fs.readdirSync(dir, { withFileTypes: true });
-              const dirStatMtime = fs.statSync(dir).mtime.getTime();
-              let latestTime = dirStatMtime;
-              let structure = { directories: {}, files: [], latestMtime: dirStatMtime };
+              let latestTime = 0;
+              let structure = { directories: {}, files: [], latestMtime: 0 };
 
               entries.forEach(entry => {
                 const fullPath = path.join(dir, entry.name);
@@ -178,8 +177,9 @@ jobs:
                     mtime = fs.statSync(fullPath).mtime;
                   }
 
-                  if (mtime.getTime() > latestTime) {
-                    latestTime = mtime.getTime();
+                  const fileTime = mtime.getTime();
+                  if (fileTime > latestTime) {
+                    latestTime = fileTime;
                   }
 
                   structure.files.push({
@@ -214,7 +214,7 @@ jobs:
                 html += `</ul>`;
               }
 
-              // 하위 디렉터리를 최신 커밋/수정 시각 내림차순으로 정렬
+              // 디렉터리 내 페이지의 최근 변경 날짜 기준 내림차순 정렬
               const sortedDirs = Object.entries(node.directories).sort((a, b) => {
                 if (b[1].latestMtime !== a[1].latestMtime) {
                   return b[1].latestMtime - a[1].latestMtime;
@@ -270,7 +270,7 @@ jobs:
             console.log("eb/index.html 생성 완료");
           '
 
-      - name: Co 디렉토리 Index.html 자동 생성 (하위 폴더 최신순, 파일명 가나다순)
+      - name: Co 디렉토리 Index.html 자동 생성 (디렉터리 내 페이지 최근 변경순, 파일명 가나다순)
         run: |
           node -e '
             const fs = require("fs");
@@ -304,9 +304,8 @@ jobs:
 
             function scanDirectory(dir, relativePath = "") {
               const entries = fs.readdirSync(dir, { withFileTypes: true });
-              const dirStatMtime = fs.statSync(dir).mtime.getTime();
-              let latestTime = dirStatMtime;
-              let structure = { directories: {}, files: [], latestMtime: dirStatMtime };
+              let latestTime = 0;
+              let structure = { directories: {}, files: [], latestMtime: 0 };
 
               entries.forEach(entry => {
                 const fullPath = path.join(dir, entry.name);
@@ -332,8 +331,9 @@ jobs:
                     mtime = fs.statSync(fullPath).mtime;
                   }
 
-                  if (mtime.getTime() > latestTime) {
-                    latestTime = mtime.getTime();
+                  const fileTime = mtime.getTime();
+                  if (fileTime > latestTime) {
+                    latestTime = fileTime;
                   }
 
                   structure.files.push({
@@ -368,7 +368,7 @@ jobs:
                 html += `</ul>`;
               }
 
-              // 하위 디렉터리를 최신 커밋/수정 시각 내림차순으로 정렬
+              // 디렉터리 내 페이지의 최근 변경 날짜 기준 내림차순 정렬
               const sortedDirs = Object.entries(node.directories).sort((a, b) => {
                 if (b[1].latestMtime !== a[1].latestMtime) {
                   return b[1].latestMtime - a[1].latestMtime;
