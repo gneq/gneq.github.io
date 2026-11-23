@@ -2,6 +2,6 @@
 //alert('스크립트 로드 및 초기화 완료');
 
 // 2. 버튼을 클릭할 때마다 실행될 함수 정의
-window.test = () => {
+window.parent.test = () => {
     alert('hi');
 }
