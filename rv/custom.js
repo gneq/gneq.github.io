@@ -1,8 +1,3 @@
-// 1. 스크립트가 처음 로드(또는 업데이트)될 때 딱 한 번 실행될 초기화 코드
-//alert('스크립트 로드 및 초기화 완료');
+const c = document.createElement('hr');
+document.querySelector('.page').prependChild(c);
 
-// 2. 버튼을 클릭할 때마다 실행될 함수 정의
-window.ppHr = function() {
-    const c = document.createElement('hr');
-    document.querySelector('.page').prependChild(c);
-}
