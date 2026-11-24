@@ -12,7 +12,7 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build-and-deploy:
@@ -816,7 +816,7 @@ jobs:
       - name: Upload artifact (GitHub Pages 전용)
         uses: actions/upload-pages-artifact@v4
         with:
-          path: _site
+          path: '.'
 
       - name: Deploy to GitHub Pages
         id: deployment
