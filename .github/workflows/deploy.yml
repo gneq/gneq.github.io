@@ -23,100 +23,18 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Col 디렉토리 Index.html 자동 생성 (최신 커밋 순 내림차순)
+      - name: HTML Index 자동 생성 (co, col, eb)
         run: |
           node -e '
             const fs = require("fs");
             const path = require("path");
             const { execSync } = require("child_process");
 
-            const colDir = path.join(__dirname, "col");
-
-            if (!fs.existsSync(colDir)) {
-              console.log("col 디렉토리가 존재하지 않습니다.");
-            } else {
-              const files = fs.readdirSync(colDir)
-                .filter(file => file.endsWith(".html") && file !== "index.html")
-                .map(file => {
-                  const filePath = `col/${file}`;
-                  let mtime;
-
-                  try {
-                    const gitTimeStr = execSync(`git log -1 --format=%ct -- "${filePath}"`, { encoding: "utf-8" }).trim();
-                    mtime = gitTimeStr
-                      ? new Date(parseInt(gitTimeStr, 10) * 1000)
-                      : fs.statSync(path.join(colDir, file)).mtime;
-                  } catch (e) {
-                    mtime = fs.statSync(path.join(colDir, file)).mtime;
-                  }
-
-                  return {
-                    name: file,
-                    title: file.replace(/\.html$/, ""),
-                    mtime
-                  };
-                });
-
-              files.sort((a, b) => b.mtime - a.mtime);
-
-              const formatter = new Intl.DateTimeFormat("ko-KR", {
-                timeZone: "Asia/Seoul",
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit",
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: false
-              });
-
-              const listItems = files.map(file => {
-                const parts = formatter.formatToParts(file.mtime);
-                const dateObj = {};
-                parts.forEach(p => { dateObj[p.type] = p.value; });
-                const timeStr = `${dateObj.year}-${dateObj.month}-${dateObj.day} ${dateObj.hour}:${dateObj.minute}`;
-
-                return `<li>
-                  <a href="${file.name}">${file.title}</a>
-                  <span class="date">[${timeStr}]</span>
-                </li>`;
-              }).join("\n");
-
-              const htmlContent = `<!DOCTYPE html>
-              <html lang="ko">
-              <head>
-                  <meta charset="UTF-8">
-                  <meta name="viewport" content="width=device-width, initial-scale=1" />
-                  <title>Col HTML 파일 목록</title>
-                  <style>
-                      html {font-size: 20px}
-                      body { font-family: sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
-                      h1 { border-bottom: 2px solid #eee; padding-bottom: 10px; }
-                      ul { line-height: 1.8; list-style-type: none; padding: 0; text-align: justify; word-break: keep-all; }
-                      li { margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 4px; }
-                      a { text-decoration: none; color: #0066cc; }
-                      a:hover { text-decoration: underline; }
-                      .date { float: right; color: #888; font-size: 0.85em; }
-                  </style>
-              </head>
-              <body>
-                  <h1>📁 Col Directory HTML List</h1>
-                  <ul>
-                      ${listItems}
-                  </ul>
-              </body>
-              </html>`;
-
-              fs.writeFileSync(path.join(colDir, "index.html"), htmlContent);
-              console.log("col/index.html 생성 완료");
-            }
-          '
-
-      - name: Eb 및 Co 디렉토리 Index.html 자동 생성
-        run: |
-          node -e '
-            const fs = require("fs");
-            const path = require("path");
-            const { execSync } = require("child_process");
+            const tabs = [
+              { key: "co", label: "co", href: "../co/" },
+              { key: "col", label: "col", href: "../col/" },
+              { key: "eb", label: "eb", href: "../eb/" }
+            ];
 
             const formatter = new Intl.DateTimeFormat("ko-KR", {
               timeZone: "Asia/Seoul",
@@ -135,7 +53,206 @@ jobs:
               return `${dateObj.year}-${dateObj.month}-${dateObj.day} ${dateObj.hour}:${dateObj.minute}`;
             }
 
-            function buildTreeIndex(dirName, pageTitle, headingText) {
+            function getGitOrStatMtime(repoRelPath, fullPath) {
+              try {
+                const gitPath = repoRelPath.replace(/\\/g, "/");
+                const gitTimeStr = execSync(`git log -1 --format=%ct -- "${gitPath}"`, { encoding: "utf-8" }).trim();
+                if (gitTimeStr) {
+                  return new Date(parseInt(gitTimeStr, 10) * 1000);
+                }
+              } catch (e) {}
+              return fs.statSync(fullPath).mtime;
+            }
+
+            function renderNav(activeKey) {
+              const items = tabs.map(t => {
+                const activeClass = t.key === activeKey ? " class=\"active\"" : "";
+                return `<a href="${t.href}"${activeClass}>${t.label}</a>`;
+              }).join("\n");
+              return `<nav class="tabs" aria-label="디렉토리 전환">\n${items}\n</nav>`;
+            }
+
+            function wrapPage({ title, heading, activeKey, bodyHtml }) {
+              return `<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>${title}</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f8f9fa;
+      --text: #1f2328;
+      --muted: #656d76;
+      --border: #d0d7de;
+      --accent: #0969da;
+      --accent-bg: #eef6ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px 16px 48px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--text);
+      background: var(--bg);
+    }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .tabs {
+      display: flex;
+      gap: 6px;
+      padding-bottom: 14px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .tabs a {
+      padding: 6px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--muted);
+      transition: background-color 0.15s, color 0.15s;
+    }
+    .tabs a:hover {
+      color: var(--text);
+      background: var(--surface);
+    }
+    .tabs a.active {
+      color: var(--accent);
+      background: var(--accent-bg);
+    }
+    h1 {
+      margin: 0 0 18px;
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .file-list li {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 9px 4px;
+      border-bottom: 1px solid #eef1f4;
+    }
+    .file-list a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+      word-break: break-word;
+    }
+    .file-list a:hover {
+      text-decoration: underline;
+    }
+    .date {
+      flex-shrink: 0;
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+    details {
+      margin: 10px 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      overflow: hidden;
+    }
+    summary {
+      cursor: pointer;
+      padding: 10px 14px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::before {
+      content: "▸";
+      color: var(--muted);
+      font-size: 0.8rem;
+      transition: transform 0.15s;
+    }
+    details[open] > summary::before {
+      transform: rotate(90deg);
+    }
+    .folder-body {
+      background: var(--bg);
+      padding: 4px 12px 10px 18px;
+      border-top: 1px solid #e5e9ee;
+    }
+    @media (max-width: 600px) {
+      body { padding: 16px 12px 36px; font-size: 15px; }
+      h1 { font-size: 1.2rem; }
+      .file-list li {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+        padding: 8px 2px;
+      }
+      .date { font-size: 0.78rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    ${renderNav(activeKey)}
+    <h1>${heading}</h1>
+    ${bodyHtml}
+  </div>
+</body>
+</html>`;
+            }
+
+            // 1. col 디렉토리 (최신 커밋 순 내림차순)
+            const colDir = path.join(__dirname, "col");
+            if (fs.existsSync(colDir)) {
+              const colFiles = fs.readdirSync(colDir)
+                .filter(file => file.endsWith(".html") && file !== "index.html")
+                .map(file => {
+                  const fullPath = path.join(colDir, file);
+                  const mtime = getGitOrStatMtime(`col/${file}`, fullPath);
+                  return {
+                    name: file,
+                    title: file.replace(/\.html$/, ""),
+                    mtime,
+                    timeStr: formatKst(mtime)
+                  };
+                })
+                .sort((a, b) => b.mtime - a.mtime);
+
+              const colListHtml = `<ul class="file-list">\n${colFiles.map(f =>
+                `  <li><a href="${f.name}">${f.title}</a><span class="date">${f.timeStr}</span></li>`
+              ).join("\n")}\n</ul>`;
+
+              fs.writeFileSync(
+                path.join(colDir, "index.html"),
+                wrapPage({
+                  title: "col — HTML 목록",
+                  heading: "col",
+                  activeKey: "col",
+                  bodyHtml: colListHtml
+                })
+              );
+              console.log("col/index.html 생성 완료");
+            } else {
+              console.log("col 디렉토리가 존재하지 않습니다.");
+            }
+
+            // 2. eb, co 트리 디렉토리 (디렉터리 최근 변경순, 파일명 가나다순)
+            function buildTreeIndex(dirName) {
               const targetDir = path.join(__dirname, dirName);
               if (!fs.existsSync(targetDir)) {
                 console.log(`${dirName} 디렉토리가 존재하지 않습니다.`);
@@ -158,17 +275,7 @@ jobs:
                       latestTime = subNode.latestMtime;
                     }
                   } else if (entry.isFile() && entry.name.endsWith(".html") && entry.name !== "index.html") {
-                    let mtime;
-                    try {
-                      const gitPath = `${dirName}/${relPath}`.replace(/\\/g, "/");
-                      const gitTimeStr = execSync(`git log -1 --format=%ct -- "${gitPath}"`, { encoding: "utf-8" }).trim();
-                      mtime = gitTimeStr
-                        ? new Date(parseInt(gitTimeStr, 10) * 1000)
-                        : fs.statSync(fullPath).mtime;
-                    } catch (e) {
-                      mtime = fs.statSync(fullPath).mtime;
-                    }
-
+                    const mtime = getGitOrStatMtime(`${dirName}/${relPath}`, fullPath);
                     const fileTime = mtime.getTime();
                     if (fileTime > latestTime) {
                       latestTime = fileTime;
@@ -178,7 +285,6 @@ jobs:
                       name: entry.name,
                       title: entry.name.replace(/\.html$/, ""),
                       path: relPath.replace(/\\/g, "/"),
-                      mtime,
                       timeStr: formatKst(mtime)
                     });
                   }
@@ -193,14 +299,9 @@ jobs:
                 let html = "";
 
                 if (node.files && node.files.length > 0) {
-                  html += "<ul>";
-                  for (const file of node.files) {
-                    html += `<li>
-                      <a href="${file.path}" target="_blank">${file.title}</a>
-                      <span class="date">[${file.timeStr}]</span>
-                    </li>`;
-                  }
-                  html += "</ul>";
+                  html += `<ul class="file-list">\n${node.files.map(file =>
+                    `  <li><a href="${file.path}" target="_blank" rel="noopener">${file.title}</a><span class="date">${file.timeStr}</span></li>`
+                  ).join("\n")}\n</ul>`;
                 }
 
                 const sortedDirs = Object.entries(node.directories).sort((a, b) => {
@@ -214,53 +315,32 @@ jobs:
                   const hasContent = subNode.files.length > 0 || Object.keys(subNode.directories).length > 0;
                   if (hasContent) {
                     html += `<details>
-                      <summary>📁 <strong>${subDirName}</strong></summary>
-                      <div class="sub-folder">
-                        ${renderTree(subNode)}
-                      </div>
-                    </details>`;
+  <summary>${subDirName}</summary>
+  <div class="folder-body">
+    ${renderTree(subNode)}
+  </div>
+</details>`;
                   }
                 }
 
                 return html;
               }
 
-              const treeData = scanDirectory(targetDir);
-              const treeHtml = renderTree(treeData);
-
-              const htmlContent = `<!DOCTYPE html>
-              <html lang="ko">
-              <head>
-                  <meta charset="UTF-8">
-                  <meta name="viewport" content="width=device-width, initial-scale=1" />
-                  <title>${pageTitle}</title>
-                  <style>
-                      html { font-size: 18px; }
-                      body { font-family: sans-serif; max-width: 700px; margin: 40px auto; padding: 20px; color: #333; }
-                      h1 { border-bottom: 2px solid #eee; padding-bottom: 10px; font-size: 1.5rem; }
-                      ul { line-height: 1.8; list-style-type: none; padding-left: 15px; margin: 5px 0; }
-                      li { margin-bottom: 6px; border-bottom: 1px dashed #f0f0f0; padding-bottom: 4px; }
-                      a { text-decoration: none; color: #0066cc; }
-                      a:hover { text-decoration: underline; }
-                      .date { float: right; color: #888; font-size: 0.8em; }
-                      details { margin: 10px 0; border: 1px solid #e1e4e8; border-radius: 6px; padding: 8px 12px; background: #fafbfc; }
-                      summary { cursor: pointer; font-weight: bold; padding: 4px 0; color: #24292e; }
-                      summary:hover { color: #0366d6; }
-                      .sub-folder { margin-top: 8px; padding-left: 10px; border-left: 2px solid #e1e4e8; }
-                  </style>
-              </head>
-              <body>
-                  <h1>${headingText}</h1>
-                  ${treeHtml}
-              </body>
-              </html>`;
-
-              fs.writeFileSync(path.join(targetDir, "index.html"), htmlContent);
+              const treeHtml = renderTree(scanDirectory(targetDir));
+              fs.writeFileSync(
+                path.join(targetDir, "index.html"),
+                wrapPage({
+                  title: `${dirName} — HTML 목록`,
+                  heading: dirName,
+                  activeKey: dirName,
+                  bodyHtml: treeHtml
+                })
+              );
               console.log(`${dirName}/index.html 생성 완료`);
             }
 
-            buildTreeIndex("eb", "Eb Directory HTML List", "📁 Eb Directory Structure");
-            buildTreeIndex("co", "Co Directory HTML List", "📁 Co Directory Structure");
+            buildTreeIndex("eb");
+            buildTreeIndex("co");
           '
 
       - name: Setup Pages
