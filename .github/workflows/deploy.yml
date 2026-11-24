@@ -25,55 +25,58 @@ jobs:
 
       - name: HTML Index 자동 생성 (co, col, eb)
         run: |
-          node -e '
-            const fs = require("fs");
-            const path = require("path");
-            const { execSync } = require("child_process");
+          node << 'EOF'
+          const fs = require("fs");
+          const path = require("path");
+          const { execSync } = require("child_process");
 
-            const tabs = [
-              { key: "co", label: "co", href: "../co/" },
-              { key: "col", label: "col", href: "../col/" },
-              { key: "eb", label: "eb", href: "../eb/" }
-            ];
+          const rootDir = process.cwd();
+          const tabs = [
+            { key: "co", label: "co", href: "../co/" },
+            { key: "col", label: "col", href: "../col/" },
+            { key: "eb", label: "eb", href: "../eb/" }
+          ];
 
-            const formatter = new Intl.DateTimeFormat("ko-KR", {
-              timeZone: "Asia/Seoul",
-              year: "numeric",
-              month: "2-digit",
-              day: "2-digit",
-              hour: "2-digit",
-              minute: "2-digit",
-              hour12: false
-            });
+          const formatter = new Intl.DateTimeFormat("ko-KR", {
+            timeZone: "Asia/Seoul",
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false
+          });
 
-            function formatKst(date) {
-              const parts = formatter.formatToParts(date);
-              const dateObj = {};
-              parts.forEach(p => { dateObj[p.type] = p.value; });
-              return `${dateObj.year}-${dateObj.month}-${dateObj.day} ${dateObj.hour}:${dateObj.minute}`;
+          function formatKst(date) {
+            const parts = formatter.formatToParts(date);
+            const dateObj = {};
+            for (const p of parts) {
+              dateObj[p.type] = p.value;
             }
+            return `${dateObj.year}-${dateObj.month}-${dateObj.day} ${dateObj.hour}:${dateObj.minute}`;
+          }
 
-            function getGitOrStatMtime(repoRelPath, fullPath) {
-              try {
-                const gitPath = repoRelPath.replace(/\\/g, "/");
-                const gitTimeStr = execSync(`git log -1 --format=%ct -- "${gitPath}"`, { encoding: "utf-8" }).trim();
-                if (gitTimeStr) {
-                  return new Date(parseInt(gitTimeStr, 10) * 1000);
-                }
-              } catch (e) {}
-              return fs.statSync(fullPath).mtime;
-            }
+          function getGitOrStatMtime(repoRelPath, fullPath) {
+            try {
+              const gitPath = repoRelPath.replace(/\\/g, "/");
+              const gitTimeStr = execSync(`git log -1 --format=%ct -- "${gitPath}"`, { encoding: "utf-8" }).trim();
+              if (gitTimeStr) {
+                return new Date(parseInt(gitTimeStr, 10) * 1000);
+              }
+            } catch (e) {}
+            return fs.statSync(fullPath).mtime;
+          }
 
-            function renderNav(activeKey) {
-              const items = tabs.map(t => {
-                const activeClass = t.key === activeKey ? " class=\"active\"" : "";
-                return `<a href="${t.href}"${activeClass}>${t.label}</a>`;
-              }).join("\n");
-              return `<nav class="tabs" aria-label="디렉토리 전환">\n${items}\n</nav>`;
-            }
+          function renderNav(activeKey) {
+            const items = tabs.map((t) => {
+              const activeClass = t.key === activeKey ? ' class="active"' : "";
+              return `<a href="${t.href}"${activeClass}>${t.label}</a>`;
+            }).join("\n");
+            return `<nav class="tabs" aria-label="디렉토리 전환">\n${items}\n</nav>`;
+          }
 
-            function wrapPage({ title, heading, activeKey, bodyHtml }) {
-              return `<!DOCTYPE html>
+          function wrapPage({ title, heading, activeKey, bodyHtml }) {
+            return `<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
@@ -214,134 +217,134 @@ jobs:
   </div>
 </body>
 </html>`;
+          }
+
+          // 1. col 디렉토리 (최신 커밋 순 내림차순)
+          const colDir = path.join(rootDir, "col");
+          if (fs.existsSync(colDir)) {
+            const colFiles = fs.readdirSync(colDir)
+              .filter((file) => file.endsWith(".html") && file !== "index.html")
+              .map((file) => {
+                const fullPath = path.join(colDir, file);
+                const mtime = getGitOrStatMtime(`col/${file}`, fullPath);
+                return {
+                  name: file,
+                  title: file.replace(/\.html$/, ""),
+                  mtime,
+                  timeStr: formatKst(mtime)
+                };
+              })
+              .sort((a, b) => b.mtime - a.mtime);
+
+            const colListHtml = `<ul class="file-list">\n${colFiles.map((f) =>
+              `  <li><a href="${f.name}">${f.title}</a><span class="date">${f.timeStr}</span></li>`
+            ).join("\n")}\n</ul>`;
+
+            fs.writeFileSync(
+              path.join(colDir, "index.html"),
+              wrapPage({
+                title: "col — HTML 목록",
+                heading: "col",
+                activeKey: "col",
+                bodyHtml: colListHtml
+              })
+            );
+            console.log("col/index.html 생성 완료");
+          } else {
+            console.log("col 디렉토리가 존재하지 않습니다.");
+          }
+
+          // 2. eb, co 트리 디렉토리 (디렉터리 최근 변경순, 파일명 가나다순)
+          function buildTreeIndex(dirName) {
+            const targetDir = path.join(rootDir, dirName);
+            if (!fs.existsSync(targetDir)) {
+              console.log(`${dirName} 디렉토리가 존재하지 않습니다.`);
+              return;
             }
 
-            // 1. col 디렉토리 (최신 커밋 순 내림차순)
-            const colDir = path.join(__dirname, "col");
-            if (fs.existsSync(colDir)) {
-              const colFiles = fs.readdirSync(colDir)
-                .filter(file => file.endsWith(".html") && file !== "index.html")
-                .map(file => {
-                  const fullPath = path.join(colDir, file);
-                  const mtime = getGitOrStatMtime(`col/${file}`, fullPath);
-                  return {
-                    name: file,
-                    title: file.replace(/\.html$/, ""),
-                    mtime,
+            function scanDirectory(dir, relativePath = "") {
+              const entries = fs.readdirSync(dir, { withFileTypes: true });
+              let latestTime = 0;
+              const structure = { directories: {}, files: [], latestMtime: 0 };
+
+              for (const entry of entries) {
+                const fullPath = path.join(dir, entry.name);
+                const relPath = path.join(relativePath, entry.name);
+
+                if (entry.isDirectory()) {
+                  const subNode = scanDirectory(fullPath, relPath);
+                  structure.directories[entry.name] = subNode;
+                  if (subNode.latestMtime > latestTime) {
+                    latestTime = subNode.latestMtime;
+                  }
+                } else if (entry.isFile() && entry.name.endsWith(".html") && entry.name !== "index.html") {
+                  const mtime = getGitOrStatMtime(`${dirName}/${relPath}`, fullPath);
+                  const fileTime = mtime.getTime();
+                  if (fileTime > latestTime) {
+                    latestTime = fileTime;
+                  }
+
+                  structure.files.push({
+                    name: entry.name,
+                    title: entry.name.replace(/\.html$/, ""),
+                    path: relPath.replace(/\\/g, "/"),
                     timeStr: formatKst(mtime)
-                  };
-                })
-                .sort((a, b) => b.mtime - a.mtime);
+                  });
+                }
+              }
 
-              const colListHtml = `<ul class="file-list">\n${colFiles.map(f =>
-                `  <li><a href="${f.name}">${f.title}</a><span class="date">${f.timeStr}</span></li>`
-              ).join("\n")}\n</ul>`;
-
-              fs.writeFileSync(
-                path.join(colDir, "index.html"),
-                wrapPage({
-                  title: "col — HTML 목록",
-                  heading: "col",
-                  activeKey: "col",
-                  bodyHtml: colListHtml
-                })
-              );
-              console.log("col/index.html 생성 완료");
-            } else {
-              console.log("col 디렉토리가 존재하지 않습니다.");
+              structure.files.sort((a, b) => a.name.localeCompare(b.name, "ko", { numeric: true }));
+              structure.latestMtime = latestTime;
+              return structure;
             }
 
-            // 2. eb, co 트리 디렉토리 (디렉터리 최근 변경순, 파일명 가나다순)
-            function buildTreeIndex(dirName) {
-              const targetDir = path.join(__dirname, dirName);
-              if (!fs.existsSync(targetDir)) {
-                console.log(`${dirName} 디렉토리가 존재하지 않습니다.`);
-                return;
+            function renderTree(node) {
+              let html = "";
+
+              if (node.files && node.files.length > 0) {
+                html += `<ul class="file-list">\n${node.files.map((file) =>
+                  `  <li><a href="${file.path}" target="_blank" rel="noopener">${file.title}</a><span class="date">${file.timeStr}</span></li>`
+                ).join("\n")}\n</ul>`;
               }
 
-              function scanDirectory(dir, relativePath = "") {
-                const entries = fs.readdirSync(dir, { withFileTypes: true });
-                let latestTime = 0;
-                const structure = { directories: {}, files: [], latestMtime: 0 };
-
-                for (const entry of entries) {
-                  const fullPath = path.join(dir, entry.name);
-                  const relPath = path.join(relativePath, entry.name);
-
-                  if (entry.isDirectory()) {
-                    const subNode = scanDirectory(fullPath, relPath);
-                    structure.directories[entry.name] = subNode;
-                    if (subNode.latestMtime > latestTime) {
-                      latestTime = subNode.latestMtime;
-                    }
-                  } else if (entry.isFile() && entry.name.endsWith(".html") && entry.name !== "index.html") {
-                    const mtime = getGitOrStatMtime(`${dirName}/${relPath}`, fullPath);
-                    const fileTime = mtime.getTime();
-                    if (fileTime > latestTime) {
-                      latestTime = fileTime;
-                    }
-
-                    structure.files.push({
-                      name: entry.name,
-                      title: entry.name.replace(/\.html$/, ""),
-                      path: relPath.replace(/\\/g, "/"),
-                      timeStr: formatKst(mtime)
-                    });
-                  }
+              const sortedDirs = Object.entries(node.directories).sort((a, b) => {
+                if (b[1].latestMtime !== a[1].latestMtime) {
+                  return b[1].latestMtime - a[1].latestMtime;
                 }
+                return a[0].localeCompare(b[0], "ko", { numeric: true });
+              });
 
-                structure.files.sort((a, b) => a.name.localeCompare(b.name, "ko", { numeric: true }));
-                structure.latestMtime = latestTime;
-                return structure;
-              }
-
-              function renderTree(node) {
-                let html = "";
-
-                if (node.files && node.files.length > 0) {
-                  html += `<ul class="file-list">\n${node.files.map(file =>
-                    `  <li><a href="${file.path}" target="_blank" rel="noopener">${file.title}</a><span class="date">${file.timeStr}</span></li>`
-                  ).join("\n")}\n</ul>`;
-                }
-
-                const sortedDirs = Object.entries(node.directories).sort((a, b) => {
-                  if (b[1].latestMtime !== a[1].latestMtime) {
-                    return b[1].latestMtime - a[1].latestMtime;
-                  }
-                  return a[0].localeCompare(b[0], "ko", { numeric: true });
-                });
-
-                for (const [subDirName, subNode] of sortedDirs) {
-                  const hasContent = subNode.files.length > 0 || Object.keys(subNode.directories).length > 0;
-                  if (hasContent) {
-                    html += `<details>
+              for (const [subDirName, subNode] of sortedDirs) {
+                const hasContent = subNode.files.length > 0 || Object.keys(subNode.directories).length > 0;
+                if (hasContent) {
+                  html += `<details>
   <summary>${subDirName}</summary>
   <div class="folder-body">
     ${renderTree(subNode)}
   </div>
 </details>`;
-                  }
                 }
-
-                return html;
               }
 
-              const treeHtml = renderTree(scanDirectory(targetDir));
-              fs.writeFileSync(
-                path.join(targetDir, "index.html"),
-                wrapPage({
-                  title: `${dirName} — HTML 목록`,
-                  heading: dirName,
-                  activeKey: dirName,
-                  bodyHtml: treeHtml
-                })
-              );
-              console.log(`${dirName}/index.html 생성 완료`);
+              return html;
             }
 
-            buildTreeIndex("eb");
-            buildTreeIndex("co");
-          '
+            const treeHtml = renderTree(scanDirectory(targetDir));
+            fs.writeFileSync(
+              path.join(targetDir, "index.html"),
+              wrapPage({
+                title: `${dirName} — HTML 목록`,
+                heading: dirName,
+                activeKey: dirName,
+                bodyHtml: treeHtml
+              })
+            );
+            console.log(`${dirName}/index.html 생성 완료`);
+          }
+
+          buildTreeIndex("eb");
+          buildTreeIndex("co");
+          EOF
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
