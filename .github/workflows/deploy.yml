@@ -101,6 +101,97 @@ jobs:
             </li>`;
           }
 
+          const clientScript = [
+            "<script>",
+            'const TOKEN_KEY = "gh_pages_delete_token";',
+            "function getRepoInfo() {",
+            "  const hostParts = window.location.hostname.split(\".\");",
+            "  const owner = hostParts[0] || \"\";",
+            "  const pathParts = window.location.pathname.split(\"/\").filter(Boolean);",
+            "  let repo = `${owner}.github.io`;",
+            "  if (!window.location.hostname.endsWith(\".github.io\") && pathParts.length > 0) {",
+            "    repo = pathParts[0];",
+            "  }",
+            "  return { owner, repo };",
+            "}",
+            "function manageToken() {",
+            "  const current = localStorage.getItem(TOKEN_KEY) || \"\";",
+            "  const next = prompt(",
+            "    \"GitHub Fine-grained PAT를 입력하세요 (빈 값 입력 시 삭제):\",",
+            "    current",
+            "  );",
+            "  if (next === null) return;",
+            "  const trimmed = next.trim();",
+            "  if (!trimmed) {",
+            "    localStorage.removeItem(TOKEN_KEY);",
+            "    alert(\"저장된 토큰을 삭제했습니다.\");",
+            "  } else {",
+            "    localStorage.setItem(TOKEN_KEY, trimmed);",
+            "    alert(\"토큰이 브라우저 localStorage에 저장되었습니다.\");",
+            "  }",
+            "}",
+            "async function ensureToken() {",
+            "  let token = localStorage.getItem(TOKEN_KEY);",
+            "  if (!token) {",
+            "    const input = prompt(",
+            "      \"파일 삭제를 위해 GitHub PAT(Contents: Read and write 권한)를 입력하세요:\"",
+            "    );",
+            "    if (!input || !input.trim()) return null;",
+            "    token = input.trim();",
+            "    localStorage.setItem(TOKEN_KEY, token);",
+            "  }",
+            "  return token;",
+            "}",
+            "async function deleteHtmlFile(btn) {",
+            "  const filePath = btn.getAttribute(\"data-path\");",
+            "  if (!filePath) return;",
+            "  const ok = confirm(`정말로 GitHub에서 '${filePath}' 파일을 삭제할까요?\\n삭제 커밋이 main 브랜치에 반영됩니다.`);",
+            "  if (!ok) return;",
+            "  const token = await ensureToken();",
+            "  if (!token) return;",
+            "  const { owner, repo } = getRepoInfo();",
+            "  const encodedPath = filePath.split(\"/\").map(encodeURIComponent).join(\"/\");",
+            "  const apiBase = `https://api.github.com/repos/${owner}/${repo}/contents/${encodedPath}`;",
+            "  const headers = {",
+            "    \"Authorization\": `Bearer ${token}`,",
+            "    \"Accept\": \"application/vnd.github+json\",",
+            "    \"X-GitHub-Api-Version\": \"2022-11-28\"",
+            "  };",
+            "  btn.disabled = true;",
+            "  const origText = btn.textContent;",
+            "  btn.textContent = \"삭제중...\";",
+            "  try {",
+            "    const getRes = await fetch(apiBase, { headers });",
+            "    if (!getRes.ok) {",
+            "      const errData = await getRes.json().catch(() => ({}));",
+            "      throw new Error(errData.message || `파일 정보 조회 실패 (${getRes.status})`);",
+            "    }",
+            "    const fileInfo = await getRes.json();",
+            "    const delRes = await fetch(apiBase, {",
+            "      method: \"DELETE\",",
+            "      headers: { ...headers, \"Content-Type\": \"application/json\" },",
+            "      body: JSON.stringify({",
+            "        message: `chore: delete ${filePath}`,",
+            "        sha: fileInfo.sha,",
+            "        branch: \"main\"",
+            "      })",
+            "    });",
+            "    if (!delRes.ok) {",
+            "      const errData = await delRes.json().catch(() => ({}));",
+            "      throw new Error(errData.message || `삭제 실패 (${delRes.status})`);",
+            "    }",
+            "    const li = btn.closest(\"li\");",
+            "    if (li) li.remove();",
+            "    alert(`'${filePath}' 삭제가 완료되었습니다. Pages 재배포까지 잠시 기다려 주세요.`);",
+            "  } catch (err) {",
+            "    alert(`삭제 중 오류가 발생했습니다:\\n${err.message}`);",
+            "    btn.disabled = false;",
+            "    btn.textContent = origText;",
+            "  }",
+            "}",
+            "</script>"
+          ].join("\n");
+
           function wrapPage({ title, heading, activeKey, bodyHtml }) {
             return `<!DOCTYPE html>
           <html lang="ko">
@@ -291,108 +382,7 @@ jobs:
               <h1>${escapeAttr(heading)}</h1>
               ${bodyHtml}
             </div>
-            <script>
-              const TOKEN_KEY = "gh_pages_delete_token";
-
-              function getRepoInfo() {
-                const hostParts = window.location.hostname.split(".");
-                const owner = hostParts[0] || "";
-                const pathParts = window.location.pathname.split("/").filter(Boolean);
-                let repo = `${owner}.github.io`;
-                if (!window.location.hostname.endsWith(".github.io") && pathParts.length > 0) {
-                  repo = pathParts[0];
-                }
-                return { owner, repo };
-              }
-
-              function manageToken() {
-                const current = localStorage.getItem(TOKEN_KEY) || "";
-                const next = prompt(
-                  "GitHub Fine-grained PAT를 입력하세요 (빈 값 입력 시 삭제):",
-                  current
-                );
-                if (next === null) return;
-                const trimmed = next.trim();
-                if (!trimmed) {
-                  localStorage.removeItem(TOKEN_KEY);
-                  alert("저장된 토큰을 삭제했습니다.");
-                } else {
-                  localStorage.setItem(TOKEN_KEY, trimmed);
-                  alert("토큰이 브라우저 localStorage에 저장되었습니다.");
-                }
-              }
-
-              async function ensureToken() {
-                let token = localStorage.getItem(TOKEN_KEY);
-                if (!token) {
-                  const input = prompt(
-                    "파일 삭제를 위해 GitHub PAT(Contents: Read and write 권한)를 입력하세요:"
-                  );
-                  if (!input || !input.trim()) return null;
-                  token = input.trim();
-                  localStorage.setItem(TOKEN_KEY, token);
-                }
-                return token;
-              }
-
-              async function deleteHtmlFile(btn) {
-                const filePath = btn.getAttribute("data-path");
-                if (!filePath) return;
-
-                const ok = confirm(`정말로 GitHub에서 '${filePath}' 파일을 삭제할까요?\n삭제 커밋이 main 브랜치에 반영됩니다.`);
-                if (!ok) return;
-
-                const token = await ensureToken();
-                if (!token) return;
-
-                const { owner, repo } = getRepoInfo();
-                const apiBase = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath.split("/").map(encodeURIComponent).join("/")}`;
-                const headers = {
-                  "Authorization": `Bearer ${token}`,
-                  "Accept": "application/vnd.github+json",
-                  "X-GitHub-Api-Version": "2022-11-28"
-                };
-
-                btn.disabled = true;
-                const origText = btn.textContent;
-                btn.textContent = "삭제중...";
-
-                try {
-                  const getRes = await fetch(apiBase, { headers });
-                  if (!getRes.ok) {
-                    const errData = await getRes.json().catch(() => ({}));
-                    throw new Error(errData.message || `파일 정보 조회 실패 (${getRes.status})`);
-                  }
-                  const fileInfo = await getRes.json();
-
-                  const delRes = await fetch(apiBase, {
-                    method: "DELETE",
-                    headers: {
-                      ...headers,
-                      "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                      message: `chore: delete ${filePath}`,
-                      sha: fileInfo.sha,
-                      branch: "main"
-                    })
-                  });
-
-                  if (!delRes.ok) {
-                    const errData = await delRes.json().catch(() => ({}));
-                    throw new Error(errData.message || `삭제 실패 (${delRes.status})`);
-                  }
-
-                  const li = btn.closest("li");
-                  if (li) li.remove();
-                  alert(`'${filePath}' 삭제가 완료되었습니다. Pages 재배포까지 잠시 기다려 주세요.`);
-                } catch (err) {
-                  alert(`삭제 중 오류가 발생했습니다:\n${err.message}`);
-                  btn.disabled = false;
-                  btn.textContent = origText;
-                }
-              }
-            </script>
+            ${clientScript}
           </body>
           </html>`;
           }
