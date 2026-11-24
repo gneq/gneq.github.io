@@ -816,7 +816,7 @@ jobs:
       - name: Upload artifact (GitHub Pages 전용)
         uses: actions/upload-pages-artifact@v4
         with:
-          path: '.'
+          path: _site
 
       - name: Deploy to GitHub Pages
         id: deployment
