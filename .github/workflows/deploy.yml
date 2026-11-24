@@ -69,6 +69,29 @@ jobs:
             return fs.statSync(fullPath).mtime;
           }
 
+          function decodeHtmlEntities(str) {
+            return String(str)
+              .replace(/&amp;/g, "&")
+              .replace(/&lt;/g, "<")
+              .replace(/&gt;/g, ">")
+              .replace(/&quot;/g, '"')
+              .replace(/&#39;/g, "'")
+              .replace(/&#x27;/g, "'")
+              .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(parseInt(code, 10)));
+          }
+
+          function getHtmlPageTitle(fullPath, fallbackName) {
+            try {
+              const content = fs.readFileSync(fullPath, "utf-8");
+              const match = content.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+              if (match && match[1]) {
+                const cleaned = decodeHtmlEntities(match[1]).replace(/\s+/g, " ").trim();
+                if (cleaned) return cleaned;
+              }
+            } catch (e) {}
+            return fallbackName.replace(/\.html$/i, "");
+          }
+
           function escapeAttr(str) {
             return String(str)
               .replace(/&/g, "&amp;")
@@ -84,10 +107,12 @@ jobs:
                 return `<a href="${t.href}"${activeClass}>${t.label}</a>`;
               })
               .join("\n");
-            return `<nav class="tabs" aria-label="디렉토리 전환">
-              <div class="tab-links">\n${items}\n</div>
-              <button type="button" class="token-btn" onclick="manageToken()">토큰 설정</button>
-            </nav>`;
+            return `<header class="tabs-wrap">
+              <nav class="tabs" aria-label="디렉토리 전환">
+                <div class="tab-links">\n${items}\n</div>
+                <button type="button" class="token-btn" onclick="manageToken()">토큰 설정</button>
+              </nav>
+            </header>`;
           }
 
           function renderFileRow({ href, title, repoPath, timeStr, openInNewTab }) {
@@ -114,6 +139,18 @@ jobs:
             "  }",
             "  return { owner, repo };",
             "}",
+            "function encodeRepoPath(filePath) {",
+            "  return filePath.split(\"/\").map(encodeURIComponent).join(\"/\");",
+            "}",
+            "function getHeaders(token, withJson = false) {",
+            "  const h = {",
+            "    \"Authorization\": `Bearer ${token}`,",
+            "    \"Accept\": \"application/vnd.github+json\",",
+            "    \"X-GitHub-Api-Version\": \"2022-11-28\"",
+            "  };",
+            "  if (withJson) h[\"Content-Type\"] = \"application/json\";",
+            "  return h;",
+            "}",
             "function manageToken() {",
             "  const current = localStorage.getItem(TOKEN_KEY) || \"\";",
             "  const next = prompt(",
@@ -134,7 +171,7 @@ jobs:
             "  let token = localStorage.getItem(TOKEN_KEY);",
             "  if (!token) {",
             "    const input = prompt(",
-            "      \"파일 삭제를 위해 GitHub PAT(Contents: Read and write 권한)를 입력하세요:\"",
+            "      \"파일/디렉토리 변경을 위해 GitHub PAT(Contents: Read and write 권한)를 입력하세요:\"",
             "    );",
             "    if (!input || !input.trim()) return null;",
             "    token = input.trim();",
@@ -150,18 +187,12 @@ jobs:
             "  const token = await ensureToken();",
             "  if (!token) return;",
             "  const { owner, repo } = getRepoInfo();",
-            "  const encodedPath = filePath.split(\"/\").map(encodeURIComponent).join(\"/\");",
-            "  const apiBase = `https://api.github.com/repos/${owner}/${repo}/contents/${encodedPath}`;",
-            "  const headers = {",
-            "    \"Authorization\": `Bearer ${token}`,",
-            "    \"Accept\": \"application/vnd.github+json\",",
-            "    \"X-GitHub-Api-Version\": \"2022-11-28\"",
-            "  };",
+            "  const apiBase = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeRepoPath(filePath)}`;",
             "  btn.disabled = true;",
             "  const origText = btn.textContent;",
             "  btn.textContent = \"삭제중...\";",
             "  try {",
-            "    const getRes = await fetch(apiBase, { headers });",
+            "    const getRes = await fetch(apiBase, { headers: getHeaders(token) });",
             "    if (!getRes.ok) {",
             "      const errData = await getRes.json().catch(() => ({}));",
             "      throw new Error(errData.message || `파일 정보 조회 실패 (${getRes.status})`);",
@@ -169,7 +200,7 @@ jobs:
             "    const fileInfo = await getRes.json();",
             "    const delRes = await fetch(apiBase, {",
             "      method: \"DELETE\",",
-            "      headers: { ...headers, \"Content-Type\": \"application/json\" },",
+            "      headers: getHeaders(token, true),",
             "      body: JSON.stringify({",
             "        message: `chore: delete ${filePath}`,",
             "        sha: fileInfo.sha,",
@@ -185,6 +216,100 @@ jobs:
             "    alert(`'${filePath}' 삭제가 완료되었습니다. Pages 재배포까지 잠시 기다려 주세요.`);",
             "  } catch (err) {",
             "    alert(`삭제 중 오류가 발생했습니다:\\n${err.message}`);",
+            "    btn.disabled = false;",
+            "    btn.textContent = origText;",
+            "  }",
+            "}",
+            "async function collectFilesRecursive(owner, repo, dirPath, token) {",
+            "  const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeRepoPath(dirPath)}?ref=main`;",
+            "  const res = await fetch(apiUrl, { headers: getHeaders(token) });",
+            "  if (!res.ok) {",
+            "    const errData = await res.json().catch(() => ({}));",
+            "    throw new Error(errData.message || `디렉토리 조회 실패 (${res.status})`);",
+            "  }",
+            "  const entries = await res.json();",
+            "  const list = Array.isArray(entries) ? entries : [entries];",
+            "  let files = [];",
+            "  for (const item of list) {",
+            "    if (item.type === \"file\") {",
+            "      files.push({ path: item.path, sha: item.sha });",
+            "    } else if (item.type === \"dir\") {",
+            "      const nested = await collectFilesRecursive(owner, repo, item.path, token);",
+            "      files = files.concat(nested);",
+            "    }",
+            "  }",
+            "  return files;",
+            "}",
+            "async function renameDirectory(event, btn) {",
+            "  event.preventDefault();",
+            "  event.stopPropagation();",
+            "  const oldDirPath = btn.getAttribute(\"data-dir-path\");",
+            "  const oldDirName = btn.getAttribute(\"data-dir-name\");",
+            "  if (!oldDirPath || !oldDirName) return;",
+            "  const input = prompt(`'${oldDirName}' 디렉토리의 새 이름을 입력하세요:`, oldDirName);",
+            "  if (input === null) return;",
+            "  const nextName = input.trim();",
+            "  if (!nextName || nextName === oldDirName) return;",
+            "  if (nextName.includes(\"/\") || nextName.includes(\"\\\\\")) {",
+            "    alert(\"디렉토리 이름에는 슬래시(/, \\\\)를 포함할 수 없습니다.\");",
+            "    return;",
+            "  }",
+            "  const parentPath = oldDirPath.includes(\"/\") ? oldDirPath.slice(0, oldDirPath.lastIndexOf(\"/\")) : \"\";",
+            "  const newDirPath = parentPath ? `${parentPath}/${nextName}` : nextName;",
+            "  const ok = confirm(`디렉토리 이름을 변경할까요?\\n${oldDirPath} → ${newDirPath}`);",
+            "  if (!ok) return;",
+            "  const token = await ensureToken();",
+            "  if (!token) return;",
+            "  const { owner, repo } = getRepoInfo();",
+            "  btn.disabled = true;",
+            "  const origText = btn.textContent;",
+            "  btn.textContent = \"변경중...\";",
+            "  try {",
+            "    const files = await collectFilesRecursive(owner, repo, oldDirPath, token);",
+            "    if (files.length === 0) {",
+            "      throw new Error(\"이동할 파일이 없습니다.\");",
+            "    }",
+            "    for (const f of files) {",
+            "      const metaRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${encodeRepoPath(f.path)}?ref=main`, {",
+            "        headers: getHeaders(token)",
+            "      });",
+            "      if (!metaRes.ok) {",
+            "        const errData = await metaRes.json().catch(() => ({}));",
+            "        throw new Error(errData.message || `파일 읽기 실패 (${f.path})`);",
+            "      }",
+            "      const meta = await metaRes.json();",
+            "      const base64Content = (meta.content || \"\").replace(/\\n/g, \"\");",
+            "      const targetFilePath = newDirPath + f.path.slice(oldDirPath.length);",
+            "      const putRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${encodeRepoPath(targetFilePath)}`, {",
+            "        method: \"PUT\",",
+            "        headers: getHeaders(token, true),",
+            "        body: JSON.stringify({",
+            "          message: `chore: move ${f.path} to ${targetFilePath}`,",
+            "          content: base64Content,",
+            "          branch: \"main\"",
+            "        })",
+            "      });",
+            "      if (!putRes.ok) {",
+            "        const errData = await putRes.json().catch(() => ({}));",
+            "        throw new Error(errData.message || `새 경로 생성 실패 (${targetFilePath})`);",
+            "      }",
+            "      const delRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${encodeRepoPath(f.path)}`, {",
+            "        method: \"DELETE\",",
+            "        headers: getHeaders(token, true),",
+            "        body: JSON.stringify({",
+            "          message: `chore: remove old ${f.path}`,",
+            "          sha: f.sha,",
+            "          branch: \"main\"",
+            "        })",
+            "      });",
+            "      if (!delRes.ok) {",
+            "        const errData = await delRes.json().catch(() => ({}));",
+            "        throw new Error(errData.message || `기존 파일 삭제 실패 (${f.path})`);",
+            "      }",
+            "    }",
+            "    alert(`'${oldDirPath}' → '${newDirPath}' 이름 변경이 완료되었습니다. Pages 재배포까지 잠시 기다려 주세요.`);",
+            "  } catch (err) {",
+            "    alert(`이름 변경 중 오류가 발생했습니다:\\n${err.message}`);",
             "    btn.disabled = false;",
             "    btn.textContent = origText;",
             "  }",
@@ -210,29 +335,38 @@ jobs:
                 --accent-bg: #eef6ff;
                 --danger: #cf222e;
                 --danger-bg: #fff1f2;
+                --header-h: 58px;
               }
               * { box-sizing: border-box; }
               body {
                 margin: 0;
-                padding: 24px 16px 48px;
+                padding: calc(var(--header-h) + 20px) 16px 48px;
                 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
                 font-size: 16px;
                 line-height: 1.5;
                 color: var(--text);
                 background: var(--bg);
               }
-              .container {
-                max-width: 720px;
-                margin: 0 auto;
+              .tabs-wrap {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 100;
+                height: var(--header-h);
+                background: rgba(255, 255, 255, 0.94);
+                backdrop-filter: blur(8px);
+                border-bottom: 1px solid var(--border);
               }
               .tabs {
+                max-width: 720px;
+                height: 100%;
+                margin: 0 auto;
+                padding: 0 16px;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
                 gap: 8px;
-                padding-bottom: 14px;
-                margin-bottom: 20px;
-                border-bottom: 1px solid var(--border);
               }
               .tab-links {
                 display: flex;
@@ -267,6 +401,10 @@ jobs:
               .token-btn:hover {
                 color: var(--text);
                 background: var(--surface);
+              }
+              .container {
+                max-width: 720px;
+                margin: 0 auto;
               }
               h1 {
                 margin: 0 0 18px;
@@ -307,23 +445,34 @@ jobs:
                 color: var(--muted);
                 font-variant-numeric: tabular-nums;
               }
-              .del-btn {
+              .del-btn, .rename-btn {
                 padding: 2px 7px;
-                border: 1px solid #f3c2c6;
                 border-radius: 5px;
                 background: transparent;
-                color: var(--danger);
-                font-size: 0.75rem;
+                font-size: 0.74rem;
                 line-height: 1.3;
                 cursor: pointer;
-                opacity: 0.75;
                 transition: background-color 0.15s, opacity 0.15s;
+              }
+              .del-btn {
+                border: 1px solid #f3c2c6;
+                color: var(--danger);
+                opacity: 0.78;
               }
               .del-btn:hover:not(:disabled) {
                 opacity: 1;
                 background: var(--danger-bg);
               }
-              .del-btn:disabled {
+              .rename-btn {
+                border: 1px solid var(--border);
+                color: var(--muted);
+                font-weight: 500;
+              }
+              .rename-btn:hover:not(:disabled) {
+                color: var(--text);
+                background: var(--bg);
+              }
+              .del-btn:disabled, .rename-btn:disabled {
                 opacity: 0.45;
                 cursor: not-allowed;
               }
@@ -342,16 +491,25 @@ jobs:
                 list-style: none;
                 display: flex;
                 align-items: center;
-                gap: 6px;
+                justify-content: space-between;
+                gap: 8px;
               }
               summary::-webkit-details-marker { display: none; }
-              summary::before {
+              .summary-left {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                min-width: 0;
+                word-break: break-word;
+              }
+              .summary-left::before {
                 content: "▸";
                 color: var(--muted);
                 font-size: 0.8rem;
+                flex-shrink: 0;
                 transition: transform 0.15s;
               }
-              details[open] > summary::before {
+              details[open] > summary .summary-left::before {
                 transform: rotate(90deg);
               }
               .folder-body {
@@ -360,7 +518,9 @@ jobs:
                 border-top: 1px solid #e5e9ee;
               }
               @media (max-width: 600px) {
-                body { padding: 16px 12px 36px; font-size: 15px; }
+                :root { --header-h: 54px; }
+                body { padding: calc(var(--header-h) + 14px) 12px 36px; font-size: 15px; }
+                .tabs { padding: 0 12px; }
                 h1 { font-size: 1.2rem; }
                 .file-list li {
                   flex-direction: column;
@@ -377,8 +537,8 @@ jobs:
             </style>
           </head>
           <body>
+            ${renderNav(activeKey)}
             <div class="container">
-              ${renderNav(activeKey)}
               <h1>${escapeAttr(heading)}</h1>
               ${bodyHtml}
             </div>
@@ -397,7 +557,7 @@ jobs:
                 const mtime = getGitOrStatMtime(`col/${file}`, fullPath);
                 return {
                   name: file,
-                  title: file.replace(/\.html$/, ""),
+                  title: getHtmlPageTitle(fullPath, file),
                   mtime,
                   timeStr: formatKst(mtime)
                 };
@@ -430,7 +590,7 @@ jobs:
             console.log("col 디렉토리가 존재하지 않습니다.");
           }
 
-          function buildTreeIndex(dirName) {
+          function buildTreeIndex(dirName, allowRename = false) {
             const targetDir = path.join(rootDir, dirName);
             if (!fs.existsSync(targetDir)) {
               console.log(`${dirName} 디렉토리가 존재하지 않습니다.`);
@@ -466,7 +626,7 @@ jobs:
                   const posixRel = relPath.replace(/\\/g, "/");
                   structure.files.push({
                     name: entry.name,
-                    title: entry.name.replace(/\.html$/, ""),
+                    title: getHtmlPageTitle(fullPath, entry.name),
                     path: posixRel,
                     repoPath: `${dirName}/${posixRel}`,
                     timeStr: formatKst(mtime)
@@ -481,7 +641,7 @@ jobs:
               return structure;
             }
 
-            function renderTree(node) {
+            function renderTree(node, currentPrefix = "") {
               let html = "";
 
               if (node.files && node.files.length > 0) {
@@ -509,10 +669,17 @@ jobs:
                 const hasContent =
                   subNode.files.length > 0 || Object.keys(subNode.directories).length > 0;
                 if (hasContent) {
+                  const subRepoPath = currentPrefix ? `${currentPrefix}/${subDirName}` : subDirName;
+                  const renameBtnHtml = allowRename
+                    ? `<button type="button" class="rename-btn" data-dir-path="${escapeAttr(subRepoPath)}" data-dir-name="${escapeAttr(subDirName)}" onclick="renameDirectory(event, this)" title="디렉토리 이름 변경">이름변경</button>`
+                    : "";
                   html += `<details>
-            <summary>${escapeAttr(subDirName)}</summary>
+            <summary>
+              <span class="summary-left">${escapeAttr(subDirName)}</span>
+              ${renameBtnHtml}
+            </summary>
             <div class="folder-body">
-              ${renderTree(subNode)}
+              ${renderTree(subNode, subRepoPath)}
             </div>
           </details>`;
                 }
@@ -521,7 +688,7 @@ jobs:
               return html;
             }
 
-            const treeHtml = renderTree(scanDirectory(targetDir));
+            const treeHtml = renderTree(scanDirectory(targetDir), dirName);
             fs.writeFileSync(
               path.join(targetDir, "index.html"),
               wrapPage({
@@ -534,8 +701,8 @@ jobs:
             console.log(`${dirName}/index.html 생성 완료`);
           }
 
-          buildTreeIndex("eb");
-          buildTreeIndex("co");
+          buildTreeIndex("eb", true);
+          buildTreeIndex("co", true);
           EOF
 
       - name: Setup Pages
