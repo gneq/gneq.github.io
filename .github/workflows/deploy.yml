@@ -129,7 +129,7 @@ jobs:
               </div>
               <span class="meta">
                 <span class="date">${timeStr}</span>
-                <button type="button" class="rename-file-btn" data-path="${escapeAttr(repoPath)}" data-file="${escapeAttr(fileName)}" onclick="renameHtmlFile(this)" title="파일명 변경">이름변경</button>
+                <button type="button" class="rename-file-btn" data-path="${escapeAttr(repoPath)}" data-file="${escapeAttr(fileName)}" onclick="renameHtmlFile(this)" title="파일명 변경">변경</button>
                 <button type="button" class="del-btn" data-path="${escapeAttr(repoPath)}" onclick="deleteHtmlFile(this)" title="GitHub에서 삭제">삭제</button>
               </span>
             </li>`;
@@ -776,7 +776,7 @@ jobs:
                 if (hasContent) {
                   const subRepoPath = currentPrefix ? `${currentPrefix}/${subDirName}` : subDirName;
                   const renameBtnHtml = allowRename
-                    ? `<button type="button" class="rename-btn" data-dir-path="${escapeAttr(subRepoPath)}" data-dir-name="${escapeAttr(subDirName)}" onclick="renameDirectory(event, this)" title="디렉토리 이름 변경">이름변경</button>`
+                    ? `<button type="button" class="rename-btn" data-dir-path="${escapeAttr(subRepoPath)}" data-dir-name="${escapeAttr(subDirName)}" onclick="renameDirectory(event, this)" title="디렉토리 이름 변경">변경</button>`
                     : "";
                   html += `<details>
             <summary>
