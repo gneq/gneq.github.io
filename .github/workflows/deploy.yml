@@ -3,7 +3,7 @@ name: Generate HTML Index and Deploy
 on:
   push:
     branches:
-      - main  # 메인 브랜치에 푸시될 때 실행
+      - main
 
 permissions:
   contents: read
@@ -21,7 +21,7 @@ jobs:
       - name: 체크아웃
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Git 히스토리를 전체 다 가져오도록 설정
+          fetch-depth: 0
 
       - name: Col 디렉토리 Index.html 자동 생성 (최신 커밋 순 내림차순)
         run: |
@@ -34,37 +34,31 @@ jobs:
 
             if (!fs.existsSync(colDir)) {
               console.log("col 디렉토리가 존재하지 않습니다.");
-              process.exit(0);
-            }
+            } else {
+              const files = fs.readdirSync(colDir)
+                .filter(file => file.endsWith(".html") && file !== "index.html")
+                .map(file => {
+                  const filePath = `col/${file}`;
+                  let mtime;
 
-            const files = fs.readdirSync(colDir)
-              .filter(file => file.endsWith(".html") && file !== "index.html")
-              .map(file => {
-                const filePath = `col/${file}`;
-                let mtime;
-
-                try {
-                  const gitTimeStr = execSync(`git log -1 --format=%ct -- "${filePath}"`, { encoding: "utf-8" }).trim();
-                  if (gitTimeStr) {
-                    mtime = new Date(parseInt(gitTimeStr, 10) * 1000);
-                  } else {
+                  try {
+                    const gitTimeStr = execSync(`git log -1 --format=%ct -- "${filePath}"`, { encoding: "utf-8" }).trim();
+                    mtime = gitTimeStr
+                      ? new Date(parseInt(gitTimeStr, 10) * 1000)
+                      : fs.statSync(path.join(colDir, file)).mtime;
+                  } catch (e) {
                     mtime = fs.statSync(path.join(colDir, file)).mtime;
                   }
-                } catch (e) {
-                  mtime = fs.statSync(path.join(colDir, file)).mtime;
-                }
 
-                return {
-                  name: file,
-                  title: file.replace(/\.html$/, ""),
-                  mtime: mtime
-                };
-              });
+                  return {
+                    name: file,
+                    title: file.replace(/\.html$/, ""),
+                    mtime
+                  };
+                });
 
-            // 최신 커밋 순으로 정렬 (내림차순)
-            files.sort((a, b) => b.mtime - a.mtime);
+              files.sort((a, b) => b.mtime - a.mtime);
 
-            const listItems = files.map(file => {
               const formatter = new Intl.DateTimeFormat("ko-KR", {
                 timeZone: "Asia/Seoul",
                 year: "numeric",
@@ -75,61 +69,54 @@ jobs:
                 hour12: false
               });
 
-              const parts = formatter.formatToParts(file.mtime);
-              const dateObj = {};
-              parts.forEach(p => { dateObj[p.type] = p.value; });
+              const listItems = files.map(file => {
+                const parts = formatter.formatToParts(file.mtime);
+                const dateObj = {};
+                parts.forEach(p => { dateObj[p.type] = p.value; });
+                const timeStr = `${dateObj.year}-${dateObj.month}-${dateObj.day} ${dateObj.hour}:${dateObj.minute}`;
 
-              const timeStr = `${dateObj.year}-${dateObj.month}-${dateObj.day} ${dateObj.hour}:${dateObj.minute}`;
+                return `<li>
+                  <a href="${file.name}">${file.title}</a>
+                  <span class="date">[${timeStr}]</span>
+                </li>`;
+              }).join("\n");
 
-              return `<li>
-                <a href="${file.name}">${file.title}</a>
-                <span class="date">[${timeStr}]</span>
-              </li>`;
-            }).join("\n");
+              const htmlContent = `<!DOCTYPE html>
+              <html lang="ko">
+              <head>
+                  <meta charset="UTF-8">
+                  <meta name="viewport" content="width=device-width, initial-scale=1" />
+                  <title>Col HTML 파일 목록</title>
+                  <style>
+                      html {font-size: 20px}
+                      body { font-family: sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+                      h1 { border-bottom: 2px solid #eee; padding-bottom: 10px; }
+                      ul { line-height: 1.8; list-style-type: none; padding: 0; text-align: justify; word-break: keep-all; }
+                      li { margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 4px; }
+                      a { text-decoration: none; color: #0066cc; }
+                      a:hover { text-decoration: underline; }
+                      .date { float: right; color: #888; font-size: 0.85em; }
+                  </style>
+              </head>
+              <body>
+                  <h1>📁 Col Directory HTML List</h1>
+                  <ul>
+                      ${listItems}
+                  </ul>
+              </body>
+              </html>`;
 
-            const htmlContent = `<!DOCTYPE html>
-            <html lang="ko">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <title>Col HTML 파일 목록</title>
-                <style>
-                    html {font-size: 20px}
-                    body { font-family: sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
-                    h1 { border-bottom: 2px solid #eee; padding-bottom: 10px; }
-                    ul { line-height: 1.8; list-style-type: none; padding: 0; text-align: justify; word-break: keep-all; }
-                    li { margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 4px;  }
-                    a { text-decoration: none; color: #0066cc;  }
-                    a:hover { text-decoration: underline; }
-                    .date { float: right; color: #888; font-size: 0.85em; }
-                </style>
-            </head>
-            <body>
-                <h1>📁 Col Directory HTML List</h1>
-                <ul>
-                    ${listItems}
-                </ul>
-            </body>
-            </html>`;
-
-            fs.writeFileSync(path.join(colDir, "index.html"), htmlContent);
-            console.log("col/index.html 생성 완료");
+              fs.writeFileSync(path.join(colDir, "index.html"), htmlContent);
+              console.log("col/index.html 생성 완료");
+            }
           '
 
-      - name: Eb 디렉토리 Index.html 자동 생성 (디렉터리 내 페이지 최근 변경순, 파일명 가나다순)
+      - name: Eb 및 Co 디렉토리 Index.html 자동 생성
         run: |
           node -e '
             const fs = require("fs");
             const path = require("path");
             const { execSync } = require("child_process");
-
-            const rootDir = __dirname;
-            const targetDir = path.join(rootDir, "eb");
-
-            if (!fs.existsSync(targetDir)) {
-              console.log("eb 디렉토리가 존재하지 않습니다.");
-              process.exit(0);
-            }
 
             const formatter = new Intl.DateTimeFormat("ko-KR", {
               timeZone: "Asia/Seoul",
@@ -148,287 +135,139 @@ jobs:
               return `${dateObj.year}-${dateObj.month}-${dateObj.day} ${dateObj.hour}:${dateObj.minute}`;
             }
 
-            function scanDirectory(dir, relativePath = "") {
-              const entries = fs.readdirSync(dir, { withFileTypes: true });
-              let latestTime = 0;
-              let structure = { directories: {}, files: [], latestMtime: 0 };
+            function buildTreeIndex(dirName, pageTitle, headingText) {
+              const targetDir = path.join(__dirname, dirName);
+              if (!fs.existsSync(targetDir)) {
+                console.log(`${dirName} 디렉토리가 존재하지 않습니다.`);
+                return;
+              }
 
-              entries.forEach(entry => {
-                const fullPath = path.join(dir, entry.name);
-                const relPath = path.join(relativePath, entry.name);
+              function scanDirectory(dir, relativePath = "") {
+                const entries = fs.readdirSync(dir, { withFileTypes: true });
+                let latestTime = 0;
+                const structure = { directories: {}, files: [], latestMtime: 0 };
 
-                if (entry.isDirectory()) {
-                  const subNode = scanDirectory(fullPath, relPath);
-                  structure.directories[entry.name] = subNode;
-                  if (subNode.latestMtime > latestTime) {
-                    latestTime = subNode.latestMtime;
-                  }
-                } else if (entry.isFile() && entry.name.endsWith(".html") && entry.name !== "index.html") {
-                  let mtime;
-                  try {
-                    const gitPath = `eb/${relPath}`.replace(/\\/g, "/");
-                    const gitTimeStr = execSync(`git log -1 --format=%ct -- "${gitPath}"`, { encoding: "utf-8" }).trim();
-                    if (gitTimeStr) {
-                      mtime = new Date(parseInt(gitTimeStr, 10) * 1000);
-                    } else {
+                for (const entry of entries) {
+                  const fullPath = path.join(dir, entry.name);
+                  const relPath = path.join(relativePath, entry.name);
+
+                  if (entry.isDirectory()) {
+                    const subNode = scanDirectory(fullPath, relPath);
+                    structure.directories[entry.name] = subNode;
+                    if (subNode.latestMtime > latestTime) {
+                      latestTime = subNode.latestMtime;
+                    }
+                  } else if (entry.isFile() && entry.name.endsWith(".html") && entry.name !== "index.html") {
+                    let mtime;
+                    try {
+                      const gitPath = `${dirName}/${relPath}`.replace(/\\/g, "/");
+                      const gitTimeStr = execSync(`git log -1 --format=%ct -- "${gitPath}"`, { encoding: "utf-8" }).trim();
+                      mtime = gitTimeStr
+                        ? new Date(parseInt(gitTimeStr, 10) * 1000)
+                        : fs.statSync(fullPath).mtime;
+                    } catch (e) {
                       mtime = fs.statSync(fullPath).mtime;
                     }
-                  } catch (e) {
-                    mtime = fs.statSync(fullPath).mtime;
-                  }
 
-                  const fileTime = mtime.getTime();
-                  if (fileTime > latestTime) {
-                    latestTime = fileTime;
-                  }
-
-                  structure.files.push({
-                    name: entry.name,
-                    title: entry.name.replace(/\.html$/, ""),
-                    path: relPath.replace(/\\/g, "/"),
-                    mtime: mtime,
-                    timeStr: formatKst(mtime)
-                  });
-                }
-              });
-
-              // 파일명 오름차순 정렬 (가나다/숫자순)
-              structure.files.sort((a, b) => a.name.localeCompare(b.name, "ko", { numeric: true }));
-              structure.latestMtime = latestTime;
-              return structure;
-            }
-
-            const ebData = scanDirectory(targetDir);
-
-            function renderTree(node) {
-              let html = "";
-
-              if (node.files && node.files.length > 0) {
-                html += `<ul>`;
-                node.files.forEach(file => {
-                  html += `<li>
-                    <a href="${file.path}" target="_blank">${file.title}</a>
-                    <span class="date">[${file.timeStr}]</span>
-                  </li>`;
-                });
-                html += `</ul>`;
-              }
-
-              // 디렉터리 내 페이지의 최근 변경 날짜 기준 내림차순 정렬
-              const sortedDirs = Object.entries(node.directories).sort((a, b) => {
-                if (b[1].latestMtime !== a[1].latestMtime) {
-                  return b[1].latestMtime - a[1].latestMtime;
-                }
-                return a[0].localeCompare(b[0], "ko", { numeric: true });
-              });
-
-              for (const [dirName, subNode] of sortedDirs) {
-                const hasContent = subNode.files.length > 0 || Object.keys(subNode.directories).length > 0;
-                if (hasContent) {
-                  html += `<details>
-                    <summary>📁 <strong>${dirName}</strong></summary>
-                    <div class="sub-folder">
-                      ${renderTree(subNode)}
-                    </div>
-                  </details>`;
-                }
-              }
-
-              return html;
-            }
-
-            const treeHtml = renderTree(ebData);
-
-            const htmlContent = `<!DOCTYPE html>
-            <html lang="ko">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <title>Eb Directory HTML List</title>
-                <style>
-                    html { font-size: 18px; }
-                    body { font-family: sans-serif; max-width: 700px; margin: 40px auto; padding: 20px; color: #333; }
-                    h1 { border-bottom: 2px solid #eee; padding-bottom: 10px; font-size: 1.5rem; }
-                    ul { line-height: 1.8; list-style-type: none; padding-left: 15px; margin: 5px 0; }
-                    li { margin-bottom: 6px; border-bottom: 1px dashed #f0f0f0; padding-bottom: 4px; }
-                    a { text-decoration: none; color: #0066cc; }
-                    a:hover { text-decoration: underline; }
-                    .date { float: right; color: #888; font-size: 0.8em; }
-                    details { margin: 10px 0; border: 1px solid #e1e4e8; border-radius: 6px; padding: 8px 12px; background: #fafbfc; }
-                    summary { cursor: pointer; font-weight: bold; padding: 4px 0; color: #24292e; }
-                    summary:hover { color: #0366d6; }
-                    .sub-folder { margin-top: 8px; padding-left: 10px; border-left: 2px solid #e1e4e8; }
-                </style>
-            </head>
-            <body>
-                <h1>📁 Eb Directory Structure</h1>
-                ${treeHtml}
-            </body>
-            </html>`;
-
-            fs.writeFileSync(path.join(targetDir, "index.html"), htmlContent);
-            console.log("eb/index.html 생성 완료");
-          '
-
-      - name: Co 디렉토리 Index.html 자동 생성 (디렉터리 내 페이지 최근 변경순, 파일명 가나다순)
-        run: |
-          node -e '
-            const fs = require("fs");
-            const path = require("path");
-            const { execSync } = require("child_process");
-
-            const rootDir = __dirname;
-            const targetDir = path.join(rootDir, "co");
-
-            if (!fs.existsSync(targetDir)) {
-              console.log("co 디렉토리가 존재하지 않습니다.");
-              process.exit(0);
-            }
-
-            const formatter = new Intl.DateTimeFormat("ko-KR", {
-              timeZone: "Asia/Seoul",
-              year: "numeric",
-              month: "2-digit",
-              day: "2-digit",
-              hour: "2-digit",
-              minute: "2-digit",
-              hour12: false
-            });
-
-            function formatKst(date) {
-              const parts = formatter.formatToParts(date);
-              const dateObj = {};
-              parts.forEach(p => { dateObj[p.type] = p.value; });
-              return `${dateObj.year}-${dateObj.month}-${dateObj.day} ${dateObj.hour}:${dateObj.minute}`;
-            }
-
-            function scanDirectory(dir, relativePath = "") {
-              const entries = fs.readdirSync(dir, { withFileTypes: true });
-              let latestTime = 0;
-              let structure = { directories: {}, files: [], latestMtime: 0 };
-
-              entries.forEach(entry => {
-                const fullPath = path.join(dir, entry.name);
-                const relPath = path.join(relativePath, entry.name);
-
-                if (entry.isDirectory()) {
-                  const subNode = scanDirectory(fullPath, relPath);
-                  structure.directories[entry.name] = subNode;
-                  if (subNode.latestMtime > latestTime) {
-                    latestTime = subNode.latestMtime;
-                  }
-                } else if (entry.isFile() && entry.name.endsWith(".html") && entry.name !== "index.html") {
-                  let mtime;
-                  try {
-                    const gitPath = `co/${relPath}`.replace(/\\/g, "/");
-                    const gitTimeStr = execSync(`git log -1 --format=%ct -- "${gitPath}"`, { encoding: "utf-8" }).trim();
-                    if (gitTimeStr) {
-                      mtime = new Date(parseInt(gitTimeStr, 10) * 1000);
-                    } else {
-                      mtime = fs.statSync(fullPath).mtime;
+                    const fileTime = mtime.getTime();
+                    if (fileTime > latestTime) {
+                      latestTime = fileTime;
                     }
-                  } catch (e) {
-                    mtime = fs.statSync(fullPath).mtime;
-                  }
 
-                  const fileTime = mtime.getTime();
-                  if (fileTime > latestTime) {
-                    latestTime = fileTime;
+                    structure.files.push({
+                      name: entry.name,
+                      title: entry.name.replace(/\.html$/, ""),
+                      path: relPath.replace(/\\/g, "/"),
+                      mtime,
+                      timeStr: formatKst(mtime)
+                    });
                   }
-
-                  structure.files.push({
-                    name: entry.name,
-                    title: entry.name.replace(/\.html$/, ""),
-                    path: relPath.replace(/\\/g, "/"),
-                    mtime: mtime,
-                    timeStr: formatKst(mtime)
-                  });
                 }
-              });
 
-              // 파일명 오름차순 정렬 (가나다/숫자순)
-              structure.files.sort((a, b) => a.name.localeCompare(b.name, "ko", { numeric: true }));
-              structure.latestMtime = latestTime;
-              return structure;
-            }
+                structure.files.sort((a, b) => a.name.localeCompare(b.name, "ko", { numeric: true }));
+                structure.latestMtime = latestTime;
+                return structure;
+              }
 
-            const coData = scanDirectory(targetDir);
+              function renderTree(node) {
+                let html = "";
 
-            function renderTree(node) {
-              let html = "";
+                if (node.files && node.files.length > 0) {
+                  html += "<ul>";
+                  for (const file of node.files) {
+                    html += `<li>
+                      <a href="${file.path}" target="_blank">${file.title}</a>
+                      <span class="date">[${file.timeStr}]</span>
+                    </li>`;
+                  }
+                  html += "</ul>";
+                }
 
-              if (node.files && node.files.length > 0) {
-                html += `<ul>`;
-                node.files.forEach(file => {
-                  html += `<li>
-                    <a href="${file.path}" target="_blank">${file.title}</a>
-                    <span class="date">[${file.timeStr}]</span>
-                  </li>`;
+                const sortedDirs = Object.entries(node.directories).sort((a, b) => {
+                  if (b[1].latestMtime !== a[1].latestMtime) {
+                    return b[1].latestMtime - a[1].latestMtime;
+                  }
+                  return a[0].localeCompare(b[0], "ko", { numeric: true });
                 });
-                html += `</ul>`;
+
+                for (const [subDirName, subNode] of sortedDirs) {
+                  const hasContent = subNode.files.length > 0 || Object.keys(subNode.directories).length > 0;
+                  if (hasContent) {
+                    html += `<details>
+                      <summary>📁 <strong>${subDirName}</strong></summary>
+                      <div class="sub-folder">
+                        ${renderTree(subNode)}
+                      </div>
+                    </details>`;
+                  }
+                }
+
+                return html;
               }
 
-              // 디렉터리 내 페이지의 최근 변경 날짜 기준 내림차순 정렬
-              const sortedDirs = Object.entries(node.directories).sort((a, b) => {
-                if (b[1].latestMtime !== a[1].latestMtime) {
-                  return b[1].latestMtime - a[1].latestMtime;
-                }
-                return a[0].localeCompare(b[0], "ko", { numeric: true });
-              });
+              const treeData = scanDirectory(targetDir);
+              const treeHtml = renderTree(treeData);
 
-              for (const [dirName, subNode] of sortedDirs) {
-                const hasContent = subNode.files.length > 0 || Object.keys(subNode.directories).length > 0;
-                if (hasContent) {
-                  html += `<details>
-                    <summary>📁 <strong>${dirName}</strong></summary>
-                    <div class="sub-folder">
-                      ${renderTree(subNode)}
-                    </div>
-                  </details>`;
-                }
-              }
+              const htmlContent = `<!DOCTYPE html>
+              <html lang="ko">
+              <head>
+                  <meta charset="UTF-8">
+                  <meta name="viewport" content="width=device-width, initial-scale=1" />
+                  <title>${pageTitle}</title>
+                  <style>
+                      html { font-size: 18px; }
+                      body { font-family: sans-serif; max-width: 700px; margin: 40px auto; padding: 20px; color: #333; }
+                      h1 { border-bottom: 2px solid #eee; padding-bottom: 10px; font-size: 1.5rem; }
+                      ul { line-height: 1.8; list-style-type: none; padding-left: 15px; margin: 5px 0; }
+                      li { margin-bottom: 6px; border-bottom: 1px dashed #f0f0f0; padding-bottom: 4px; }
+                      a { text-decoration: none; color: #0066cc; }
+                      a:hover { text-decoration: underline; }
+                      .date { float: right; color: #888; font-size: 0.8em; }
+                      details { margin: 10px 0; border: 1px solid #e1e4e8; border-radius: 6px; padding: 8px 12px; background: #fafbfc; }
+                      summary { cursor: pointer; font-weight: bold; padding: 4px 0; color: #24292e; }
+                      summary:hover { color: #0366d6; }
+                      .sub-folder { margin-top: 8px; padding-left: 10px; border-left: 2px solid #e1e4e8; }
+                  </style>
+              </head>
+              <body>
+                  <h1>${headingText}</h1>
+                  ${treeHtml}
+              </body>
+              </html>`;
 
-              return html;
+              fs.writeFileSync(path.join(targetDir, "index.html"), htmlContent);
+              console.log(`${dirName}/index.html 생성 완료`);
             }
 
-            const treeHtml = renderTree(coData);
-
-            const htmlContent = `<!DOCTYPE html>
-            <html lang="ko">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <title>Co Directory HTML List</title>
-                <style>
-                    html { font-size: 18px; }
-                    body { font-family: sans-serif; max-width: 700px; margin: 40px auto; padding: 20px; color: #333; }
-                    h1 { border-bottom: 2px solid #eee; padding-bottom: 10px; font-size: 1.5rem; }
-                    ul { line-height: 1.8; list-style-type: none; padding-left: 15px; margin: 5px 0; }
-                    li { margin-bottom: 6px; border-bottom: 1px dashed #f0f0f0; padding-bottom: 4px; }
-                    a { text-decoration: none; color: #0066cc; }
-                    a:hover { text-decoration: underline; }
-                    .date { float: right; color: #888; font-size: 0.8em; }
-                    details { margin: 10px 0; border: 1px solid #e1e4e8; border-radius: 6px; padding: 8px 12px; background: #fafbfc; }
-                    summary { cursor: pointer; font-weight: bold; padding: 4px 0; color: #24292e; }
-                    summary:hover { color: #0366d6; }
-                    .sub-folder { margin-top: 8px; padding-left: 10px; border-left: 2px solid #e1e4e8; }
-                </style>
-            </head>
-            <body>
-                <h1>📁 Co Directory Structure</h1>
-                ${treeHtml}
-            </body>
-            </html>`;
-
-            fs.writeFileSync(path.join(targetDir, "index.html"), htmlContent);
-            console.log("co/index.html 생성 완료");
+            buildTreeIndex("eb", "Eb Directory HTML List", "📁 Eb Directory Structure");
+            buildTreeIndex("co", "Co Directory HTML List", "📁 Co Directory Structure");
           '
 
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
 
       - name: Upload artifact (GitHub Pages 전용)
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: '.'
 
