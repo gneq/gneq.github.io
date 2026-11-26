@@ -115,12 +115,23 @@ jobs:
             </header>`;
           }
 
-          function renderFileRow({ href, fileName, pageTitle, repoPath, timeStr, openInNewTab }) {
+          function renderFileRow({
+            href,
+            fileName,
+            pageTitle,
+            repoPath,
+            timeStr,
+            openInNewTab,
+            allowTitleEdit = false
+          }) {
             const targetAttr = openInNewTab ? ' target="_blank" rel="noopener"' : "";
             const baseName = fileName.replace(/\.html$/i, "");
             const showSubtitle = pageTitle && pageTitle !== baseName && pageTitle !== fileName;
             const subtitleHtml = showSubtitle
               ? `<span class="page-title">${escapeAttr(pageTitle)}</span>`
+              : "";
+            const titleBtnHtml = allowTitleEdit
+              ? `<button type="button" class="rename-file-btn" data-path="${escapeAttr(repoPath)}" data-title="${escapeAttr(pageTitle || "")}" onclick="editPageTitle(this)" title="페이지 제목 변경">제목</button>`
               : "";
             return `<li>
               <div class="file-main">
@@ -129,6 +140,7 @@ jobs:
               </div>
               <span class="meta">
                 <span class="date">${timeStr}</span>
+                ${titleBtnHtml}
                 <button type="button" class="rename-file-btn" data-path="${escapeAttr(repoPath)}" data-file="${escapeAttr(fileName)}" onclick="renameHtmlFile(this)" title="파일명 변경">변경</button>
                 <button type="button" class="del-btn" data-path="${escapeAttr(repoPath)}" onclick="deleteHtmlFile(this)" title="GitHub에서 삭제">삭제</button>
               </span>
@@ -160,6 +172,23 @@ jobs:
             "  if (withJson) h[\"Content-Type\"] = \"application/json\";",
             "  return h;",
             "}",
+            "function encodeUtf8Base64(str) {",
+            "  const bytes = new TextEncoder().encode(str);",
+            "  let bin = \"\";",
+            "  for (let i = 0; i < bytes.length; i++) {",
+            "    bin += String.fromCharCode(bytes[i]);",
+            "  }",
+            "  return btoa(bin);",
+            "}",
+            "function decodeUtf8Base64(b64) {",
+            "  const clean = (b64 || \"\").replace(/\\n/g, \"\");",
+            "  const bin = atob(clean);",
+            "  const bytes = new Uint8Array(bin.length);",
+            "  for (let i = 0; i < bin.length; i++) {",
+            "    bytes[i] = bin.charCodeAt(i);",
+            "  }",
+            "  return new TextDecoder(\"utf-8\").decode(bytes);",
+            "}",
             "function manageToken() {",
             "  const current = localStorage.getItem(TOKEN_KEY) || \"\";",
             "  const next = prompt(",
@@ -187,6 +216,71 @@ jobs:
             "    localStorage.setItem(TOKEN_KEY, token);",
             "  }",
             "  return token;",
+            "}",
+            "async function editPageTitle(btn) {",
+            "  const filePath = btn.getAttribute(\"data-path\");",
+            "  const currentTitle = btn.getAttribute(\"data-title\") || \"\";",
+            "  if (!filePath) return;",
+            "  const input = prompt(`'${filePath}'의 새 페이지 제목(<title>)을 입력하세요:`, currentTitle);",
+            "  if (input === null) return;",
+            "  const nextTitle = input.trim();",
+            "  if (!nextTitle || nextTitle === currentTitle) return;",
+            "  const token = await ensureToken();",
+            "  if (!token) return;",
+            "  const { owner, repo } = getRepoInfo();",
+            "  const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeRepoPath(filePath)}?ref=main`;",
+            "  btn.disabled = true;",
+            "  const origText = btn.textContent;",
+            "  btn.textContent = \"수정중...\";",
+            "  try {",
+            "    const res = await fetch(apiUrl, { headers: getHeaders(token) });",
+            "    if (!res.ok) {",
+            "      const errData = await res.json().catch(() => ({}));",
+            "      throw new Error(errData.message || `파일 조회 실패 (${res.status})`);",
+            "    }",
+            "    const data = await res.json();",
+            "    let html = decodeUtf8Base64(data.content);",
+            "    const escapedTitle = nextTitle.replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\").replace(/>/g, \"&gt;\");",
+            "    if (/<title[^>]*>[\\s\\S]*?<\\/title>/i.test(html)) {",
+            "      html = html.replace(/<title[^>]*>[\\s\\S]*?<\\/title>/i, `<title>${escapedTitle}</title>`);",
+            "    } else if (/<head[^>]*>/i.test(html)) {",
+            "      html = html.replace(/<head([^>]*)>/i, `<head$1>\\n  <title>${escapedTitle}</title>`);",
+            "    } else {",
+            "      html = `<title>${escapedTitle}</title>\\n` + html;",
+            "    }",
+            "    const putRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${encodeRepoPath(filePath)}`, {",
+            "      method: \"PUT\",",
+            "      headers: getHeaders(token, true),",
+            "      body: JSON.stringify({",
+            "        message: `chore: update page title in ${filePath}`,",
+            "        content: encodeUtf8Base64(html),",
+            "        sha: data.sha,",
+            "        branch: \"main\"",
+            "      })",
+            "    });",
+            "    if (!putRes.ok) {",
+            "      const errData = await putRes.json().catch(() => ({}));",
+            "      throw new Error(errData.message || `제목 저장 실패 (${putRes.status})`);",
+            "    }",
+            "    btn.setAttribute(\"data-title\", nextTitle);",
+            "    const li = btn.closest(\"li\");",
+            "    if (li) {",
+            "      let sub = li.querySelector(\".page-title\");",
+            "      if (!sub) {",
+            "        sub = document.createElement(\"span\");",
+            "        sub.className = \"page-title\";",
+            "        const mainEl = li.querySelector(\".file-main\");",
+            "        if (mainEl) mainEl.appendChild(sub);",
+            "      }",
+            "      sub.textContent = nextTitle;",
+            "    }",
+            "    alert(`'${filePath}'의 제목이 '${nextTitle}'(으)로 변경되었습니다. Pages 재배포까지 잠시 기다려 주세요.`);",
+            "  } catch (err) {",
+            "    alert(`제목 변경 중 오류가 발생했습니다:\\n${err.message}`);",
+            "  } finally {",
+            "    btn.disabled = false;",
+            "    btn.textContent = origText;",
+            "  }",
             "}",
             "async function renameHtmlFile(btn) {",
             "  const oldPath = btn.getAttribute(\"data-path\");",
@@ -319,6 +413,46 @@ jobs:
             "    }",
             "  }",
             "  return files;",
+            "}",
+            "async function deleteDirectory(event, btn) {",
+            "  event.preventDefault();",
+            "  event.stopPropagation();",
+            "  const dirPath = btn.getAttribute(\"data-dir-path\");",
+            "  const dirName = btn.getAttribute(\"data-dir-name\");",
+            "  if (!dirPath) return;",
+            "  const ok = confirm(`정말로 '${dirName || dirPath}' 디렉토리와 내부의 모든 파일을 GitHub에서 삭제할까요?\\n삭제 커밋이 main 브랜치에 반영됩니다.`);",
+            "  if (!ok) return;",
+            "  const token = await ensureToken();",
+            "  if (!token) return;",
+            "  const { owner, repo } = getRepoInfo();",
+            "  btn.disabled = true;",
+            "  const origText = btn.textContent;",
+            "  btn.textContent = \"삭제중...\";",
+            "  try {",
+            "    const files = await collectFilesRecursive(owner, repo, dirPath, token);",
+            "    for (const f of files) {",
+            "      const delRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${encodeRepoPath(f.path)}`, {",
+            "        method: \"DELETE\",",
+            "        headers: getHeaders(token, true),",
+            "        body: JSON.stringify({",
+            "          message: `chore: delete ${f.path}`,",
+            "          sha: f.sha,",
+            "          branch: \"main\"",
+            "        })",
+            "      });",
+            "      if (!delRes.ok) {",
+            "        const errData = await delRes.json().catch(() => ({}));",
+            "        throw new Error(errData.message || `파일 삭제 실패 (${f.path})`);",
+            "      }",
+            "    }",
+            "    const detailsEl = btn.closest(\"details\");",
+            "    if (detailsEl) detailsEl.remove();",
+            "    alert(`'${dirPath}' 디렉토리 삭제가 완료되었습니다. Pages 재배포까지 잠시 기다려 주세요.`);",
+            "  } catch (err) {",
+            "    alert(`디렉토리 삭제 중 오류가 발생했습니다:\\n${err.message}`);",
+            "    btn.disabled = false;",
+            "    btn.textContent = origText;",
+            "  }",
             "}",
             "async function renameDirectory(event, btn) {",
             "  event.preventDefault();",
@@ -606,6 +740,12 @@ jobs:
               details[open] > summary .summary-left::before {
                 transform: rotate(90deg);
               }
+              .summary-actions {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                flex-shrink: 0;
+              }
               .folder-body {
                 background: var(--bg);
                 padding: 4px 12px 10px 18px;
@@ -676,7 +816,8 @@ jobs:
                   pageTitle: "",
                   repoPath: `col/${f.name}`,
                   timeStr: f.timeStr,
-                  openInNewTab: false
+                  openInNewTab: false,
+                  allowTitleEdit: false
                 })
               )
               .join("\n")}\n</ul>`;
@@ -695,7 +836,10 @@ jobs:
             console.log("col 디렉토리가 존재하지 않습니다.");
           }
 
-          function buildTreeIndex(dirName, { allowRename = false, showPageTitle = false } = {}) {
+          function buildTreeIndex(
+            dirName,
+            { allowRename = false, allowDirDelete = false, showPageTitle = false, allowTitleEdit = false } = {}
+          ) {
             const targetDir = path.join(rootDir, dirName);
             if (!fs.existsSync(targetDir)) {
               console.log(`${dirName} 디렉토리가 존재하지 않습니다.`);
@@ -758,7 +902,8 @@ jobs:
                       pageTitle: file.pageTitle,
                       repoPath: file.repoPath,
                       timeStr: file.timeStr,
-                      openInNewTab: true
+                      openInNewTab: true,
+                      allowTitleEdit
                     })
                   )
                   .join("\n")}\n</ul>`;
@@ -779,10 +924,17 @@ jobs:
                   const renameBtnHtml = allowRename
                     ? `<button type="button" class="rename-btn" data-dir-path="${escapeAttr(subRepoPath)}" data-dir-name="${escapeAttr(subDirName)}" onclick="renameDirectory(event, this)" title="디렉토리 이름 변경">변경</button>`
                     : "";
+                  const delDirBtnHtml = allowDirDelete
+                    ? `<button type="button" class="del-btn" data-dir-path="${escapeAttr(subRepoPath)}" data-dir-name="${escapeAttr(subDirName)}" onclick="deleteDirectory(event, this)" title="디렉토리 삭제">삭제</button>`
+                    : "";
+                  const actionsHtml =
+                    renameBtnHtml || delDirBtnHtml
+                      ? `<span class="summary-actions">${renameBtnHtml}${delDirBtnHtml}</span>`
+                      : "";
                   html += `<details>
             <summary>
               <span class="summary-left">${escapeAttr(subDirName)}</span>
-              ${renameBtnHtml}
+              ${actionsHtml}
             </summary>
             <div class="folder-body">
               ${renderTree(subNode, subRepoPath)}
@@ -807,8 +959,18 @@ jobs:
             console.log(`${dirName}/index.html 생성 완료`);
           }
 
-          buildTreeIndex("eb", { allowRename: true, showPageTitle: true });
-          buildTreeIndex("co", { allowRename: true, showPageTitle: false });
+          buildTreeIndex("eb", {
+            allowRename: true,
+            allowDirDelete: true,
+            showPageTitle: true,
+            allowTitleEdit: true
+          });
+          buildTreeIndex("co", {
+            allowRename: true,
+            allowDirDelete: false,
+            showPageTitle: false,
+            allowTitleEdit: false
+          });
           EOF
 
       - name: Setup Pages
