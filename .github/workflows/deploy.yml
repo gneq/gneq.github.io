@@ -47,14 +47,26 @@ jobs:
             hour12: false
           });
 
-          function formatKst(date) {
+          function getKstParts(date) {
             const parts = formatter.formatToParts(date);
             const dateObj = {};
             for (const p of parts) {
               dateObj[p.type] = p.value;
             }
-            return `${dateObj.year}-${dateObj.month}-${dateObj.day} ${dateObj.hour}:${dateObj.minute}`;
+            return dateObj;
           }
+
+          function formatKst(date) {
+            const d = getKstParts(date);
+            return `${d.year}-${d.month}-${d.day} ${d.hour}:${d.minute}`;
+          }
+
+          function formatKstDateOnly(date) {
+            const d = getKstParts(date);
+            return `${d.year}-${d.month}-${d.day}`;
+          }
+
+          const todayKstStr = formatKstDateOnly(new Date());
 
           function getGitOrStatMtime(repoRelPath, fullPath) {
             try {
@@ -640,6 +652,9 @@ jobs:
                 padding: 9px 4px;
                 border-bottom: 1px solid #eef1f4;
               }
+              .file-list li:last-child {
+                border-bottom: none;
+              }
               .file-main {
                 display: flex;
                 flex-wrap: wrap;
@@ -672,6 +687,29 @@ jobs:
                 font-size: 0.82rem;
                 color: var(--muted);
                 font-variant-numeric: tabular-nums;
+              }
+              .count-badge {
+                display: inline-flex;
+                align-items: center;
+                padding: 1px 8px;
+                border-radius: 999px;
+                background: #eef1f4;
+                color: var(--muted);
+                font-size: 0.76rem;
+                font-weight: 600;
+                font-variant-numeric: tabular-nums;
+                flex-shrink: 0;
+              }
+              .today-tag {
+                display: inline-flex;
+                align-items: center;
+                padding: 1px 6px;
+                border-radius: 999px;
+                background: var(--accent-bg);
+                color: var(--accent);
+                font-size: 0.72rem;
+                font-weight: 700;
+                flex-shrink: 0;
               }
               .del-btn, .rename-btn, .rename-file-btn {
                 padding: 2px 7px;
@@ -803,32 +841,62 @@ jobs:
                 return {
                   name: file,
                   mtime,
+                  dayStr: formatKstDateOnly(mtime),
                   timeStr: formatKst(mtime)
                 };
               })
               .sort((a, b) => b.mtime - a.mtime);
 
-            const colListHtml = `<ul class="file-list">\n${colFiles
-              .map((f) =>
-                renderFileRow({
-                  href: f.name,
-                  fileName: f.name,
-                  pageTitle: "",
-                  repoPath: `col/${f.name}`,
-                  timeStr: f.timeStr,
-                  openInNewTab: false,
-                  allowTitleEdit: false
-                })
-              )
-              .join("\n")}\n</ul>`;
+            const groupedByDate = new Map();
+            for (const f of colFiles) {
+              if (!groupedByDate.has(f.dayStr)) {
+                groupedByDate.set(f.dayStr, []);
+              }
+              groupedByDate.get(f.dayStr).push(f);
+            }
+
+            const colGroupedHtml = Array.from(groupedByDate.entries())
+              .map(([dayStr, files]) => {
+                const isToday = dayStr === todayKstStr;
+                const openAttr = isToday ? " open" : "";
+                const todayBadge = isToday ? `<span class="today-tag">오늘</span>` : "";
+                const rowsHtml = files
+                  .map((f) =>
+                    renderFileRow({
+                      href: f.name,
+                      fileName: f.name,
+                      pageTitle: "",
+                      repoPath: `col/${f.name}`,
+                      timeStr: f.timeStr,
+                      openInNewTab: false,
+                      allowTitleEdit: false
+                    })
+                  )
+                  .join("\n");
+
+                return `<details${openAttr}>
+                  <summary>
+                    <span class="summary-left">${escapeAttr(dayStr)}${todayBadge}</span>
+                    <span class="summary-actions">
+                      <span class="count-badge">${files.length}개</span>
+                    </span>
+                  </summary>
+                  <div class="folder-body">
+                    <ul class="file-list">
+                      ${rowsHtml}
+                    </ul>
+                  </div>
+                </details>`;
+              })
+              .join("\n");
 
             fs.writeFileSync(
               path.join(colDir, "index.html"),
               wrapPage({
                 title: "col — HTML 목록",
-                heading: "col",
+                heading: `col (${colFiles.length}개)`,
                 activeKey: "col",
-                bodyHtml: colListHtml
+                bodyHtml: colGroupedHtml
               })
             );
             console.log("col/index.html 생성 완료");
@@ -849,7 +917,8 @@ jobs:
             function scanDirectory(dir, relativePath = "") {
               const entries = fs.readdirSync(dir, { withFileTypes: true });
               let latestTime = 0;
-              const structure = { directories: {}, files: [], latestMtime: 0 };
+              let totalFiles = 0;
+              const structure = { directories: {}, files: [], latestMtime: 0, totalFiles: 0 };
 
               for (const entry of entries) {
                 const fullPath = path.join(dir, entry.name);
@@ -858,6 +927,7 @@ jobs:
                 if (entry.isDirectory()) {
                   const subNode = scanDirectory(fullPath, relPath);
                   structure.directories[entry.name] = subNode;
+                  totalFiles += subNode.totalFiles;
                   if (subNode.latestMtime > latestTime) {
                     latestTime = subNode.latestMtime;
                   }
@@ -871,6 +941,7 @@ jobs:
                   if (fileTime > latestTime) {
                     latestTime = fileTime;
                   }
+                  totalFiles += 1;
 
                   const posixRel = relPath.replace(/\\/g, "/");
                   structure.files.push({
@@ -887,6 +958,7 @@ jobs:
                 a.name.localeCompare(b.name, "ko", { numeric: true })
               );
               structure.latestMtime = latestTime;
+              structure.totalFiles = totalFiles;
               return structure;
             }
 
@@ -921,16 +993,14 @@ jobs:
                   subNode.files.length > 0 || Object.keys(subNode.directories).length > 0;
                 if (hasContent) {
                   const subRepoPath = currentPrefix ? `${currentPrefix}/${subDirName}` : subDirName;
+                  const countBadgeHtml = `<span class="count-badge">${subNode.totalFiles}개</span>`;
                   const renameBtnHtml = allowRename
                     ? `<button type="button" class="rename-btn" data-dir-path="${escapeAttr(subRepoPath)}" data-dir-name="${escapeAttr(subDirName)}" onclick="renameDirectory(event, this)" title="디렉토리 이름 변경">변경</button>`
                     : "";
                   const delDirBtnHtml = allowDirDelete
                     ? `<button type="button" class="del-btn" data-dir-path="${escapeAttr(subRepoPath)}" data-dir-name="${escapeAttr(subDirName)}" onclick="deleteDirectory(event, this)" title="디렉토리 삭제">삭제</button>`
                     : "";
-                  const actionsHtml =
-                    renameBtnHtml || delDirBtnHtml
-                      ? `<span class="summary-actions">${renameBtnHtml}${delDirBtnHtml}</span>`
-                      : "";
+                  const actionsHtml = `<span class="summary-actions">${countBadgeHtml}${renameBtnHtml}${delDirBtnHtml}</span>`;
                   html += `<details>
             <summary>
               <span class="summary-left">${escapeAttr(subDirName)}</span>
@@ -946,12 +1016,13 @@ jobs:
               return html;
             }
 
-            const treeHtml = renderTree(scanDirectory(targetDir), dirName);
+            const rootNode = scanDirectory(targetDir);
+            const treeHtml = renderTree(rootNode, dirName);
             fs.writeFileSync(
               path.join(targetDir, "index.html"),
               wrapPage({
                 title: `${dirName} — HTML 목록`,
-                heading: dirName,
+                heading: `${dirName} (${rootNode.totalFiles}개)`,
                 activeKey: dirName,
                 bodyHtml: treeHtml
               })
