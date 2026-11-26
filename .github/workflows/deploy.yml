@@ -427,6 +427,7 @@ jobs:
                 color: var(--text);
                 background: var(--bg);
               }
+              .container { padding:50vh 0 75vh 0; }
               .tabs-wrap {
                 position: fixed;
                 top: 0;
