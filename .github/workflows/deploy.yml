@@ -524,7 +524,7 @@ jobs:
             "        headers: getHeaders(token, true),",
             "        body: JSON.stringify({",
             "          message: `chore: remove old ${f.path}`,",
-            "          sha: f.sha,",
+            "          sha: meta.sha,",
             "          branch: \"main\"",
             "        })",
             "      });",
@@ -840,6 +840,7 @@ jobs:
                 const mtime = getGitOrStatMtime(`col/${file}`, fullPath);
                 return {
                   name: file,
+                  pageTitle: getHtmlPageTitle(fullPath),
                   mtime,
                   dayStr: formatKstDateOnly(mtime),
                   timeStr: formatKst(mtime)
@@ -865,11 +866,11 @@ jobs:
                     renderFileRow({
                       href: f.name,
                       fileName: f.name,
-                      pageTitle: "",
+                      pageTitle: f.pageTitle,
                       repoPath: `col/${f.name}`,
                       timeStr: f.timeStr,
                       openInNewTab: false,
-                      allowTitleEdit: false
+                      allowTitleEdit: true
                     })
                   )
                   .join("\n");
@@ -1039,8 +1040,8 @@ jobs:
           buildTreeIndex("co", {
             allowRename: true,
             allowDirDelete: false,
-            showPageTitle: false,
-            allowTitleEdit: false
+            showPageTitle: true,
+            allowTitleEdit: true
           });
           EOF
 
