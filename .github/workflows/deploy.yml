@@ -204,19 +204,17 @@ jobs:
             </li>`;
           }
 
-          const dialogMarkup = [
-            '<div id="ui-dialog-backdrop" class="ui-dialog-backdrop" hidden>',
-            '  <div class="ui-dialog" role="dialog" aria-modal="true" aria-labelledby="ui-dialog-title">',
-            '    <div class="ui-dialog-header">',
-            '      <h2 id="ui-dialog-title" class="ui-dialog-title">알림</h2>',
+          const popupMarkup = [
+            '<div id="ui-popup-backdrop" class="ui-popup-backdrop" hidden>',
+            '  <div class="ui-popup-box">',
+            '    <div id="ui-popup-title" class="ui-popup-title">알림</div>',
+            '    <div id="ui-popup-message" class="ui-popup-message"></div>',
+            '    <div id="ui-popup-input-row" class="ui-popup-input-row" hidden>',
+            '      <input id="ui-popup-input" type="text" class="ui-popup-input" autocomplete="off" />',
             '    </div>',
-            '    <div id="ui-dialog-message" class="ui-dialog-message"></div>',
-            '    <div id="ui-dialog-input-wrap" class="ui-dialog-input-wrap" hidden>',
-            '      <input id="ui-dialog-input" type="text" class="ui-dialog-input" autocomplete="off" />',
-            '    </div>',
-            '    <div class="ui-dialog-actions">',
-            '      <button type="button" id="ui-dialog-cancel" class="ui-btn ui-btn-secondary">취소</button>',
-            '      <button type="button" id="ui-dialog-ok" class="ui-btn ui-btn-primary">확인</button>',
+            '    <div class="ui-popup-actions">',
+            '      <button type="button" id="ui-popup-cancel" class="ui-btn ui-btn-secondary">취소</button>',
+            '      <button type="button" id="ui-popup-ok" class="ui-btn ui-btn-primary">확인</button>',
             '    </div>',
             '  </div>',
             '</div>'
@@ -225,22 +223,22 @@ jobs:
           const clientScript = [
             "<script>",
             'const TOKEN_KEY = "gh_pages_delete_token";',
-            "function openDialog({ mode = \"alert\", title = \"알림\", message = \"\", defaultValue = \"\", placeholder = \"\", okText = \"확인\", cancelText = \"취소\" }) {",
+            "function openPopup({ mode = \"alert\", title = \"알림\", message = \"\", defaultValue = \"\", placeholder = \"\", okText = \"확인\", cancelText = \"취소\" }) {",
             "  return new Promise((resolve) => {",
-            "    const backdrop = document.getElementById(\"ui-dialog-backdrop\");",
-            "    const titleEl = document.getElementById(\"ui-dialog-title\");",
-            "    const msgEl = document.getElementById(\"ui-dialog-message\");",
-            "    const inputWrap = document.getElementById(\"ui-dialog-input-wrap\");",
-            "    const inputEl = document.getElementById(\"ui-dialog-input\");",
-            "    const okBtn = document.getElementById(\"ui-dialog-ok\");",
-            "    const cancelBtn = document.getElementById(\"ui-dialog-cancel\");",
+            "    const backdrop = document.getElementById(\"ui-popup-backdrop\");",
+            "    const titleEl = document.getElementById(\"ui-popup-title\");",
+            "    const msgEl = document.getElementById(\"ui-popup-message\");",
+            "    const inputRow = document.getElementById(\"ui-popup-input-row\");",
+            "    const inputEl = document.getElementById(\"ui-popup-input\");",
+            "    const okBtn = document.getElementById(\"ui-popup-ok\");",
+            "    const cancelBtn = document.getElementById(\"ui-popup-cancel\");",
             "    titleEl.textContent = title;",
             "    msgEl.textContent = message;",
             "    okBtn.textContent = okText;",
             "    cancelBtn.textContent = cancelText;",
             "    const showInput = mode === \"prompt\";",
             "    const showCancel = mode === \"confirm\" || mode === \"prompt\";",
-            "    inputWrap.hidden = !showInput;",
+            "    inputRow.hidden = !showInput;",
             "    cancelBtn.hidden = !showCancel;",
             "    if (showInput) {",
             "      inputEl.value = defaultValue ?? \"\";",
@@ -260,7 +258,6 @@ jobs:
             "    }",
             "    function onOk() {",
             "      if (mode === \"prompt\") cleanup(inputEl.value);",
-            "      else if (mode === \"confirm\") cleanup(true);",
             "      else cleanup(true);",
             "    }",
             "    function onCancel() {",
@@ -290,13 +287,13 @@ jobs:
             "  });",
             "}",
             "function uiAlert(message, title = \"알림\") {",
-            "  return openDialog({ mode: \"alert\", title, message, okText: \"확인\" });",
+            "  return openPopup({ mode: \"alert\", title, message, okText: \"확인\" });",
             "}",
             "function uiConfirm(message, title = \"확인\") {",
-            "  return openDialog({ mode: \"confirm\", title, message, okText: \"확인\", cancelText: \"취소\" });",
+            "  return openPopup({ mode: \"confirm\", title, message, okText: \"확인\", cancelText: \"취소\" });",
             "}",
             "function uiPrompt(message, defaultValue = \"\", title = \"입력\", placeholder = \"\") {",
-            "  return openDialog({ mode: \"prompt\", title, message, defaultValue, placeholder, okText: \"확인\", cancelText: \"취소\" });",
+            "  return openPopup({ mode: \"prompt\", title, message, defaultValue, placeholder, okText: \"확인\", cancelText: \"취소\" });",
             "}",
             "function normalizeKeywordsClient(raw) {",
             "  return String(raw || \"\")",
@@ -1057,10 +1054,10 @@ jobs:
                 padding: 4px 12px 10px 18px;
                 border-top: 1px solid #e5e9ee;
               }
-              .ui-dialog-backdrop[hidden] {
+              .ui-popup-backdrop[hidden] {
                 display: none;
               }
-              .ui-dialog-backdrop {
+              .ui-popup-backdrop {
                 position: fixed;
                 inset: 0;
                 z-index: 999;
@@ -1071,7 +1068,7 @@ jobs:
                 justify-content: center;
                 padding: 16px;
               }
-              .ui-dialog {
+              .ui-popup-box {
                 width: 100%;
                 max-width: 420px;
                 background: var(--bg);
@@ -1080,30 +1077,27 @@ jobs:
                 box-shadow: 0 12px 32px rgba(31, 35, 40, 0.16);
                 overflow: hidden;
               }
-              .ui-dialog-header {
+              .ui-popup-title {
                 padding: 14px 18px 10px;
                 border-bottom: 1px solid #eef1f4;
-              }
-              .ui-dialog-title {
-                margin: 0;
                 font-size: 1rem;
                 font-weight: 700;
                 color: var(--text);
               }
-              .ui-dialog-message {
+              .ui-popup-message {
                 padding: 14px 18px;
                 font-size: 0.9rem;
                 color: var(--text);
                 white-space: pre-line;
                 word-break: break-word;
               }
-              .ui-dialog-input-wrap[hidden] {
+              .ui-popup-input-row[hidden] {
                 display: none;
               }
-              .ui-dialog-input-wrap {
+              .ui-popup-input-row {
                 padding: 0 18px 14px;
               }
-              .ui-dialog-input {
+              .ui-popup-input {
                 width: 100%;
                 padding: 9px 11px;
                 border: 1px solid var(--border);
@@ -1114,11 +1108,11 @@ jobs:
                 background: var(--bg);
                 outline: none;
               }
-              .ui-dialog-input:focus {
+              .ui-popup-input:focus {
                 border-color: var(--accent);
                 box-shadow: 0 0 0 3px var(--accent-bg);
               }
-              .ui-dialog-actions {
+              .ui-popup-actions {
                 padding: 10px 18px 14px;
                 display: flex;
                 justify-content: flex-end;
@@ -1188,7 +1182,7 @@ jobs:
               <h1>${escapeAttr(heading)}</h1>
               ${bodyHtml}
             </div>
-            ${dialogMarkup}
+            ${popupMarkup}
             ${clientScript}
           </body>
           </html>`;
