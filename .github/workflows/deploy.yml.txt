@@ -1,0 +1,1058 @@
+name: Generate HTML Index and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 체크아웃
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: HTML Index 자동 생성 (co, col, eb)
+        run: |
+          node - << 'EOF'
+          const fs = require("fs");
+          const path = require("path");
+          const { execSync } = require("child_process");
+
+          const rootDir = process.cwd();
+          const tabs = [
+            { key: "co", label: "co", href: "../co/" },
+            { key: "col", label: "col", href: "../col/" },
+            { key: "eb", label: "eb", href: "../eb/" }
+          ];
+
+          const formatter = new Intl.DateTimeFormat("ko-KR", {
+            timeZone: "Asia/Seoul",
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false
+          });
+
+          function getKstParts(date) {
+            const parts = formatter.formatToParts(date);
+            const dateObj = {};
+            for (const p of parts) {
+              dateObj[p.type] = p.value;
+            }
+            return dateObj;
+          }
+
+          function formatKst(date) {
+            const d = getKstParts(date);
+            return `${d.year}-${d.month}-${d.day} ${d.hour}:${d.minute}`;
+          }
+
+          function formatKstDateOnly(date) {
+            const d = getKstParts(date);
+            return `${d.year}-${d.month}-${d.day}`;
+          }
+
+          const todayKstStr = formatKstDateOnly(new Date());
+
+          function getGitOrStatMtime(repoRelPath, fullPath) {
+            try {
+              const gitPath = repoRelPath.replace(/\\/g, "/");
+              const gitTimeStr = execSync(`git log -1 --format=%ct -- "${gitPath}"`, {
+                encoding: "utf-8"
+              }).trim();
+              if (gitTimeStr) {
+                return new Date(parseInt(gitTimeStr, 10) * 1000);
+              }
+            } catch (e) {}
+            return fs.statSync(fullPath).mtime;
+          }
+
+          function decodeHtmlEntities(str) {
+            return String(str)
+              .replace(/&amp;/g, "&")
+              .replace(/&lt;/g, "<")
+              .replace(/&gt;/g, ">")
+              .replace(/&quot;/g, '"')
+              .replace(/&#39;/g, "'")
+              .replace(/&#x27;/g, "'")
+              .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(parseInt(code, 10)));
+          }
+
+          function getHtmlPageTitle(fullPath) {
+            try {
+              const content = fs.readFileSync(fullPath, "utf-8");
+              const match = content.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+              if (match && match[1]) {
+                const cleaned = decodeHtmlEntities(match[1]).replace(/\s+/g, " ").trim();
+                if (cleaned) return cleaned;
+              }
+            } catch (e) {}
+            return "";
+          }
+
+          function escapeAttr(str) {
+            return String(str)
+              .replace(/&/g, "&amp;")
+              .replace(/"/g, "&quot;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;");
+          }
+
+          function renderNav(activeKey) {
+            const items = tabs
+              .map((t) => {
+                const activeClass = t.key === activeKey ? ' class="active"' : "";
+                return `<a href="${t.href}"${activeClass}>${t.label}</a>`;
+              })
+              .join("\n");
+            return `<header class="tabs-wrap">
+              <nav class="tabs" aria-label="디렉토리 전환">
+                <div class="tab-links">\n${items}\n</div>
+                <button type="button" class="token-btn" onclick="manageToken()">토큰 설정</button>
+              </nav>
+            </header>`;
+          }
+
+          function renderFileRow({
+            href,
+            fileName,
+            pageTitle,
+            repoPath,
+            timeStr,
+            openInNewTab,
+            allowTitleEdit = false
+          }) {
+            const targetAttr = openInNewTab ? ' target="_blank" rel="noopener"' : "";
+            const baseName = fileName.replace(/\.html$/i, "");
+            const showSubtitle = pageTitle && pageTitle !== baseName && pageTitle !== fileName;
+            const subtitleHtml = showSubtitle
+              ? `<span class="page-title">${escapeAttr(pageTitle)}</span>`
+              : "";
+            const titleBtnHtml = allowTitleEdit
+              ? `<button type="button" class="rename-file-btn" data-path="${escapeAttr(repoPath)}" data-title="${escapeAttr(pageTitle || "")}" onclick="editPageTitle(this)" title="페이지 제목 변경">제목</button>`
+              : "";
+            return `<li>
+              <div class="file-main">
+                <a href="${escapeAttr(href)}"${targetAttr}>${escapeAttr(baseName)}</a>
+                ${subtitleHtml}
+              </div>
+              <span class="meta">
+                <span class="date">${timeStr}</span>
+                ${titleBtnHtml}
+                <button type="button" class="rename-file-btn" data-path="${escapeAttr(repoPath)}" data-file="${escapeAttr(fileName)}" onclick="renameHtmlFile(this)" title="파일명 변경">변경</button>
+                <button type="button" class="del-btn" data-path="${escapeAttr(repoPath)}" onclick="deleteHtmlFile(this)" title="GitHub에서 삭제">삭제</button>
+              </span>
+            </li>`;
+          }
+
+          const clientScript = [
+            "<script>",
+            'const TOKEN_KEY = "gh_pages_delete_token";',
+            "function getRepoInfo() {",
+            "  const hostParts = window.location.hostname.split(\".\");",
+            "  const owner = hostParts[0] || \"\";",
+            "  const pathParts = window.location.pathname.split(\"/\").filter(Boolean);",
+            "  let repo = `${owner}.github.io`;",
+            "  if (!window.location.hostname.endsWith(\".github.io\") && pathParts.length > 0) {",
+            "    repo = pathParts[0];",
+            "  }",
+            "  return { owner, repo };",
+            "}",
+            "function encodeRepoPath(filePath) {",
+            "  return filePath.split(\"/\").map(encodeURIComponent).join(\"/\");",
+            "}",
+            "function getHeaders(token, withJson = false) {",
+            "  const h = {",
+            "    \"Authorization\": `Bearer ${token}`,",
+            "    \"Accept\": \"application/vnd.github+json\",",
+            "    \"X-GitHub-Api-Version\": \"2022-11-28\"",
+            "  };",
+            "  if (withJson) h[\"Content-Type\"] = \"application/json\";",
+            "  return h;",
+            "}",
+            "function encodeUtf8Base64(str) {",
+            "  const bytes = new TextEncoder().encode(str);",
+            "  let bin = \"\";",
+            "  for (let i = 0; i < bytes.length; i++) {",
+            "    bin += String.fromCharCode(bytes[i]);",
+            "  }",
+            "  return btoa(bin);",
+            "}",
+            "function decodeUtf8Base64(b64) {",
+            "  const clean = (b64 || \"\").replace(/\\n/g, \"\");",
+            "  const bin = atob(clean);",
+            "  const bytes = new Uint8Array(bin.length);",
+            "  for (let i = 0; i < bin.length; i++) {",
+            "    bytes[i] = bin.charCodeAt(i);",
+            "  }",
+            "  return new TextDecoder(\"utf-8\").decode(bytes);",
+            "}",
+            "function manageToken() {",
+            "  const current = localStorage.getItem(TOKEN_KEY) || \"\";",
+            "  const next = prompt(",
+            "    \"GitHub Fine-grained PAT를 입력하세요 (빈 값 입력 시 삭제):\",",
+            "    current",
+            "  );",
+            "  if (next === null) return;",
+            "  const trimmed = next.trim();",
+            "  if (!trimmed) {",
+            "    localStorage.removeItem(TOKEN_KEY);",
+            "    alert(\"저장된 토큰을 삭제했습니다.\");",
+            "  } else {",
+            "    localStorage.setItem(TOKEN_KEY, trimmed);",
+            "    alert(\"토큰이 브라우저 localStorage에 저장되었습니다.\");",
+            "  }",
+            "}",
+            "async function ensureToken() {",
+            "  let token = localStorage.getItem(TOKEN_KEY);",
+            "  if (!token) {",
+            "    const input = prompt(",
+            "      \"파일/디렉토리 변경을 위해 GitHub PAT(Contents: Read and write 권한)를 입력하세요:\"",
+            "    );",
+            "    if (!input || !input.trim()) return null;",
+            "    token = input.trim();",
+            "    localStorage.setItem(TOKEN_KEY, token);",
+            "  }",
+            "  return token;",
+            "}",
+            "async function editPageTitle(btn) {",
+            "  const filePath = btn.getAttribute(\"data-path\");",
+            "  const currentTitle = btn.getAttribute(\"data-title\") || \"\";",
+            "  if (!filePath) return;",
+            "  const input = prompt(`'${filePath}'의 새 페이지 제목(<title>)을 입력하세요:`, currentTitle);",
+            "  if (input === null) return;",
+            "  const nextTitle = input.trim();",
+            "  if (!nextTitle || nextTitle === currentTitle) return;",
+            "  const token = await ensureToken();",
+            "  if (!token) return;",
+            "  const { owner, repo } = getRepoInfo();",
+            "  const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeRepoPath(filePath)}?ref=main`;",
+            "  btn.disabled = true;",
+            "  const origText = btn.textContent;",
+            "  btn.textContent = \"수정중...\";",
+            "  try {",
+            "    const res = await fetch(apiUrl, { headers: getHeaders(token) });",
+            "    if (!res.ok) {",
+            "      const errData = await res.json().catch(() => ({}));",
+            "      throw new Error(errData.message || `파일 조회 실패 (${res.status})`);",
+            "    }",
+            "    const data = await res.json();",
+            "    let html = decodeUtf8Base64(data.content);",
+            "    const escapedTitle = nextTitle.replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\").replace(/>/g, \"&gt;\");",
+            "    if (/<title[^>]*>[\\s\\S]*?<\\/title>/i.test(html)) {",
+            "      html = html.replace(/<title[^>]*>[\\s\\S]*?<\\/title>/i, `<title>${escapedTitle}</title>`);",
+            "    } else if (/<head[^>]*>/i.test(html)) {",
+            "      html = html.replace(/<head([^>]*)>/i, `<head$1>\\n  <title>${escapedTitle}</title>`);",
+            "    } else {",
+            "      html = `<title>${escapedTitle}</title>\\n` + html;",
+            "    }",
+            "    const putRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${encodeRepoPath(filePath)}`, {",
+            "      method: \"PUT\",",
+            "      headers: getHeaders(token, true),",
+            "      body: JSON.stringify({",
+            "        message: `chore: update page title in ${filePath}`,",
+            "        content: encodeUtf8Base64(html),",
+            "        sha: data.sha,",
+            "        branch: \"main\"",
+            "      })",
+            "    });",
+            "    if (!putRes.ok) {",
+            "      const errData = await putRes.json().catch(() => ({}));",
+            "      throw new Error(errData.message || `제목 저장 실패 (${putRes.status})`);",
+            "    }",
+            "    btn.setAttribute(\"data-title\", nextTitle);",
+            "    const li = btn.closest(\"li\");",
+            "    if (li) {",
+            "      let sub = li.querySelector(\".page-title\");",
+            "      if (!sub) {",
+            "        sub = document.createElement(\"span\");",
+            "        sub.className = \"page-title\";",
+            "        const mainEl = li.querySelector(\".file-main\");",
+            "        if (mainEl) mainEl.appendChild(sub);",
+            "      }",
+            "      sub.textContent = nextTitle;",
+            "    }",
+            "    alert(`'${filePath}'의 제목이 '${nextTitle}'(으)로 변경되었습니다. Pages 재배포까지 잠시 기다려 주세요.`);",
+            "  } catch (err) {",
+            "    alert(`제목 변경 중 오류가 발생했습니다:\\n${err.message}`);",
+            "  } finally {",
+            "    btn.disabled = false;",
+            "    btn.textContent = origText;",
+            "  }",
+            "}",
+            "async function renameHtmlFile(btn) {",
+            "  const oldPath = btn.getAttribute(\"data-path\");",
+            "  const oldFileName = btn.getAttribute(\"data-file\");",
+            "  if (!oldPath || !oldFileName) return;",
+            "  const currentBase = oldFileName.replace(/\\.html$/i, \"\");",
+            "  const input = prompt(`'${currentBase}'의 새 파일명을 입력하세요 (.html 자동 추가):`, currentBase);",
+            "  if (input === null) return;",
+            "  let nextBase = input.trim();",
+            "  if (!nextBase) return;",
+            "  if (nextBase.toLowerCase().endsWith(\".html\")) {",
+            "    nextBase = nextBase.slice(0, -5);",
+            "  }",
+            "  if (!nextBase || nextBase.includes(\"/\") || nextBase.includes(\"\\\\\")) {",
+            "    alert(\"유효하지 않은 파일명입니다.\");",
+            "    return;",
+            "  }",
+            "  const nextFileName = `${nextBase}.html`;",
+            "  if (nextFileName === oldFileName) return;",
+            "  const parentDir = oldPath.includes(\"/\") ? oldPath.slice(0, oldPath.lastIndexOf(\"/\")) : \"\";",
+            "  const newPath = parentDir ? `${parentDir}/${nextFileName}` : nextFileName;",
+            "  const ok = confirm(`파일명을 변경할까요?\\n${oldPath} → ${newPath}`);",
+            "  if (!ok) return;",
+            "  const token = await ensureToken();",
+            "  if (!token) return;",
+            "  const { owner, repo } = getRepoInfo();",
+            "  btn.disabled = true;",
+            "  const origText = btn.textContent;",
+            "  btn.textContent = \"변경중...\";",
+            "  try {",
+            "    const metaRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${encodeRepoPath(oldPath)}?ref=main`, {",
+            "      headers: getHeaders(token)",
+            "    });",
+            "    if (!metaRes.ok) {",
+            "      const errData = await metaRes.json().catch(() => ({}));",
+            "      throw new Error(errData.message || `파일 조회 실패 (${metaRes.status})`);",
+            "    }",
+            "    const meta = await metaRes.json();",
+            "    const base64Content = (meta.content || \"\").replace(/\\n/g, \"\");",
+            "    const putRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${encodeRepoPath(newPath)}`, {",
+            "      method: \"PUT\",",
+            "      headers: getHeaders(token, true),",
+            "      body: JSON.stringify({",
+            "        message: `chore: rename ${oldPath} to ${newPath}`,",
+            "        content: base64Content,",
+            "        branch: \"main\"",
+            "      })",
+            "    });",
+            "    if (!putRes.ok) {",
+            "      const errData = await putRes.json().catch(() => ({}));",
+            "      throw new Error(errData.message || `새 파일 생성 실패 (${putRes.status})`);",
+            "    }",
+            "    const delRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${encodeRepoPath(oldPath)}`, {",
+            "      method: \"DELETE\",",
+            "      headers: getHeaders(token, true),",
+            "      body: JSON.stringify({",
+            "        message: `chore: remove old ${oldPath}`,",
+            "        sha: meta.sha,",
+            "        branch: \"main\"",
+            "      })",
+            "    });",
+            "    if (!delRes.ok) {",
+            "      const errData = await delRes.json().catch(() => ({}));",
+            "      throw new Error(errData.message || `기존 파일 삭제 실패 (${delRes.status})`);",
+            "    }",
+            "    alert(`'${oldPath}' → '${newPath}' 변경이 완료되었습니다. Pages 재배포까지 잠시 기다려 주세요.`);",
+            "  } catch (err) {",
+            "    alert(`파일명 변경 중 오류가 발생했습니다:\\n${err.message}`);",
+            "    btn.disabled = false;",
+            "    btn.textContent = origText;",
+            "  }",
+            "}",
+            "async function deleteHtmlFile(btn) {",
+            "  const filePath = btn.getAttribute(\"data-path\");",
+            "  if (!filePath) return;",
+            "  const ok = confirm(`정말로 GitHub에서 '${filePath}' 파일을 삭제할까요?\\n삭제 커밋이 main 브랜치에 반영됩니다.`);",
+            "  if (!ok) return;",
+            "  const token = await ensureToken();",
+            "  if (!token) return;",
+            "  const { owner, repo } = getRepoInfo();",
+            "  const apiBase = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeRepoPath(filePath)}`;",
+            "  btn.disabled = true;",
+            "  const origText = btn.textContent;",
+            "  btn.textContent = \"삭제중...\";",
+            "  try {",
+            "    const getRes = await fetch(apiBase, { headers: getHeaders(token) });",
+            "    if (!getRes.ok) {",
+            "      const errData = await getRes.json().catch(() => ({}));",
+            "      throw new Error(errData.message || `파일 정보 조회 실패 (${getRes.status})`);",
+            "    }",
+            "    const fileInfo = await getRes.json();",
+            "    const delRes = await fetch(apiBase, {",
+            "      method: \"DELETE\",",
+            "      headers: getHeaders(token, true),",
+            "      body: JSON.stringify({",
+            "        message: `chore: delete ${filePath}`,",
+            "        sha: fileInfo.sha,",
+            "        branch: \"main\"",
+            "      })",
+            "    });",
+            "    if (!delRes.ok) {",
+            "      const errData = await delRes.json().catch(() => ({}));",
+            "      throw new Error(errData.message || `삭제 실패 (${delRes.status})`);",
+            "    }",
+            "    const li = btn.closest(\"li\");",
+            "    if (li) li.remove();",
+            "    alert(`'${filePath}' 삭제가 완료되었습니다. Pages 재배포까지 잠시 기다려 주세요.`);",
+            "  } catch (err) {",
+            "    alert(`삭제 중 오류가 발생했습니다:\\n${err.message}`);",
+            "    btn.disabled = false;",
+            "    btn.textContent = origText;",
+            "  }",
+            "}",
+            "async function collectFilesRecursive(owner, repo, dirPath, token) {",
+            "  const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeRepoPath(dirPath)}?ref=main`;",
+            "  const res = await fetch(apiUrl, { headers: getHeaders(token) });",
+            "  if (!res.ok) {",
+            "    const errData = await res.json().catch(() => ({}));",
+            "    throw new Error(errData.message || `디렉토리 조회 실패 (${res.status})`);",
+            "  }",
+            "  const entries = await res.json();",
+            "  const list = Array.isArray(entries) ? entries : [entries];",
+            "  let files = [];",
+            "  for (const item of list) {",
+            "    if (item.type === \"file\") {",
+            "      files.push({ path: item.path, sha: item.sha });",
+            "    } else if (item.type === \"dir\") {",
+            "      const nested = await collectFilesRecursive(owner, repo, item.path, token);",
+            "      files = files.concat(nested);",
+            "    }",
+            "  }",
+            "  return files;",
+            "}",
+            "async function deleteDirectory(event, btn) {",
+            "  event.preventDefault();",
+            "  event.stopPropagation();",
+            "  const dirPath = btn.getAttribute(\"data-dir-path\");",
+            "  const dirName = btn.getAttribute(\"data-dir-name\");",
+            "  if (!dirPath) return;",
+            "  const ok = confirm(`정말로 '${dirName || dirPath}' 디렉토리와 내부의 모든 파일을 GitHub에서 삭제할까요?\\n삭제 커밋이 main 브랜치에 반영됩니다.`);",
+            "  if (!ok) return;",
+            "  const token = await ensureToken();",
+            "  if (!token) return;",
+            "  const { owner, repo } = getRepoInfo();",
+            "  btn.disabled = true;",
+            "  const origText = btn.textContent;",
+            "  btn.textContent = \"삭제중...\";",
+            "  try {",
+            "    const files = await collectFilesRecursive(owner, repo, dirPath, token);",
+            "    for (const f of files) {",
+            "      const delRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${encodeRepoPath(f.path)}`, {",
+            "        method: \"DELETE\",",
+            "        headers: getHeaders(token, true),",
+            "        body: JSON.stringify({",
+            "          message: `chore: delete ${f.path}`,",
+            "          sha: f.sha,",
+            "          branch: \"main\"",
+            "        })",
+            "      });",
+            "      if (!delRes.ok) {",
+            "        const errData = await delRes.json().catch(() => ({}));",
+            "        throw new Error(errData.message || `파일 삭제 실패 (${f.path})`);",
+            "      }",
+            "    }",
+            "    const detailsEl = btn.closest(\"details\");",
+            "    if (detailsEl) detailsEl.remove();",
+            "    alert(`'${dirPath}' 디렉토리 삭제가 완료되었습니다. Pages 재배포까지 잠시 기다려 주세요.`);",
+            "  } catch (err) {",
+            "    alert(`디렉토리 삭제 중 오류가 발생했습니다:\\n${err.message}`);",
+            "    btn.disabled = false;",
+            "    btn.textContent = origText;",
+            "  }",
+            "}",
+            "async function renameDirectory(event, btn) {",
+            "  event.preventDefault();",
+            "  event.stopPropagation();",
+            "  const oldDirPath = btn.getAttribute(\"data-dir-path\");",
+            "  const oldDirName = btn.getAttribute(\"data-dir-name\");",
+            "  if (!oldDirPath || !oldDirName) return;",
+            "  const input = prompt(`'${oldDirName}' 디렉토리의 새 이름을 입력하세요:`, oldDirName);",
+            "  if (input === null) return;",
+            "  const nextName = input.trim();",
+            "  if (!nextName || nextName === oldDirName) return;",
+            "  if (nextName.includes(\"/\") || nextName.includes(\"\\\\\")) {",
+            "    alert(\"디렉토리 이름에는 슬래시(/, \\\\)를 포함할 수 없습니다.\");",
+            "    return;",
+            "  }",
+            "  const parentPath = oldDirPath.includes(\"/\") ? oldDirPath.slice(0, oldDirPath.lastIndexOf(\"/\")) : \"\";",
+            "  const newDirPath = parentPath ? `${parentPath}/${nextName}` : nextName;",
+            "  const ok = confirm(`디렉토리 이름을 변경할까요?\\n${oldDirPath} → ${newDirPath}`);",
+            "  if (!ok) return;",
+            "  const token = await ensureToken();",
+            "  if (!token) return;",
+            "  const { owner, repo } = getRepoInfo();",
+            "  btn.disabled = true;",
+            "  const origText = btn.textContent;",
+            "  btn.textContent = \"변경중...\";",
+            "  try {",
+            "    const files = await collectFilesRecursive(owner, repo, oldDirPath, token);",
+            "    if (files.length === 0) {",
+            "      throw new Error(\"이동할 파일이 없습니다.\");",
+            "    }",
+            "    for (const f of files) {",
+            "      const metaRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${encodeRepoPath(f.path)}?ref=main`, {",
+            "        headers: getHeaders(token)",
+            "      });",
+            "      if (!metaRes.ok) {",
+            "        const errData = await metaRes.json().catch(() => ({}));",
+            "        throw new Error(errData.message || `파일 읽기 실패 (${f.path})`);",
+            "      }",
+            "      const meta = await metaRes.json();",
+            "      const base64Content = (meta.content || \"\").replace(/\\n/g, \"\");",
+            "      const targetFilePath = newDirPath + f.path.slice(oldDirPath.length);",
+            "      const putRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${encodeRepoPath(targetFilePath)}`, {",
+            "        method: \"PUT\",",
+            "        headers: getHeaders(token, true),",
+            "        body: JSON.stringify({",
+            "          message: `chore: move ${f.path} to ${targetFilePath}`,",
+            "          content: base64Content,",
+            "          branch: \"main\"",
+            "        })",
+            "      });",
+            "      if (!putRes.ok) {",
+            "        const errData = await putRes.json().catch(() => ({}));",
+            "        throw new Error(errData.message || `새 경로 생성 실패 (${targetFilePath})`);",
+            "      }",
+            "      const delRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${encodeRepoPath(f.path)}`, {",
+            "        method: \"DELETE\",",
+            "        headers: getHeaders(token, true),",
+            "        body: JSON.stringify({",
+            "          message: `chore: remove old ${f.path}`,",
+            "          sha: meta.sha,",
+            "          branch: \"main\"",
+            "        })",
+            "      });",
+            "      if (!delRes.ok) {",
+            "        const errData = await delRes.json().catch(() => ({}));",
+            "        throw new Error(errData.message || `기존 파일 삭제 실패 (${f.path})`);",
+            "      }",
+            "    }",
+            "    alert(`'${oldDirPath}' → '${newDirPath}' 이름 변경이 완료되었습니다. Pages 재배포까지 잠시 기다려 주세요.`);",
+            "  } catch (err) {",
+            "    alert(`이름 변경 중 오류가 발생했습니다:\\n${err.message}`);",
+            "    btn.disabled = false;",
+            "    btn.textContent = origText;",
+            "  }",
+            "}",
+            "</script>"
+          ].join("\n");
+
+          function wrapPage({ title, heading, activeKey, bodyHtml }) {
+            return `<!DOCTYPE html>
+          <html lang="ko">
+          <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <title>${escapeAttr(title)}</title>
+            <style>
+              :root {
+                --bg: #ffffff;
+                --surface: #f8f9fa;
+                --text: #1f2328;
+                --muted: #656d76;
+                --border: #d0d7de;
+                --accent: #0969da;
+                --accent-bg: #eef6ff;
+                --danger: #cf222e;
+                --danger-bg: #fff1f2;
+                --header-h: 58px;
+              }
+              * { box-sizing: border-box; }
+              body {
+                margin: 0;
+                padding: calc(var(--header-h) + 20px) 16px 48px;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+                font-size: 16px;
+                line-height: 1.5;
+                color: var(--text);
+                background: var(--bg);
+              }
+              .container { padding: 35vh 0 50vh 0; }
+              .tabs-wrap {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 100;
+                height: var(--header-h);
+                background: rgba(255, 255, 255, 0.94);
+                backdrop-filter: blur(8px);
+                border-bottom: 1px solid var(--border);
+              }
+              .tabs {
+                max-width: 720px;
+                height: 100%;
+                margin: 0 auto;
+                padding: 0 16px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 8px;
+              }
+              .tab-links {
+                display: flex;
+                gap: 6px;
+              }
+              .tab-links a {
+                padding: 6px 14px;
+                border-radius: 8px;
+                text-decoration: none;
+                font-size: 0.92rem;
+                font-weight: 600;
+                color: var(--muted);
+                transition: background-color 0.15s, color 0.15s;
+              }
+              .tab-links a:hover {
+                color: var(--text);
+                background: var(--surface);
+              }
+              .tab-links a.active {
+                color: var(--accent);
+                background: var(--accent-bg);
+              }
+              .token-btn {
+                padding: 5px 10px;
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                background: var(--bg);
+                color: var(--muted);
+                font-size: 0.78rem;
+                cursor: pointer;
+              }
+              .token-btn:hover {
+                color: var(--text);
+                background: var(--surface);
+              }
+              .container {
+                max-width: 720px;
+                margin: 0 auto;
+              }
+              h1 {
+                margin: 0 0 18px;
+                font-size: 1.35rem;
+                font-weight: 700;
+                letter-spacing: -0.01em;
+              }
+              ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+              }
+              .file-list li {
+                display: flex;
+                align-items: baseline;
+                justify-content: space-between;
+                gap: 12px;
+                padding: 9px 4px;
+                border-bottom: 1px solid #eef1f4;
+              }
+              .file-list li:last-child {
+                border-bottom: none;
+              }
+              .file-main {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: baseline;
+                gap: 4px 8px;
+                min-width: 0;
+              }
+              .file-list a {
+                color: var(--accent);
+                text-decoration: none;
+                font-weight: 500;
+                word-break: break-word;
+              }
+              .file-list a:hover {
+                text-decoration: underline;
+              }
+              .page-title {
+                font-size: 0.8rem;
+                color: var(--muted);
+                word-break: break-word;
+              }
+              .meta {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                flex-shrink: 0;
+              }
+              .date {
+                margin-right: 2px;
+                font-size: 0.82rem;
+                color: var(--muted);
+                font-variant-numeric: tabular-nums;
+              }
+              .count-badge {
+                display: inline-flex;
+                align-items: center;
+                padding: 1px 8px;
+                border-radius: 999px;
+                background: #eef1f4;
+                color: var(--muted);
+                font-size: 0.76rem;
+                font-weight: 600;
+                font-variant-numeric: tabular-nums;
+                flex-shrink: 0;
+              }
+              .today-tag {
+                display: inline-flex;
+                align-items: center;
+                padding: 1px 6px;
+                border-radius: 999px;
+                background: var(--accent-bg);
+                color: var(--accent);
+                font-size: 0.72rem;
+                font-weight: 700;
+                flex-shrink: 0;
+              }
+              .del-btn, .rename-btn, .rename-file-btn {
+                padding: 2px 7px;
+                border-radius: 5px;
+                background: transparent;
+                font-size: 0.74rem;
+                line-height: 1.3;
+                cursor: pointer;
+                transition: background-color 0.15s, opacity 0.15s;
+              }
+              .del-btn {
+                border: 1px solid #f3c2c6;
+                color: var(--danger);
+                opacity: 0.78;
+              }
+              .del-btn:hover:not(:disabled) {
+                opacity: 1;
+                background: var(--danger-bg);
+              }
+              .rename-btn, .rename-file-btn {
+                border: 1px solid var(--border);
+                color: var(--muted);
+                font-weight: 500;
+              }
+              .rename-btn:hover:not(:disabled), .rename-file-btn:hover:not(:disabled) {
+                color: var(--text);
+                background: var(--surface);
+              }
+              .del-btn:disabled, .rename-btn:disabled, .rename-file-btn:disabled {
+                opacity: 0.45;
+                cursor: not-allowed;
+              }
+              details {
+                margin: 10px 0;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                background: var(--surface);
+                overflow: hidden;
+              }
+              summary {
+                cursor: pointer;
+                padding: 10px 14px;
+                font-weight: 600;
+                font-size: 0.95rem;
+                list-style: none;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 8px;
+              }
+              summary::-webkit-details-marker { display: none; }
+              .summary-left {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                min-width: 0;
+                word-break: break-word;
+              }
+              .summary-left::before {
+                content: "▸";
+                color: var(--muted);
+                font-size: 0.8rem;
+                flex-shrink: 0;
+                transition: transform 0.15s;
+              }
+              details[open] > summary .summary-left::before {
+                transform: rotate(90deg);
+              }
+              .summary-actions {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                flex-shrink: 0;
+              }
+              .folder-body {
+                background: var(--bg);
+                padding: 4px 12px 10px 18px;
+                border-top: 1px solid #e5e9ee;
+              }
+              @media (max-width: 600px) {
+                :root { --header-h: 54px; }
+                body { padding: calc(var(--header-h) + 14px) 12px 36px; font-size: 15px; }
+                .tabs { padding: 0 12px; }
+                h1 { font-size: 1.2rem; }
+                .file-list li {
+                  flex-direction: column;
+                  align-items: flex-start;
+                  gap: 4px;
+                  padding: 8px 2px;
+                }
+                .file-main {
+                  flex-direction: column;
+                  align-items: flex-start;
+                  gap: 2px;
+                }
+                .page-title {
+                  font-size: 0.78rem;
+                }
+                .meta {
+                  width: 100%;
+                  justify-content: flex-end;
+                }
+                .date {
+                  margin-right: auto;
+                  font-size: 0.78rem;
+                }
+              }
+            </style>
+          </head>
+          <body>
+            ${renderNav(activeKey)}
+            <div class="container">
+              <h1>${escapeAttr(heading)}</h1>
+              ${bodyHtml}
+            </div>
+            ${clientScript}
+          </body>
+          </html>`;
+          }
+
+          const colDir = path.join(rootDir, "col");
+          if (fs.existsSync(colDir)) {
+            const colFiles = fs
+              .readdirSync(colDir)
+              .filter((file) => file.endsWith(".html") && file !== "index.html")
+              .map((file) => {
+                const fullPath = path.join(colDir, file);
+                const mtime = getGitOrStatMtime(`col/${file}`, fullPath);
+                return {
+                  name: file,
+                  pageTitle: getHtmlPageTitle(fullPath),
+                  mtime,
+                  dayStr: formatKstDateOnly(mtime),
+                  timeStr: formatKst(mtime)
+                };
+              })
+              .sort((a, b) => b.mtime - a.mtime);
+
+            const groupedByDate = new Map();
+            for (const f of colFiles) {
+              if (!groupedByDate.has(f.dayStr)) {
+                groupedByDate.set(f.dayStr, []);
+              }
+              groupedByDate.get(f.dayStr).push(f);
+            }
+
+            const colGroupedHtml = Array.from(groupedByDate.entries())
+              .map(([dayStr, files]) => {
+                const isToday = dayStr === todayKstStr;
+                const openAttr = isToday ? " open" : "";
+                const todayBadge = isToday ? `<span class="today-tag">오늘</span>` : "";
+                const rowsHtml = files
+                  .map((f) =>
+                    renderFileRow({
+                      href: f.name,
+                      fileName: f.name,
+                      pageTitle: f.pageTitle,
+                      repoPath: `col/${f.name}`,
+                      timeStr: f.timeStr,
+                      openInNewTab: false,
+                      allowTitleEdit: true
+                    })
+                  )
+                  .join("\n");
+
+                return `<details${openAttr}>
+                  <summary>
+                    <span class="summary-left">${escapeAttr(dayStr)}${todayBadge}</span>
+                    <span class="summary-actions">
+                      <span class="count-badge">${files.length}개</span>
+                    </span>
+                  </summary>
+                  <div class="folder-body">
+                    <ul class="file-list">
+                      ${rowsHtml}
+                    </ul>
+                  </div>
+                </details>`;
+              })
+              .join("\n");
+
+            fs.writeFileSync(
+              path.join(colDir, "index.html"),
+              wrapPage({
+                title: "col — HTML 목록",
+                heading: `col (${colFiles.length}개)`,
+                activeKey: "col",
+                bodyHtml: colGroupedHtml
+              })
+            );
+            console.log("col/index.html 생성 완료");
+          } else {
+            console.log("col 디렉토리가 존재하지 않습니다.");
+          }
+
+          function buildTreeIndex(
+            dirName,
+            { allowRename = false, allowDirDelete = false, showPageTitle = false, allowTitleEdit = false } = {}
+          ) {
+            const targetDir = path.join(rootDir, dirName);
+            if (!fs.existsSync(targetDir)) {
+              console.log(`${dirName} 디렉토리가 존재하지 않습니다.`);
+              return;
+            }
+
+            function scanDirectory(dir, relativePath = "") {
+              const entries = fs.readdirSync(dir, { withFileTypes: true });
+              let latestTime = 0;
+              let totalFiles = 0;
+              const structure = { directories: {}, files: [], latestMtime: 0, totalFiles: 0 };
+
+              for (const entry of entries) {
+                const fullPath = path.join(dir, entry.name);
+                const relPath = path.join(relativePath, entry.name);
+
+                if (entry.isDirectory()) {
+                  const subNode = scanDirectory(fullPath, relPath);
+                  structure.directories[entry.name] = subNode;
+                  totalFiles += subNode.totalFiles;
+                  if (subNode.latestMtime > latestTime) {
+                    latestTime = subNode.latestMtime;
+                  }
+                } else if (
+                  entry.isFile() &&
+                  entry.name.endsWith(".html") &&
+                  entry.name !== "index.html"
+                ) {
+                  const mtime = getGitOrStatMtime(`${dirName}/${relPath}`, fullPath);
+                  const fileTime = mtime.getTime();
+                  if (fileTime > latestTime) {
+                    latestTime = fileTime;
+                  }
+                  totalFiles += 1;
+
+                  const posixRel = relPath.replace(/\\/g, "/");
+                  structure.files.push({
+                    name: entry.name,
+                    pageTitle: showPageTitle ? getHtmlPageTitle(fullPath) : "",
+                    path: posixRel,
+                    repoPath: `${dirName}/${posixRel}`,
+                    timeStr: formatKst(mtime)
+                  });
+                }
+              }
+
+              structure.files.sort((a, b) =>
+                a.name.localeCompare(b.name, "ko", { numeric: true })
+              );
+              structure.latestMtime = latestTime;
+              structure.totalFiles = totalFiles;
+              return structure;
+            }
+
+            function renderTree(node, currentPrefix = "") {
+              let html = "";
+
+              if (node.files && node.files.length > 0) {
+                html += `<ul class="file-list">\n${node.files
+                  .map((file) =>
+                    renderFileRow({
+                      href: file.path,
+                      fileName: file.name,
+                      pageTitle: file.pageTitle,
+                      repoPath: file.repoPath,
+                      timeStr: file.timeStr,
+                      openInNewTab: true,
+                      allowTitleEdit
+                    })
+                  )
+                  .join("\n")}\n</ul>`;
+              }
+
+              const sortedDirs = Object.entries(node.directories).sort((a, b) => {
+                if (b[1].latestMtime !== a[1].latestMtime) {
+                  return b[1].latestMtime - a[1].latestMtime;
+                }
+                return a[0].localeCompare(b[0], "ko", { numeric: true });
+              });
+
+              for (const [subDirName, subNode] of sortedDirs) {
+                const hasContent =
+                  subNode.files.length > 0 || Object.keys(subNode.directories).length > 0;
+                if (hasContent) {
+                  const subRepoPath = currentPrefix ? `${currentPrefix}/${subDirName}` : subDirName;
+                  const countBadgeHtml = `<span class="count-badge">${subNode.totalFiles}개</span>`;
+                  const renameBtnHtml = allowRename
+                    ? `<button type="button" class="rename-btn" data-dir-path="${escapeAttr(subRepoPath)}" data-dir-name="${escapeAttr(subDirName)}" onclick="renameDirectory(event, this)" title="디렉토리 이름 변경">변경</button>`
+                    : "";
+                  const delDirBtnHtml = allowDirDelete
+                    ? `<button type="button" class="del-btn" data-dir-path="${escapeAttr(subRepoPath)}" data-dir-name="${escapeAttr(subDirName)}" onclick="deleteDirectory(event, this)" title="디렉토리 삭제">삭제</button>`
+                    : "";
+                  const actionsHtml = `<span class="summary-actions">${countBadgeHtml}${renameBtnHtml}${delDirBtnHtml}</span>`;
+                  html += `<details>
+            <summary>
+              <span class="summary-left">${escapeAttr(subDirName)}</span>
+              ${actionsHtml}
+            </summary>
+            <div class="folder-body">
+              ${renderTree(subNode, subRepoPath)}
+            </div>
+          </details>`;
+                }
+              }
+
+              return html;
+            }
+
+            const rootNode = scanDirectory(targetDir);
+            const treeHtml = renderTree(rootNode, dirName);
+            fs.writeFileSync(
+              path.join(targetDir, "index.html"),
+              wrapPage({
+                title: `${dirName} — HTML 목록`,
+                heading: `${dirName} (${rootNode.totalFiles}개)`,
+                activeKey: dirName,
+                bodyHtml: treeHtml
+              })
+            );
+            console.log(`${dirName}/index.html 생성 완료`);
+          }
+
+          buildTreeIndex("eb", {
+            allowRename: true,
+            allowDirDelete: true,
+            showPageTitle: true,
+            allowTitleEdit: true
+          });
+          buildTreeIndex("co", {
+            allowRename: true,
+            allowDirDelete: false,
+            showPageTitle: true,
+            allowTitleEdit: true
+          });
+          EOF
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact (GitHub Pages 전용)
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
