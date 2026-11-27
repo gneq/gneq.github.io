@@ -92,16 +92,36 @@ jobs:
               .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(parseInt(code, 10)));
           }
 
-          function getHtmlPageTitle(fullPath) {
+          function getHtmlMeta(fullPath) {
             try {
               const content = fs.readFileSync(fullPath, "utf-8");
-              const match = content.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
-              if (match && match[1]) {
-                const cleaned = decodeHtmlEntities(match[1]).replace(/\s+/g, " ").trim();
-                if (cleaned) return cleaned;
+              let pageTitle = "";
+              const titleMatch = content.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+              if (titleMatch && titleMatch[1]) {
+                const cleaned = decodeHtmlEntities(titleMatch[1]).replace(/\s+/g, " ").trim();
+                if (cleaned) pageTitle = cleaned;
               }
+
+              let keywords = "";
+              const metaMatches = content.match(/<meta\b[^>]*>/gi) || [];
+              for (const tag of metaMatches) {
+                const nameAttr = tag.match(/\bname\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i);
+                const nameVal = nameAttr ? (nameAttr[1] ?? nameAttr[2] ?? nameAttr[3] ?? "").trim().toLowerCase() : "";
+                if (nameVal === "keywords") {
+                  const contentAttr = tag.match(/\bcontent\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i);
+                  const rawKeywords = contentAttr ? (contentAttr[1] ?? contentAttr[2] ?? contentAttr[3] ?? "") : "";
+                  keywords = decodeHtmlEntities(rawKeywords)
+                    .split(",")
+                    .map((s) => s.trim())
+                    .filter(Boolean)
+                    .join(", ");
+                  break;
+                }
+              }
+
+              return { pageTitle, keywords };
             } catch (e) {}
-            return "";
+            return { pageTitle: "", keywords: "" };
           }
 
           function escapeAttr(str) {
@@ -131,6 +151,7 @@ jobs:
             href,
             fileName,
             pageTitle,
+            keywords = "",
             repoPath,
             timeStr,
             openInNewTab,
@@ -142,16 +163,27 @@ jobs:
             const subtitleHtml = showSubtitle
               ? `<span class="page-title">${escapeAttr(pageTitle)}</span>`
               : "";
+            const tagsHtml = keywords
+              ? `<span class="tag-chips">${keywords
+                  .split(",")
+                  .map((t) => t.trim())
+                  .filter(Boolean)
+                  .map((t) => `<span class="tag-chip">${escapeAttr(t)}</span>`)
+                  .join("")}</span>`
+              : `<span class="tag-chips"></span>`;
             const titleBtnHtml = allowTitleEdit
               ? `<button type="button" class="rename-file-btn" data-path="${escapeAttr(repoPath)}" data-title="${escapeAttr(pageTitle || "")}" onclick="editPageTitle(this)" title="페이지 제목 변경">제목</button>`
               : "";
+            const tagBtnHtml = `<button type="button" class="tag-btn" data-path="${escapeAttr(repoPath)}" data-tags="${escapeAttr(keywords)}" onclick="editPageTags(this)" title="메타 키워드(태그) 편집">태그</button>`;
             return `<li>
               <div class="file-main">
                 <a href="${escapeAttr(href)}"${targetAttr}>${escapeAttr(baseName)}</a>
                 ${subtitleHtml}
+                ${tagsHtml}
               </div>
               <span class="meta">
                 <span class="date">${timeStr}</span>
+                ${tagBtnHtml}
                 ${titleBtnHtml}
                 <button type="button" class="rename-file-btn" data-path="${escapeAttr(repoPath)}" data-file="${escapeAttr(fileName)}" onclick="renameHtmlFile(this)" title="파일명 변경">변경</button>
                 <button type="button" class="del-btn" data-path="${escapeAttr(repoPath)}" onclick="deleteHtmlFile(this)" title="GitHub에서 삭제">삭제</button>
@@ -159,9 +191,98 @@ jobs:
             </li>`;
           }
 
+          const dialogMarkup = `
+            <dialog id="appDialog" class="app-dialog" aria-labelledby="appDialogTitle">
+              <form method="dialog" id="appDialogForm" class="app-dialog-form">
+                <div class="app-dialog-header">
+                  <h2 id="appDialogTitle" class="app-dialog-title"></h2>
+                </div>
+                <p id="appDialogMessage" class="app-dialog-message"></p>
+                <div id="appDialogFieldWrap" class="app-dialog-field-wrap" hidden>
+                  <label id="appDialogLabel" for="appDialogInput" class="app-dialog-label"></label>
+                  <input id="appDialogInput" type="text" class="app-dialog-input" autocomplete="off" />
+                </div>
+                <div class="app-dialog-actions">
+                  <button type="button" id="appDialogCancel" class="dialog-btn dialog-btn-secondary">취소</button>
+                  <button type="submit" id="appDialogConfirm" class="dialog-btn dialog-btn-primary">확인</button>
+                </div>
+              </form>
+            </dialog>
+          `;
+
           const clientScript = [
             "<script>",
             'const TOKEN_KEY = "gh_pages_delete_token";',
+            "function openSimpleDialog({ title = \"알림\", message = \"\", mode = \"alert\", defaultValue = \"\", placeholder = \"\", confirmText = \"확인\", cancelText = \"취소\", danger = false } = {}) {",
+            "  return new Promise((resolve) => {",
+            "    const dlg = document.getElementById(\"appDialog\");",
+            "    const form = document.getElementById(\"appDialogForm\");",
+            "    const titleEl = document.getElementById(\"appDialogTitle\");",
+            "    const msgEl = document.getElementById(\"appDialogMessage\");",
+            "    const fieldWrap = document.getElementById(\"appDialogFieldWrap\");",
+            "    const labelEl = document.getElementById(\"appDialogLabel\");",
+            "    const inputEl = document.getElementById(\"appDialogInput\");",
+            "    const cancelBtn = document.getElementById(\"appDialogCancel\");",
+            "    const confirmBtn = document.getElementById(\"appDialogConfirm\");",
+            "    if (!dlg || typeof dlg.showModal !== \"function\") {",
+            "      if (mode === \"prompt\") resolve(window.prompt(message, defaultValue));",
+            "      else if (mode === \"confirm\") resolve(window.confirm(message));",
+            "      else { window.alert(message); resolve(true); }",
+            "      return;",
+            "    }",
+            "    titleEl.textContent = title;",
+            "    msgEl.textContent = message;",
+            "    msgEl.hidden = !message;",
+            "    confirmBtn.textContent = confirmText;",
+            "    cancelBtn.textContent = cancelText;",
+            "    cancelBtn.hidden = mode === \"alert\";",
+            "    confirmBtn.classList.toggle(\"dialog-btn-danger\", Boolean(danger));",
+            "    const isPrompt = mode === \"prompt\";",
+            "    fieldWrap.hidden = !isPrompt;",
+            "    if (isPrompt) {",
+            "      labelEl.textContent = \"입력\";",
+            "      inputEl.value = defaultValue ?? \"\";",
+            "      inputEl.placeholder = placeholder;",
+            "    }",
+            "    let settled = false;",
+            "    function finish(val) {",
+            "      if (settled) return;",
+            "      settled = true;",
+            "      dlg.removeEventListener(\"close\", onClose);",
+            "      dlg.removeEventListener(\"click\", onBackdropClick);",
+            "      cancelBtn.removeEventListener(\"click\", onCancel);",
+            "      form.removeEventListener(\"submit\", onSubmit);",
+            "      if (dlg.open) dlg.close();",
+            "      resolve(val);",
+            "    }",
+            "    function onSubmit(e) {",
+            "      e.preventDefault();",
+            "      if (isPrompt) finish(inputEl.value);",
+            "      else finish(true);",
+            "    }",
+            "    function onCancel() {",
+            "      finish(isPrompt ? null : false);",
+            "    }",
+            "    function onClose() {",
+            "      finish(isPrompt ? null : false);",
+            "    }",
+            "    function onBackdropClick(e) {",
+            "      if (e.target === dlg) {",
+            "        finish(isPrompt ? null : false);",
+            "      }",
+            "    }",
+            "    cancelBtn.addEventListener(\"click\", onCancel);",
+            "    form.addEventListener(\"submit\", onSubmit);",
+            "    dlg.addEventListener(\"close\", onClose);",
+            "    dlg.addEventListener(\"click\", onBackdropClick);",
+            "    dlg.showModal();",
+            "    if (isPrompt) {",
+            "      setTimeout(() => { inputEl.focus(); inputEl.select(); }, 0);",
+            "    } else {",
+            "      setTimeout(() => confirmBtn.focus(), 0);",
+            "    }",
+            "  });",
+            "}",
             "function getRepoInfo() {",
             "  const hostParts = window.location.hostname.split(\".\");",
             "  const owner = hostParts[0] || \"\";",
@@ -201,39 +322,161 @@ jobs:
             "  }",
             "  return new TextDecoder(\"utf-8\").decode(bytes);",
             "}",
-            "function manageToken() {",
+            "function escapeHtmlText(str) {",
+            "  return String(str)",
+            "    .replace(/&/g, \"&amp;\")",
+            "    .replace(/</g, \"&lt;\")",
+            "    .replace(/>/g, \"&gt;\");",
+            "}",
+            "function escapeHtmlAttrValue(str) {",
+            "  return String(str)",
+            "    .replace(/&/g, \"&amp;\")",
+            "    .replace(/\"/g, \"&quot;\")",
+            "    .replace(/</g, \"&lt;\")",
+            "    .replace(/>/g, \"&gt;\");",
+            "}",
+            "function normalizeKeywords(raw) {",
+            "  return String(raw || \"\")",
+            "    .split(\",\")",
+            "    .map((s) => s.trim())",
+            "    .filter(Boolean)",
+            "    .join(\", \");",
+            "}",
+            "function upsertKeywordsMeta(html, normalizedTags) {",
+            "  const metaTag = `<meta name=\"keywords\" content=\"${escapeHtmlAttrValue(normalizedTags)}\" />`;",
+            "  const metaRegex = /<meta\\b[^>]*\\bname\\s*=\\s*(?:\"keywords\"|'keywords'|keywords)\\b[^>]*>/i;",
+            "  if (!normalizedTags) {",
+            "    return html.replace(/\\s*<meta\\b[^>]*\\bname\\s*=\\s*(?:\"keywords\"|'keywords'|keywords)\\b[^>]*>\\s*/gi, \"\\n\");",
+            "  }",
+            "  if (metaRegex.test(html)) {",
+            "    return html.replace(metaRegex, metaTag);",
+            "  }",
+            "  if (/<\\/head>/i.test(html)) {",
+            "    return html.replace(/<\\/head>/i, `  ${metaTag}\\n</head>`);",
+            "  }",
+            "  if (/<head[^>]*>/i.test(html)) {",
+            "    return html.replace(/<head([^>]*)>/i, `<head$1>\\n  ${metaTag}`);",
+            "  }",
+            "  return `${metaTag}\\n` + html;",
+            "}",
+            "async function manageToken() {",
             "  const current = localStorage.getItem(TOKEN_KEY) || \"\";",
-            "  const next = prompt(",
-            "    \"GitHub Fine-grained PAT를 입력하세요 (빈 값 입력 시 삭제):\",",
-            "    current",
-            "  );",
+            "  const next = await openSimpleDialog({",
+            "    title: \"GitHub 토큰 설정\",",
+            "    message: \"GitHub Fine-grained PAT를 입력하세요 (빈 값 입력 시 삭제):\",",
+            "    mode: \"prompt\",",
+            "    defaultValue: current,",
+            "    placeholder: \"github_pat_...\"",
+            "  });",
             "  if (next === null) return;",
             "  const trimmed = next.trim();",
             "  if (!trimmed) {",
             "    localStorage.removeItem(TOKEN_KEY);",
-            "    alert(\"저장된 토큰을 삭제했습니다.\");",
+            "    await openSimpleDialog({ title: \"토큰 삭제\", message: \"저장된 토큰을 삭제했습니다.\" });",
             "  } else {",
             "    localStorage.setItem(TOKEN_KEY, trimmed);",
-            "    alert(\"토큰이 브라우저 localStorage에 저장되었습니다.\");",
+            "    await openSimpleDialog({ title: \"토큰 저장\", message: \"토큰이 브라우저 localStorage에 저장되었습니다.\" });",
             "  }",
             "}",
             "async function ensureToken() {",
             "  let token = localStorage.getItem(TOKEN_KEY);",
             "  if (!token) {",
-            "    const input = prompt(",
-            "      \"파일/디렉토리 변경을 위해 GitHub PAT(Contents: Read and write 권한)를 입력하세요:\"",
-            "    );",
+            "    const input = await openSimpleDialog({",
+            "      title: \"GitHub 토큰 필요\",",
+            "      message: \"파일/디렉토리 변경을 위해 GitHub PAT(Contents: Read and write 권한)를 입력하세요:\",",
+            "      mode: \"prompt\",",
+            "      placeholder: \"github_pat_...\"",
+            "    });",
             "    if (!input || !input.trim()) return null;",
             "    token = input.trim();",
             "    localStorage.setItem(TOKEN_KEY, token);",
             "  }",
             "  return token;",
             "}",
+            "async function editPageTags(btn) {",
+            "  const filePath = btn.getAttribute(\"data-path\");",
+            "  const currentTags = btn.getAttribute(\"data-tags\") || \"\";",
+            "  if (!filePath) return;",
+            "  const input = await openSimpleDialog({",
+            "    title: \"메타 태그(keywords) 편집\",",
+            "    message: `'${filePath}'에 들어갈 키워드를 쉼표(,)로 구분해 입력하세요 (비우면 태그 제거):`,",
+            "    mode: \"prompt\",",
+            "    defaultValue: currentTags,",
+            "    placeholder: \"예: 기획, 체크리스트, 템플릿\"",
+            "    confirmText: \"푸시 저장\"",
+            "  });",
+            "  if (input === null) return;",
+            "  const nextTags = normalizeKeywords(input);",
+            "  if (nextTags === currentTags) return;",
+            "  const token = await ensureToken();",
+            "  if (!token) return;",
+            "  const { owner, repo } = getRepoInfo();",
+            "  const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeRepoPath(filePath)}?ref=main`;",
+            "  btn.disabled = true;",
+            "  const origText = btn.textContent;",
+            "  btn.textContent = \"푸시중...\";",
+            "  try {",
+            "    const res = await fetch(apiUrl, { headers: getHeaders(token) });",
+            "    if (!res.ok) {",
+            "      const errData = await res.json().catch(() => ({}));",
+            "      throw new Error(errData.message || `파일 조회 실패 (${res.status})`);",
+            "    }",
+            "    const data = await res.json();",
+            "    const html = decodeUtf8Base64(data.content);",
+            "    const updatedHtml = upsertKeywordsMeta(html, nextTags);",
+            "    const putRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${encodeRepoPath(filePath)}`, {",
+            "      method: \"PUT\",",
+            "      headers: getHeaders(token, true),",
+            "      body: JSON.stringify({",
+            "        message: `chore: update keywords meta in ${filePath}`,",
+            "        content: encodeUtf8Base64(updatedHtml),",
+            "        sha: data.sha,",
+            "        branch: \"main\"",
+            "      })",
+            "    });",
+            "    if (!putRes.ok) {",
+            "      const errData = await putRes.json().catch(() => ({}));",
+            "      throw new Error(errData.message || `태그 푸시 실패 (${putRes.status})`);",
+            "    }",
+            "    btn.setAttribute(\"data-tags\", nextTags);",
+            "    const li = btn.closest(\"li\");",
+            "    if (li) {",
+            "      let chipsWrap = li.querySelector(\".tag-chips\");",
+            "      if (!chipsWrap) {",
+            "        chipsWrap = document.createElement(\"span\");",
+            "        chipsWrap.className = \"tag-chips\";",
+            "        const mainEl = li.querySelector(\".file-main\");",
+            "        if (mainEl) mainEl.appendChild(chipsWrap);",
+            "      }",
+            "      const tagsArr = nextTags ? nextTags.split(\",\").map((s) => s.trim()).filter(Boolean) : [];",
+            "      chipsWrap.innerHTML = tagsArr.map((t) => `<span class=\"tag-chip\">${escapeHtmlText(t)}</span>`).join(\"\");",
+            "    }",
+            "    await openSimpleDialog({",
+            "      title: \"태그 푸시 완료\",",
+            "      message: nextTags",
+            "        ? `'${filePath}'의 meta keywords가 [${nextTags}](으)로 반영되었습니다. Pages 재배포까지 잠시 기다려 주세요.`",
+            "        : `'${filePath}'의 meta keywords가 제거되었습니다. Pages 재배포까지 잠시 기다려 주세요.`",
+            "    });",
+            "  } catch (err) {",
+            "    await openSimpleDialog({",
+            "      title: \"태그 저장 오류\",",
+            "      message: `태그 저장 중 오류가 발생했습니다:\\n${err.message}`",
+            "    });",
+            "  } finally {",
+            "    btn.disabled = false;",
+            "    btn.textContent = origText;",
+            "  }",
+            "}",
             "async function editPageTitle(btn) {",
             "  const filePath = btn.getAttribute(\"data-path\");",
             "  const currentTitle = btn.getAttribute(\"data-title\") || \"\";",
             "  if (!filePath) return;",
-            "  const input = prompt(`'${filePath}'의 새 페이지 제목(<title>)을 입력하세요:`, currentTitle);",
+            "  const input = await openSimpleDialog({",
+            "    title: \"페이지 제목 변경\",",
+            "    message: `'${filePath}'의 새 페이지 제목(<title>)을 입력하세요:`,",
+            "    mode: \"prompt\",",
+            "    defaultValue: currentTitle",
+            "  });",
             "  if (input === null) return;",
             "  const nextTitle = input.trim();",
             "  if (!nextTitle || nextTitle === currentTitle) return;",
@@ -252,7 +495,7 @@ jobs:
             "    }",
             "    const data = await res.json();",
             "    let html = decodeUtf8Base64(data.content);",
-            "    const escapedTitle = nextTitle.replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\").replace(/>/g, \"&gt;\");",
+            "    const escapedTitle = escapeHtmlText(nextTitle);",
             "    if (/<title[^>]*>[\\s\\S]*?<\\/title>/i.test(html)) {",
             "      html = html.replace(/<title[^>]*>[\\s\\S]*?<\\/title>/i, `<title>${escapedTitle}</title>`);",
             "    } else if (/<head[^>]*>/i.test(html)) {",
@@ -286,9 +529,15 @@ jobs:
             "      }",
             "      sub.textContent = nextTitle;",
             "    }",
-            "    alert(`'${filePath}'의 제목이 '${nextTitle}'(으)로 변경되었습니다. Pages 재배포까지 잠시 기다려 주세요.`);",
+            "    await openSimpleDialog({",
+            "      title: \"제목 변경 완료\",",
+            "      message: `'${filePath}'의 제목이 '${nextTitle}'(으)로 변경되었습니다. Pages 재배포까지 잠시 기다려 주세요.`",
+            "    });",
             "  } catch (err) {",
-            "    alert(`제목 변경 중 오류가 발생했습니다:\\n${err.message}`);",
+            "    await openSimpleDialog({",
+            "      title: \"제목 변경 오류\",",
+            "      message: `제목 변경 중 오류가 발생했습니다:\\n${err.message}`",
+            "    });",
             "  } finally {",
             "    btn.disabled = false;",
             "    btn.textContent = origText;",
@@ -299,7 +548,12 @@ jobs:
             "  const oldFileName = btn.getAttribute(\"data-file\");",
             "  if (!oldPath || !oldFileName) return;",
             "  const currentBase = oldFileName.replace(/\\.html$/i, \"\");",
-            "  const input = prompt(`'${currentBase}'의 새 파일명을 입력하세요 (.html 자동 추가):`, currentBase);",
+            "  const input = await openSimpleDialog({",
+            "    title: \"파일명 변경\",",
+            "    message: `'${currentBase}'의 새 파일명을 입력하세요 (.html 자동 추가):`,",
+            "    mode: \"prompt\",",
+            "    defaultValue: currentBase",
+            "  });",
             "  if (input === null) return;",
             "  let nextBase = input.trim();",
             "  if (!nextBase) return;",
@@ -307,14 +561,18 @@ jobs:
             "    nextBase = nextBase.slice(0, -5);",
             "  }",
             "  if (!nextBase || nextBase.includes(\"/\") || nextBase.includes(\"\\\\\")) {",
-            "    alert(\"유효하지 않은 파일명입니다.\");",
+            "    await openSimpleDialog({ title: \"입력 오류\", message: \"유효하지 않은 파일명입니다.\" });",
             "    return;",
             "  }",
             "  const nextFileName = `${nextBase}.html`;",
             "  if (nextFileName === oldFileName) return;",
             "  const parentDir = oldPath.includes(\"/\") ? oldPath.slice(0, oldPath.lastIndexOf(\"/\")) : \"\";",
             "  const newPath = parentDir ? `${parentDir}/${nextFileName}` : nextFileName;",
-            "  const ok = confirm(`파일명을 변경할까요?\\n${oldPath} → ${newPath}`);",
+            "  const ok = await openSimpleDialog({",
+            "    title: \"파일명 변경 확인\",",
+            "    message: `파일명을 변경할까요?\\n${oldPath} → ${newPath}`,",
+            "    mode: \"confirm\"",
+            "  });",
             "  if (!ok) return;",
             "  const token = await ensureToken();",
             "  if (!token) return;",
@@ -358,9 +616,15 @@ jobs:
             "      const errData = await delRes.json().catch(() => ({}));",
             "      throw new Error(errData.message || `기존 파일 삭제 실패 (${delRes.status})`);",
             "    }",
-            "    alert(`'${oldPath}' → '${newPath}' 변경이 완료되었습니다. Pages 재배포까지 잠시 기다려 주세요.`);",
+            "    await openSimpleDialog({",
+            "      title: \"파일명 변경 완료\",",
+            "      message: `'${oldPath}' → '${newPath}' 변경이 완료되었습니다. Pages 재배포까지 잠시 기다려 주세요.`",
+            "    });",
             "  } catch (err) {",
-            "    alert(`파일명 변경 중 오류가 발생했습니다:\\n${err.message}`);",
+            "    await openSimpleDialog({",
+            "      title: \"파일명 변경 오류\",",
+            "      message: `파일명 변경 중 오류가 발생했습니다:\\n${err.message}`",
+            "    });",
             "    btn.disabled = false;",
             "    btn.textContent = origText;",
             "  }",
@@ -368,7 +632,13 @@ jobs:
             "async function deleteHtmlFile(btn) {",
             "  const filePath = btn.getAttribute(\"data-path\");",
             "  if (!filePath) return;",
-            "  const ok = confirm(`정말로 GitHub에서 '${filePath}' 파일을 삭제할까요?\\n삭제 커밋이 main 브랜치에 반영됩니다.`);",
+            "  const ok = await openSimpleDialog({",
+            "    title: \"파일 삭제 확인\",",
+            "    message: `정말로 GitHub에서 '${filePath}' 파일을 삭제할까요?\\n삭제 커밋이 main 브랜치에 반영됩니다.`,",
+            "    mode: \"confirm\",",
+            "    confirmText: \"삭제\",",
+            "    danger: true",
+            "  });",
             "  if (!ok) return;",
             "  const token = await ensureToken();",
             "  if (!token) return;",
@@ -399,9 +669,15 @@ jobs:
             "    }",
             "    const li = btn.closest(\"li\");",
             "    if (li) li.remove();",
-            "    alert(`'${filePath}' 삭제가 완료되었습니다. Pages 재배포까지 잠시 기다려 주세요.`);",
+            "    await openSimpleDialog({",
+            "      title: \"삭제 완료\",",
+            "      message: `'${filePath}' 삭제가 완료되었습니다. Pages 재배포까지 잠시 기다려 주세요.`",
+            "    });",
             "  } catch (err) {",
-            "    alert(`삭제 중 오류가 발생했습니다:\\n${err.message}`);",
+            "    await openSimpleDialog({",
+            "      title: \"삭제 오류\",",
+            "      message: `삭제 중 오류가 발생했습니다:\\n${err.message}`",
+            "    });",
             "    btn.disabled = false;",
             "    btn.textContent = origText;",
             "  }",
@@ -432,7 +708,13 @@ jobs:
             "  const dirPath = btn.getAttribute(\"data-dir-path\");",
             "  const dirName = btn.getAttribute(\"data-dir-name\");",
             "  if (!dirPath) return;",
-            "  const ok = confirm(`정말로 '${dirName || dirPath}' 디렉토리와 내부의 모든 파일을 GitHub에서 삭제할까요?\\n삭제 커밋이 main 브랜치에 반영됩니다.`);",
+            "  const ok = await openSimpleDialog({",
+            "    title: \"디렉토리 삭제 확인\",",
+            "    message: `정말로 '${dirName || dirPath}' 디렉토리와 내부의 모든 파일을 GitHub에서 삭제할까요?\\n삭제 커밋이 main 브랜치에 반영됩니다.`,",
+            "    mode: \"confirm\",",
+            "    confirmText: \"삭제\",",
+            "    danger: true",
+            "  });",
             "  if (!ok) return;",
             "  const token = await ensureToken();",
             "  if (!token) return;",
@@ -459,9 +741,15 @@ jobs:
             "    }",
             "    const detailsEl = btn.closest(\"details\");",
             "    if (detailsEl) detailsEl.remove();",
-            "    alert(`'${dirPath}' 디렉토리 삭제가 완료되었습니다. Pages 재배포까지 잠시 기다려 주세요.`);",
+            "    await openSimpleDialog({",
+            "      title: \"디렉토리 삭제 완료\",",
+            "      message: `'${dirPath}' 디렉토리 삭제가 완료되었습니다. Pages 재배포까지 잠시 기다려 주세요.`",
+            "    });",
             "  } catch (err) {",
-            "    alert(`디렉토리 삭제 중 오류가 발생했습니다:\\n${err.message}`);",
+            "    await openSimpleDialog({",
+            "      title: \"디렉토리 삭제 오류\",",
+            "      message: `디렉토리 삭제 중 오류가 발생했습니다:\\n${err.message}`",
+            "    });",
             "    btn.disabled = false;",
             "    btn.textContent = origText;",
             "  }",
@@ -472,17 +760,26 @@ jobs:
             "  const oldDirPath = btn.getAttribute(\"data-dir-path\");",
             "  const oldDirName = btn.getAttribute(\"data-dir-name\");",
             "  if (!oldDirPath || !oldDirName) return;",
-            "  const input = prompt(`'${oldDirName}' 디렉토리의 새 이름을 입력하세요:`, oldDirName);",
+            "  const input = await openSimpleDialog({",
+            "    title: \"디렉토리 이름 변경\",",
+            "    message: `'${oldDirName}' 디렉토리의 새 이름을 입력하세요:`,",
+            "    mode: \"prompt\",",
+            "    defaultValue: oldDirName",
+            "  });",
             "  if (input === null) return;",
             "  const nextName = input.trim();",
             "  if (!nextName || nextName === oldDirName) return;",
             "  if (nextName.includes(\"/\") || nextName.includes(\"\\\\\")) {",
-            "    alert(\"디렉토리 이름에는 슬래시(/, \\\\)를 포함할 수 없습니다.\");",
+            "    await openSimpleDialog({ title: \"입력 오류\", message: \"디렉토리 이름에는 슬래시(/, \\\\)를 포함할 수 없습니다.\" });",
             "    return;",
             "  }",
             "  const parentPath = oldDirPath.includes(\"/\") ? oldDirPath.slice(0, oldDirPath.lastIndexOf(\"/\")) : \"\";",
             "  const newDirPath = parentPath ? `${parentPath}/${nextName}` : nextName;",
-            "  const ok = confirm(`디렉토리 이름을 변경할까요?\\n${oldDirPath} → ${newDirPath}`);",
+            "  const ok = await openSimpleDialog({",
+            "    title: \"디렉토리 이름 변경 확인\",",
+            "    message: `디렉토리 이름을 변경할까요?\\n${oldDirPath} → ${newDirPath}`,",
+            "    mode: \"confirm\"",
+            "  });",
             "  if (!ok) return;",
             "  const token = await ensureToken();",
             "  if (!token) return;",
@@ -533,9 +830,15 @@ jobs:
             "        throw new Error(errData.message || `기존 파일 삭제 실패 (${f.path})`);",
             "      }",
             "    }",
-            "    alert(`'${oldDirPath}' → '${newDirPath}' 이름 변경이 완료되었습니다. Pages 재배포까지 잠시 기다려 주세요.`);",
+            "    await openSimpleDialog({",
+            "      title: \"이름 변경 완료\",",
+            "      message: `'${oldDirPath}' → '${newDirPath}' 이름 변경이 완료되었습니다. Pages 재배포까지 잠시 기다려 주세요.`",
+            "    });",
             "  } catch (err) {",
-            "    alert(`이름 변경 중 오류가 발생했습니다:\\n${err.message}`);",
+            "    await openSimpleDialog({",
+            "      title: \"이름 변경 오류\",",
+            "      message: `이름 변경 중 오류가 발생했습니다:\\n${err.message}`",
+            "    });",
             "    btn.disabled = false;",
             "    btn.textContent = origText;",
             "  }",
@@ -573,7 +876,11 @@ jobs:
                 color: var(--text);
                 background: var(--bg);
               }
-              .container { padding: 35vh 0 50vh 0; }
+              .container {
+                max-width: 720px;
+                margin: 0 auto;
+                padding: 35vh 0 50vh 0;
+              }
               .tabs-wrap {
                 position: fixed;
                 top: 0;
@@ -629,10 +936,6 @@ jobs:
                 color: var(--text);
                 background: var(--surface);
               }
-              .container {
-                max-width: 720px;
-                margin: 0 auto;
-              }
               h1 {
                 margin: 0 0 18px;
                 font-size: 1.35rem;
@@ -658,7 +961,7 @@ jobs:
               .file-main {
                 display: flex;
                 flex-wrap: wrap;
-                align-items: baseline;
+                align-items: center;
                 gap: 4px 8px;
                 min-width: 0;
               }
@@ -675,6 +978,22 @@ jobs:
                 font-size: 0.8rem;
                 color: var(--muted);
                 word-break: break-word;
+              }
+              .tag-chips {
+                display: inline-flex;
+                flex-wrap: wrap;
+                gap: 4px;
+              }
+              .tag-chip {
+                display: inline-flex;
+                align-items: center;
+                padding: 1px 7px;
+                border-radius: 999px;
+                background: var(--surface);
+                border: 1px solid var(--border);
+                color: var(--muted);
+                font-size: 0.72rem;
+                line-height: 1.35;
               }
               .meta {
                 display: inline-flex;
@@ -711,7 +1030,7 @@ jobs:
                 font-weight: 700;
                 flex-shrink: 0;
               }
-              .del-btn, .rename-btn, .rename-file-btn {
+              .del-btn, .rename-btn, .rename-file-btn, .tag-btn {
                 padding: 2px 7px;
                 border-radius: 5px;
                 background: transparent;
@@ -729,16 +1048,16 @@ jobs:
                 opacity: 1;
                 background: var(--danger-bg);
               }
-              .rename-btn, .rename-file-btn {
+              .rename-btn, .rename-file-btn, .tag-btn {
                 border: 1px solid var(--border);
                 color: var(--muted);
                 font-weight: 500;
               }
-              .rename-btn:hover:not(:disabled), .rename-file-btn:hover:not(:disabled) {
+              .rename-btn:hover:not(:disabled), .rename-file-btn:hover:not(:disabled), .tag-btn:hover:not(:disabled) {
                 color: var(--text);
                 background: var(--surface);
               }
-              .del-btn:disabled, .rename-btn:disabled, .rename-file-btn:disabled {
+              .del-btn:disabled, .rename-btn:disabled, .rename-file-btn:disabled, .tag-btn:disabled {
                 opacity: 0.45;
                 cursor: not-allowed;
               }
@@ -789,6 +1108,98 @@ jobs:
                 padding: 4px 12px 10px 18px;
                 border-top: 1px solid #e5e9ee;
               }
+              dialog.app-dialog {
+                width: min(440px, calc(100vw - 28px));
+                margin: auto;
+                padding: 0;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                background: var(--bg);
+                color: var(--text);
+                box-shadow: 0 16px 40px rgba(31, 35, 40, 0.18);
+              }
+              dialog.app-dialog::backdrop {
+                background: rgba(31, 35, 40, 0.42);
+                backdrop-filter: blur(2px);
+              }
+              .app-dialog-form {
+                padding: 18px;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+              }
+              .app-dialog-title {
+                margin: 0;
+                font-size: 1rem;
+                font-weight: 700;
+              }
+              .app-dialog-message {
+                margin: 0;
+                font-size: 0.9rem;
+                color: var(--muted);
+                white-space: pre-line;
+                word-break: break-word;
+              }
+              .app-dialog-field-wrap {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+              }
+              .app-dialog-label {
+                font-size: 0.78rem;
+                font-weight: 600;
+                color: var(--muted);
+              }
+              .app-dialog-input {
+                width: 100%;
+                padding: 8px 10px;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                font-size: 0.92rem;
+                color: var(--text);
+                background: var(--bg);
+              }
+              .app-dialog-input:focus {
+                outline: 2px solid var(--accent-bg);
+                border-color: var(--accent);
+              }
+              .app-dialog-actions {
+                display: flex;
+                justify-content: flex-end;
+                gap: 8px;
+                margin-top: 4px;
+              }
+              .dialog-btn {
+                padding: 6px 12px;
+                border-radius: 7px;
+                font-size: 0.85rem;
+                font-weight: 600;
+                cursor: pointer;
+                border: 1px solid var(--border);
+              }
+              .dialog-btn-secondary {
+                background: var(--bg);
+                color: var(--text);
+              }
+              .dialog-btn-secondary:hover {
+                background: var(--surface);
+              }
+              .dialog-btn-primary {
+                background: var(--accent);
+                border-color: var(--accent);
+                color: #ffffff;
+              }
+              .dialog-btn-primary:hover {
+                filter: brightness(0.95);
+              }
+              .dialog-btn-danger {
+                background: var(--danger);
+                border-color: var(--danger);
+                color: #ffffff;
+              }
+              .dialog-btn-danger:hover {
+                filter: brightness(0.95);
+              }
               @media (max-width: 600px) {
                 :root { --header-h: 54px; }
                 body { padding: calc(var(--header-h) + 14px) 12px 36px; font-size: 15px; }
@@ -825,6 +1236,7 @@ jobs:
               <h1>${escapeAttr(heading)}</h1>
               ${bodyHtml}
             </div>
+            ${dialogMarkup}
             ${clientScript}
           </body>
           </html>`;
@@ -838,9 +1250,11 @@ jobs:
               .map((file) => {
                 const fullPath = path.join(colDir, file);
                 const mtime = getGitOrStatMtime(`col/${file}`, fullPath);
+                const meta = getHtmlMeta(fullPath);
                 return {
                   name: file,
-                  pageTitle: getHtmlPageTitle(fullPath),
+                  pageTitle: meta.pageTitle,
+                  keywords: meta.keywords,
                   mtime,
                   dayStr: formatKstDateOnly(mtime),
                   timeStr: formatKst(mtime)
@@ -867,6 +1281,7 @@ jobs:
                       href: f.name,
                       fileName: f.name,
                       pageTitle: f.pageTitle,
+                      keywords: f.keywords,
                       repoPath: `col/${f.name}`,
                       timeStr: f.timeStr,
                       openInNewTab: false,
@@ -945,9 +1360,11 @@ jobs:
                   totalFiles += 1;
 
                   const posixRel = relPath.replace(/\\/g, "/");
+                  const meta = getHtmlMeta(fullPath);
                   structure.files.push({
                     name: entry.name,
-                    pageTitle: showPageTitle ? getHtmlPageTitle(fullPath) : "",
+                    pageTitle: showPageTitle ? meta.pageTitle : "",
+                    keywords: meta.keywords,
                     path: posixRel,
                     repoPath: `${dirName}/${posixRel}`,
                     timeStr: formatKst(mtime)
@@ -973,6 +1390,7 @@ jobs:
                       href: file.path,
                       fileName: file.name,
                       pageTitle: file.pageTitle,
+                      keywords: file.keywords,
                       repoPath: file.repoPath,
                       timeStr: file.timeStr,
                       openInNewTab: true,
